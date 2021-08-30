@@ -1,9 +1,10 @@
 doctype html
-html(lang="en")
+html(lang="it")
 	head
 		meta(charset="UTF-8")
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		link(rel="stylesheet", href="/assets/style.css")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css")
+		link(rel="stylesheet" href="/assets/style.css")
 		title Cornici
 	body
 		h1 Cornici
@@ -29,11 +30,9 @@ html(lang="en")
 					label(for="photo") Foto
 					input#photo(type="file" name="photo" accept=".jpg,.jpeg,.png")
 					
-					button(type="submit") Scegli foto
+					button(type="submit") Conferma foto
 				button#apply(disabled) Applica cornice
 			section#photo-section
-				img#base
-				img#frame
-		script(src="https://code.jquery.com/jquery-3.6.0.min.js")
-		script(src="/assets/jquery-ui/jquery-ui.min.js")
+				img#image
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js")
 		script(src="/assets/script.js" defer)

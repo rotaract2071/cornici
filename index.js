@@ -27,13 +27,15 @@ app.post('/upload', upload.single("photo"), async (req, res) => {
 })
 
 app.post('/apply', async (req, res) => {
-	const [baseFilename, frameFilename] = [req.body.base, req.body.frame]
+	const [baseFilename, frameFilename] = [req.body.image, req.body.frame]
 	const [top, left] = [Math.floor(req.body.top), Math.floor(req.body.left)]
+	const [width, height] = [Math.floor(req.body.width), Math.floor(req.body.height)]
 	const ratio = req.body.ratio
-	const [width, height] = ratio === "square" ? [1080, 1080] : ratio === "portrait" ?  [1080, 1620] : [1620, 1080]
+	// const [width, height] = ratio === "square" ? [1080, 1080] : ratio === "portrait" ?  [1080, 1620] : [1620, 1080]
 	
 	await sharp(`var/uploads/${baseFilename}`)
 		.extract({ top: top, left: left, width: width, height: height })
+		.resize(1080, 1080, { fit: 'outside' })
 		.composite([{ input: `assets/frames/${frameFilename}.png` }])
 		.toFile(`var/exports/${baseFilename}`)
 	res.json({

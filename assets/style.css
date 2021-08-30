@@ -8,16 +8,6 @@ input, select, button {
 }
 
 img {
-	height: 540px;
-}
-
-img#base {
-	position: absolute;
-	z-index: 1;
-}
-
-img#frame {
-	position: absolute;
-	z-index: 2;
-	cursor: move;
+	display: block;
+	max-width: 100%;
 }

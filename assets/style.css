@@ -1,0 +1,23 @@
+#main {
+	display: flex;
+}
+
+input, select, button {
+	display: block;
+	margin-bottom: 1rem;
+}
+
+img {
+	height: 540px;
+}
+
+img#base {
+	position: absolute;
+	z-index: 1;
+}
+
+img#frame {
+	position: absolute;
+	z-index: 2;
+	cursor: move;
+}

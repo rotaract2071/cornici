@@ -1,0 +1,39 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		link(rel="stylesheet", href="/assets/style.css")
+		title Cornici
+	body
+		h1 Cornici
+
+		main#main
+			section#form-section
+				form#upload-form
+					label(for="zone") Zona
+					select#zone(name="zone")
+						option(value="doc") DOC
+						option(value="etruria") Etruria
+						option(value="galileo") Galileo
+						option(value="magnifico") Il Magnifico
+						option(value="montalbano") Montalbano
+						option(value="tirreno") Tirreno
+					
+					label(for="ratio") Formato
+					select#ratio(name="ratio")
+						option(value="square") 1:1 (quadrato)
+						option(value="portrait") 2:3 (verticale)
+						option(value="landscape") 3:2 (orizzontale)
+					
+					label(for="photo") Foto
+					input#photo(type="file" name="photo" accept=".jpg,.jpeg,.png")
+					
+					button(type="submit") Scegli foto
+				button#apply(disabled) Applica cornice
+			section#photo-section
+				img#base
+				img#frame
+		script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+		script(src="/assets/jquery-ui/jquery-ui.min.js")
+		script(src="/assets/script.js" defer)

@@ -29,10 +29,10 @@ html(lang="it")
 					
 					label(for="photo") Foto
 					input#photo(type="file" name="photo" accept=".jpg,.jpeg,.png")
-					
-					button(type="submit") Conferma foto
 				button#apply(disabled) Applica cornice
+				button#refresh(onclick="window.location.reload()") Ricarica
 			section#photo-section
 				img#image
-		script(src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js")
+		script(src="//cdn.jsdelivr.net/npm/sweetalert2@11")
 		script(src="/assets/script.js" defer)

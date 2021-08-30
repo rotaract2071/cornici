@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const form = document.querySelector("#upload-form")
+	const fileInput = document.getElementById("photo")
 	const image = document.querySelector("#image")
 	const apply = document.querySelector("#apply")
 
@@ -7,28 +8,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	let [baseFilename, frameFilename] = [null, null]
 
-	form.addEventListener("submit", (e) => {
-		e.preventDefault()
+	fileInput.onchange = () => {
 		const formData = new FormData(form)
 		let ratio = formData.get('ratio')
+		Swal.showLoading()
 		fetch("/upload", {
 			method: "POST",
 			body: formData
 		}).then(data => data.json()).then(json => {
+			Swal.close()
 			baseFilename = json.baseFilename
 			frameFilename = `${formData.get("zone")}_${formData.get("ratio")}`
 			image.setAttribute("src", `/uploads/${json.baseFilename}`);
 			[...form.elements].forEach(el => el.setAttribute('disabled', true))
 			cropper = new Cropper(image, {
-				aspectRatio: ratio === 'square' ? 1 : ratio === 'portrait' ? 2/3 : ratio === 'landscape' ? 3/2 : null,
+				aspectRatio: ratio === 'square' ? 1 : ratio === 'portrait' ? 2 / 3 : ratio === 'landscape' ? 3 / 2 : null,
 				zoomable: false
 			})
 			apply.removeAttribute("disabled")
 		})
-	})
+	}
 
-	apply.addEventListener("click", () => {
-		const formData = new FormData(form)
+	apply.onclick = () => {
 		const cropboxData = cropper.getData()
 		console.log(cropper.getData())
 		fetch("/apply", {
@@ -37,8 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			body: JSON.stringify({
 				image: baseFilename,
 				frame: frameFilename,
-				zone: formData.get("zone"),
-				ratio: formData.get("ratio"),
 				left: cropboxData.x,
 				top: cropboxData.y,
 				width: cropboxData.width,
@@ -46,5 +45,5 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 		}).then(response => response.json())
 			.then(data => window.location = data.filename)
-	})
+	}
 })

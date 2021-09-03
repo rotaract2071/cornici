@@ -19,8 +19,6 @@ app.post('/apply', upload.single('photo'), async (req, res) => {
 	const [top, left] = [Math.floor(req.body.top), Math.floor(req.body.left)]
 	const [width, height] = [Math.floor(req.body.width), Math.floor(req.body.height)]
 
-	console.log(top, left, width, height)
-
 	const fileName = `${nanoid()}.jpg`
 
 	await sharp(req.file.buffer)
@@ -35,7 +33,7 @@ app.post('/apply', upload.single('photo'), async (req, res) => {
 		.composite([{ input: `assets/frames/${zone}_${ratio}.png` }])
 		.toFile(`var/exports/${fileName}`)
 
-	setTimeout(() => fs.unlink(`var/exports/${fileName}`), 5 * 60 * 1000)
+	setTimeout(() => fs.unlink(`var/exports/${fileName}`), 10 * 1000)
 
 	res.json({
 		ok: true,

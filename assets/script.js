@@ -46,6 +46,4 @@ document.addEventListener("DOMContentLoaded", () => {
 				window.location = data.filename
 			})
 	}
-
-	fileInput.value = null
 })

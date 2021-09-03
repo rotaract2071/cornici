@@ -9,7 +9,6 @@ const upload = multer({ storage: multer.memoryStorage() })
 const app = express()
 app.set("view engine", "pug")
 app.use("/assets", express.static("assets"))
-app.use(express.json())
 
 app.get('/', (req, res) => res.render("home"))
 

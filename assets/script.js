@@ -36,14 +36,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		formData.set('top', cropboxData.y)
 		formData.set('width', cropboxData.width)
 		formData.set('height', cropboxData.height)
-		Swal.showLoading()
+		Swal.fire({
+			allowOutsideClick: false,
+			didOpen: () => Swal.showLoading()
+		})
 		fetch("/apply", {
 			method: "POST",
 			body: formData
-		}).then(response => response.json())
-			.then(data => {
-				Swal.close()
-				window.location = data.filename
-			})
+		}).then(response => response.json()).then(data => {
+			Swal.close()
+			window.location = data.filename
+		})
 	}
 })

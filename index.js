@@ -13,7 +13,7 @@ app.use(express.json())
 
 app.get('/', (req, res) => res.render("home"))
 
-app.post('/apply', upload.single('photo'), async (req, res) => {
+app.post('/apply', upload.single('image'), async (req, res) => {
 	const zone = req.body.zone
 	const ratio = req.body.ratio
 	const [top, left] = [Math.floor(req.body.top), Math.floor(req.body.left)]

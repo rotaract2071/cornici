@@ -12,14 +12,14 @@ html(lang="it")
 		main#main
 			section#form-section
 				form#upload-form
-					label(for="photo") Foto
-					input#photo(required type="file" name="photo" accept=".jpg,.jpeg,.png")
+					label(for="image-input") Foto
+					input#image-input(required type="file" name="image" accept=".jpg,.jpeg,.png")
 					
 					label(for="ratio") Formato
 					select#ratio(name="ratio")
-						option(value="square") 1:1 (quadrato)
-						option(value="portrait") 2:3 (verticale)
-						option(value="landscape") 3:2 (orizzontale)
+						option(value="square") Quadrato
+						option(value="portrait") Verticale
+						option(value="landscape") Orizzontale
 
 					label(for="zone") Zona
 					select#zone(name="zone")
@@ -31,7 +31,7 @@ html(lang="it")
 						option(value="tirreno") Tirreno
 
 				button#apply(disabled) Applica cornice
-			section#photo-section
+			section#image-section
 				img#image
 		script(src="//cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js")
 		script(src="//cdn.jsdelivr.net/npm/sweetalert2@11")

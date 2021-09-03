@@ -1,16 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-	const form = document.querySelector("#upload-form")
-	const fileInput = document.getElementById("photo")
+	const form = document.getElementById("upload-form")
+	const imageInput = document.getElementById("image-input")
 	const ratioInput = document.getElementById("ratio")
-	const image = document.querySelector("#image")
-	const apply = document.querySelector("#apply")
+	const image = document.getElementById("image")
+	const apply = document.getElementById("apply")
 
 	let cropper = null
 
-	fileInput.onchange = () => {
+	imageInput.onchange = () => {
 		const formData = new FormData(form)
 		let ratio = formData.get('ratio')
-		const file = fileInput.files[0]
+		const file = imageInput.files[0]
 		const fileReader = new FileReader()
 		fileReader.onload = (e) => {
 			image.src = e.target.result

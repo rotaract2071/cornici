@@ -12,6 +12,15 @@ html(lang="it")
 		main#main
 			section#form-section
 				form#upload-form
+					label(for="photo") Foto
+					input#photo(required type="file" name="photo" accept=".jpg,.jpeg,.png")
+					
+					label(for="ratio") Formato
+					select#ratio(name="ratio")
+						option(value="square") 1:1 (quadrato)
+						option(value="portrait") 2:3 (verticale)
+						option(value="landscape") 3:2 (orizzontale)
+
 					label(for="zone") Zona
 					select#zone(name="zone")
 						option(value="doc") DOC
@@ -20,15 +29,7 @@ html(lang="it")
 						option(value="magnifico") Il Magnifico
 						option(value="montalbano") Montalbano
 						option(value="tirreno") Tirreno
-					
-					label(for="ratio") Formato
-					select#ratio(name="ratio")
-						option(value="square") 1:1 (quadrato)
-						option(value="portrait") 2:3 (verticale)
-						option(value="landscape") 3:2 (orizzontale)
-					
-					label(for="photo") Foto
-					input#photo(type="file" name="photo" accept=".jpg,.jpeg,.png")
+
 				button#apply(disabled) Applica cornice
 				button#refresh(onclick="window.location.reload()") Ricarica
 			section#photo-section

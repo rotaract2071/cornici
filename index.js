@@ -9,32 +9,22 @@ const upload = multer({ storage: multer.memoryStorage() })
 const app = express()
 app.set("view engine", "pug")
 app.use("/assets", express.static("assets"))
-app.use("/uploads", express.static("var/uploads"))
 app.use(express.json())
 
 app.get('/', (req, res) => res.render("home"))
 
-app.post('/upload', upload.single("photo"), async (req, res) => {
-	const filename = `${nanoid()}.jpg`
-	await sharp(req.file.buffer)
-		.rotate()
-		.resize(1080, 1080, { fit: 'outside' })
-		.toFile(`var/uploads/${filename}`)
-
-	res.json({
-		ok: true,
-		baseFilename: filename
-	})
-
-	setTimeout(() => fs.unlink(`var/uploads/${filename}`), 5 * 60 * 1000)
-})
-
-app.post('/apply', async (req, res) => {
-	const [baseFilename, frameFilename] = [req.body.image, req.body.frame]
+app.post('/apply', upload.single('photo'), async (req, res) => {
+	const zone = req.body.zone
+	const ratio = req.body.ratio
 	const [top, left] = [Math.floor(req.body.top), Math.floor(req.body.left)]
 	const [width, height] = [Math.floor(req.body.width), Math.floor(req.body.height)]
 
-	await sharp(`var/uploads/${baseFilename}`)
+	console.log(top, left, width, height)
+
+	const fileName = `${nanoid()}.jpg`
+
+	await sharp(req.file.buffer)
+		.rotate()
 		.extract({
 			top: top >= 0 ? top : 0,
 			left: left >= 0 ? left : 0,
@@ -42,22 +32,19 @@ app.post('/apply', async (req, res) => {
 			height: height
 		})
 		.resize(1080, 1080, { fit: 'outside' })
-		.composite([{ input: `assets/frames/${frameFilename}.png` }])
-		.toFile(`var/exports/${baseFilename}`)
-	
-	setTimeout(() => fs.unlink(`var/exports/${baseFilename}`), 5 * 60 * 1000)
-		
+		.composite([{ input: `assets/frames/${zone}_${ratio}.png` }])
+		.toFile(`var/exports/${fileName}`)
+
+	setTimeout(() => fs.unlink(`var/exports/${fileName}`), 5 * 60 * 1000)
+
 	res.json({
 		ok: true,
-		filename: `/exports/${baseFilename}`
+		filename: `/exports/${fileName}`
 	})
 })
 
 app.get('/exports/:filename', (req, res) => {
-	res.sendFile(`var/exports/${req.params.filename}`, {
-		headers: { 'Content-Disposition': 'attachment; filename=export.jpg' },
-		root: __dirname
-	})
+	res.download(`var/exports/${req.params.filename}`, 'export.jpg')
 })
 
 app.listen(8000)

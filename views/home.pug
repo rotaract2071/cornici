@@ -4,35 +4,45 @@ html(lang="it")
 		meta(charset="UTF-8")
 		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css")
+		link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/css/uikit.min.css")
 		link(rel="stylesheet" href="/assets/style.css")
 		title Cornici
 	body
-		h1 Cornici
+		div#header-container
+			h1#header.uk-heading-small CORNICI
 
 		main#main
 			section#form-section
-				form#upload-form
-					label(for="image-input") Foto
-					input#image-input(required type="file" name="image" accept=".jpg,.jpeg,.png")
-					
-					label(for="ratio") Formato
-					select#ratio(name="ratio")
-						option(value="square") Quadrato
-						option(value="portrait") Verticale
-						option(value="landscape") Orizzontale
+				form#upload-form.uk-form-horizontal.uk-margin-large(style="margin: 0")
+					div.uk-margin
+						label.uk-form-label(for="image-input") Foto
+						div.uk-form-controls(uk-form-custom)
+							input#image-input(type="file" multiple)
+							button.uk-button.uk-button-primary(type="button" tabindex="-1") Scegli
+						
+					div.uk-margin
+						label.uk-form-label(for="ratio") Formato
+						div.uk-form-controls
+							select#ratio.uk-select(name="ratio")
+								option(value="square") Quadrato
+								option(value="portrait") Verticale
+								option(value="landscape") Orizzontale
 
-					label(for="zone") Zona
-					select#zone(name="zone")
-						option(value="doc") DOC
-						option(value="etruria") Etruria
-						option(value="galileo") Galileo
-						option(value="magnifico") Il Magnifico
-						option(value="montalbano") Montalbano
-						option(value="tirreno") Tirreno
-
-				button#apply(disabled) Applica cornice
+					div.uk-margin
+						label.uk-form-label(for="zone") Zona
+						div.uk-form-controls
+							select#zone.uk-select(name="zone")
+								option(value="doc") DOC
+								option(value="etruria") Etruria
+								option(value="galileo") Galileo
+								option(value="magnifico") Il Magnifico
+								option(value="montalbano") Montalbano
+								option(value="tirreno") Tirreno
+			button#apply.uk-button.uk-button-primary(disabled style="margin: 12px") Applica cornice
 			section#image-section
 				img#image
 		script(src="//cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js")
+		script(src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit.min.js")
+		script(src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit-icons.min.js")
 		script(src="//cdn.jsdelivr.net/npm/sweetalert2@11")
 		script(src="/assets/script.js" defer)

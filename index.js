@@ -31,8 +31,10 @@ app.post('/apply', upload.single('image'), async (req, res) => {
 		.resize(1080, 1080, { fit: 'outside' })
 		.composite([{ input: `assets/frames/${zone}_${ratio}.png` }])
 		.toFile(`var/exports/${fileName}`)
+		.catch(err => console.error(err))
 
-	setTimeout(() => fs.unlink(`var/exports/${fileName}`), 10 * 1000)
+	console.log(`${(new Date).toLocaleString('it-IT')}: ${req.ip} overlapped the ${ratio} frame "${zone}" to a ${width} x ${height} image`)
+	setTimeout(() => fs.unlink(`var/exports/${fileName}`).catch(err => console.error(err)), 10 * 1000)
 
 	res.json({
 		ok: true,
@@ -41,7 +43,7 @@ app.post('/apply', upload.single('image'), async (req, res) => {
 })
 
 app.get('/exports/:filename', (req, res) => {
-	res.download(`var/exports/${req.params.filename}`, 'export.jpg')
+	res.download(`var/exports/${req.params.filename}`, `cornice-${Date.now()}.jpg`)
 })
 
 app.listen(8000)

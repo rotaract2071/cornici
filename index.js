@@ -30,6 +30,7 @@ app.post('/apply', upload.single('image'), async (req, res) => {
 		})
 		.resize(1080, 1080, { fit: 'outside' })
 		.composite([{ input: `assets/frames/${zone}_${ratio}.png` }])
+		.jpeg({ quality: 100 })
 		.toFile(`var/exports/${fileName}`)
 		.catch(err => console.error(err))
 

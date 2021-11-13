@@ -13,7 +13,6 @@ const sessionConfig = {
 }
 const loginRouter = require("./routes/login")
 const logoutRouter = require("./routes/logout")
-const applyRouter = require("./routes/apply")
 
 const app = express()
 app.set("view engine", "pug")
@@ -25,7 +24,6 @@ app.use("/assets", express.static("assets"))
 app.use(session(sessionConfig))
 app.use("/login", loginRouter)
 app.use("/logout", logoutRouter)
-app.use("/apply", applyRouter)
 
 app.get('/', (req, res) => res.render("home", { user: req.session.user }))
 

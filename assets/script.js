@@ -7,12 +7,12 @@ const apply = document.getElementById("apply")
 
 let cropper = null
 const colorMap = {
-	"doc": "#0d4e8c",
-	"etruria": "#17b2dc",
-	"galileo": "#f5a14d",
-	"magnifico": "#138a62",
-	"montalbano": "#e71d75",
-	"tirreno": "#ee7046"
+	"doc": "hsl(209, 83%, 30%)",
+	"etruria": "hsl(193, 81%, 48%)",
+	"galileo": "hsl(30, 89%, 63%)",
+	"magnifico": "hsl(160, 76%, 31%)",
+	"montalbano": "hsl(334, 81%, 51%)",
+	"tirreno": "hsl(15, 83%, 60%)"
 }
 
 imageInput.onchange = () => {

@@ -14,6 +14,7 @@ html(lang="it")
 		main#main
 			if user
 				p Ciao #{user.firstName}!
+				a.uk-button.uk-button-secondary(href="/logout") Logout
 			section#form-section
 				form#upload-form.uk-form-horizontal.uk-margin-large(style="margin: 0")
 					div.uk-margin

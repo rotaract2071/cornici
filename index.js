@@ -11,8 +11,7 @@ const sessionConfig = {
 		sameSite: "strict"
 	}
 }
-const loginRouter = require("./routes/login")
-const logoutRouter = require("./routes/logout")
+const authRouter = require("./routes/auth")
 
 const app = express()
 app.set("view engine", "pug")
@@ -22,13 +21,8 @@ if (app.get("env") === "production") {
 }
 app.use("/assets", express.static("assets"))
 app.use(session(sessionConfig))
-app.use("/login", loginRouter)
-app.use("/logout", logoutRouter)
+app.use("/", authRouter)
 
 app.get('/', (req, res) => res.render("home", { user: req.session.user }))
-
-app.get('/exports/:filename', (req, res) => {
-	res.download(`var/exports/${req.params.filename}`, `cornice-${Date.now()}.jpg`)
-})
 
 app.listen(8000)

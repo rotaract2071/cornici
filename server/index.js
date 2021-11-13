@@ -1,5 +1,6 @@
 const express = require('express')
 const session = require("express-session")
+const path = require("path")
 
 const { secret } = require("./auth.json")
 const sessionConfig = {
@@ -15,6 +16,7 @@ const authRouter = require("./routes/auth")
 
 const app = express()
 app.set("view engine", "pug")
+app.set("views", path.join(__dirname, "/views"))
 if (app.get("env") === "production") {
 	app.set("trust proxy", 1)
 	sessionConfig.cookie.secure = true

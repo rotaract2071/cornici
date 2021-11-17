@@ -14,12 +14,12 @@ export enum Zone {
 }
 
 export enum Color {
-    Doc = 'hsl(209, 83%, 30%)',
-    Etruria = 'hsl(193, 81%, 48%)',
-    Galileo = 'hsl(30, 89%, 63%)',
-    Magnifico = 'hsl(160, 76%, 31%)',
-    Montalbano = 'hsl(334, 81%, 51%)',
-    Tirreno = 'hsl(15, 83%, 60%)'
+    Doc = '#0d4e8c',
+    Etruria = '#17b2dc',
+    Galileo = '#f5a14d',
+    Magnifico = '#138a62',
+    Montalbano = '#e71d75',
+    Tirreno = '#ee7046'
 }
 
 export enum Logo {

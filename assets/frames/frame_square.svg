@@ -1,6 +1,6 @@
 <svg version="1.1" width="1080" height="1080" xmlns="http://www.w3.org/2000/svg">
 <path d="M0,0 H270 V60 S60,60,60,270 H0 Z" fill="#fff"/>
 <path d="M1080,1080 H810 V1020 S1020,1020,1020,810 H1080 Z" fill="#fff"/>
-<path d="M2,272 H58 V1022 H808 V1078 H2 Z" fill="#808080" stroke="#072c28" stroke-width="4"/>
-<path d="M272,2 H1078 V808 H1022 V58 H272 Z" fill="#808080" stroke="#072c28" stroke-width="4"/>
+<path d="M2,272 H58 V1022 H808 V1078 H2 Z" fill="#808080" stroke="#4c4c4c" stroke-width="4" class="border"/>
+<path d="M272,2 H1078 V808 H1022 V58 H272 Z" fill="#808080" stroke="#4c4c4c" stroke-width="4" class="border"/>
 </svg>

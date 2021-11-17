@@ -1,4 +1,5 @@
 from sys import argv
+from colorsys import hls_to_rgb
 
 width = height = 1080
 stroke_width = 2
@@ -27,6 +28,10 @@ class HSLColor:
             self.saturation,
             (self.lightness - self.__darkening_constant) if (self.lightness - self.__darkening_constant) >= 0 else 0
         )
+    
+    def to_rgb_hex(self) -> str:
+        rgb_values = hls_to_rgb(self.hue / 360, self.lightness / 100, self.saturation / 100)
+        return '#%02x%02x%02x' % tuple(map(lambda x: int(x * 256), rgb_values))
 
 fill_color = HSLColor(0, 0, 50)
 stroke_color = fill_color.darken()
@@ -79,8 +84,8 @@ def generate_frame(ratio: float) -> str:
     return f"""<svg version="1.1" width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
 <path d="{' '.join(corner_1)}" fill="#fff"/>
 <path d="{' '.join(corner_2)}" fill="#fff"/>
-<path d="{' '.join(border_1)}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width * 2}"/>
-<path d="{' '.join(border_2)}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width * 2}"/>
+<path d="{' '.join(border_1)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>
+<path d="{' '.join(border_2)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>
 </svg>"""
 
 ratio = eval(argv[1]) if len(argv) >= 2 else 1

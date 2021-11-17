@@ -54,7 +54,7 @@ export default class Overlayer {
     paths.forEach(path => {
       const path2d = new Path2D(path.getAttribute('d'))
 
-      if (path.getAttribute('fill') === '#808080') {
+      if (path.classList.contains('border')) {
         ctx.fillStyle = this.#frame.color
       } else {
         ctx.fillStyle = path.getAttribute('fill')

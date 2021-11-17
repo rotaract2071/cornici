@@ -2,6 +2,7 @@ import { Ratio, Zone } from './constants'
 import Cropper from './Cropper'
 import Frame from './Frame'
 import Overlayer from './Overlayer'
+import Downloader from './Downloader'
 
 const form: HTMLFormElement = <HTMLFormElement>document.getElementById('upload-form')
 const imageInput: HTMLInputElement = <HTMLInputElement>document.getElementById('image-input')
@@ -31,8 +32,7 @@ form.onsubmit = async (e: Event) => {
   const overlayer: Overlayer = new Overlayer(croppedCanvas, frame)
   await overlayer.overlay()
 
-  const a: HTMLAnchorElement = document.createElement('a')
-  a.download = 'cornice.jpg'
-  a.href = overlayer.imageAsDataURL
-  a.click()
+  const dataUrl = overlayer.imageAsDataURL
+  const file: File = imageInput.files[0]
+  Downloader.download(dataUrl, file)
 }

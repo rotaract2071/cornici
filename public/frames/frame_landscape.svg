@@ -1,0 +1,6 @@
+<svg version="1.1" width="1620" height="1080" xmlns="http://www.w3.org/2000/svg">
+<path d="M0,0 H270 V60 S60,60,60,270 H0 Z" fill="#fff"/>
+<path d="M1620,1080 H1350 V1020 S1560,1020,1560,810 H1620 Z" fill="#fff"/>
+<path d="M2,272 H58 V1022 H1348 V1078 H2 Z" fill="#808080" stroke="#072c28" stroke-width="4"/>
+<path d="M272,2 H1618 V808 H1562 V58 H272 Z" fill="#808080" stroke="#072c28" stroke-width="4"/>
+</svg>

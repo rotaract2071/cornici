@@ -22,7 +22,8 @@ export default abstract class Cropper {
   }
 
   static setAspectRatio(ratio: Ratio) {
-    this.#cropper.setAspectRatio(ratio === Ratio.Square ? 1 : ratio === Ratio.Landscape ? 3 / 2 : ratio === Ratio.Portrait ? 2 / 3 : null)
+    if (this.#cropper !== null)
+      this.#cropper.setAspectRatio(ratio === Ratio.Square ? 1 : ratio === Ratio.Landscape ? 3 / 2 : ratio === Ratio.Portrait ? 2 / 3 : null)
   }
 
   static get croppedCanvas(): HTMLCanvasElement {

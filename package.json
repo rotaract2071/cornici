@@ -2,29 +2,29 @@
   "name": "cornici",
   "version": "0.0.1",
   "description": "",
-  "main": "server/index.js",
   "scripts": {
-    "dev": "nodemon .",
-    "lint": "eslint client/**",
-    "build": "esbuild client/app.ts --bundle --minify --legal-comments=none --outfile=assets/app.js"
+    "lint": "eslint src/ts/**",
+    "build-js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --outfile=public/app.js",
+    "build-html": "html-minifier --collapse-whitespace src/index.html > public/index.html",
+    "build-css": "esbuild src/style.css --bundle --minify --legal-comments=none --outfile=public/style.css && purgecss --content public/index.html --css public/style.css --output public",
+    "build": "npm run build-js && npm run build-html && npm run build-css"
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",
   "license": "MIT",
   "dependencies": {
     "cropperjs": "^1.5.12",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "pug": "^3.0.2"
+    "esbuild": "^0.13.13",
+    "html-minifier": "^4.0.0",
+    "purgecss": "^4.0.3",
+    "uikit": "^3.9.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
-    "esbuild": "^0.13.13",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.1",
-    "nodemon": "^2.0.12"
+    "eslint-plugin-promise": "^5.1.1"
   }
 }

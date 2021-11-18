@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+  <link rel="stylesheet" href="/style.css">
+  <title>Cornici</title>
+</head>
+
+<body>
+  <div id="header-container">
+    <h1 class="uk-heading-small" id="header">CORNICI</h1>
+  </div>
+  <main id="main">
+    <section id="form-section">
+      <form class="uk-form-horizontal uk-margin-large" id="upload-form" style="margin: 0">
+        <div class="uk-margin"><label class="uk-form-label" for="image-input">Foto</label>
+          <div class="uk-form-controls" uk-form-custom><input id="image-input" type="file" name="image"
+              accept=".jpg,.jpeg,.png"><button class="uk-button uk-button-primary" type="button"
+              tabindex="-1">Scegli</button></div>
+        </div>
+        <div class="uk-margin"><label class="uk-form-label" for="ratio">Formato</label>
+          <div class="uk-form-controls"><select class="uk-select" id="ratio" name="ratio">
+              <option value="square">Quadrato</option>
+              <option value="portrait">Verticale</option>
+              <option value="landscape">Orizzontale</option>
+            </select></div>
+        </div>
+        <div class="uk-margin"><label class="uk-form-label" for="zone">Zona</label>
+          <div class="uk-form-controls"><select class="uk-select" id="zone" name="zone">
+              <option value="doc">DOC</option>
+              <option value="etruria">Etruria</option>
+              <option value="galileo">Galileo</option>
+              <option value="magnifico">Il Magnifico</option>
+              <option value="montalbano">Montalbano</option>
+              <option value="tirreno">Tirreno</option>
+            </select></div>
+        </div><button class="uk-button uk-button-primary" id="apply" disabled style="margin: 12px" type="submit">Applica
+          cornice</button>
+      </form>
+    </section>
+    <section id="image-section"><img id="image"></section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.3/dist/js/uikit.min.js"></script>
+<script src="/app.js" defer></script>
+</body>
+
+</html>

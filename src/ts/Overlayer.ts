@@ -42,7 +42,7 @@ export default class Overlayer {
   private async drawFrame () {
     const ctx = this.#outputCanvas.getContext('2d')
     const svgText = await fetch(
-      `/assets/frames/frame_${this.#frame.ratio}.svg`
+      `/frames/frame_${this.#frame.ratio}.svg`
     ).then(data => data.text())
     const frame = (() => {
       const tmp = document.createElement('div')
@@ -72,7 +72,7 @@ export default class Overlayer {
   private async drawLogo () {
     const ctx = this.#outputCanvas.getContext('2d')
 
-    for (const logoUrl of ['/assets/logos/distretto.avif', `/assets/logos/${this.#frame.logo}`]) {
+    for (const logoUrl of ['/logos/distretto.avif', `/logos/${this.#frame.logo}`]) {
       const logo: Blob = await fetch(logoUrl).then(data => data.blob())
       const logoBitmap: ImageBitmap = await createImageBitmap(logo)
       const [dx, dy] = logoUrl.indexOf('distretto') !== -1 ? [0, 0] : [this.#outputCanvas.width - 125, this.#outputCanvas.height - 125]

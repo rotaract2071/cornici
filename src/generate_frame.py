@@ -81,12 +81,12 @@ def generate_frame(ratio: float) -> str:
         "Z"
     ]
 
-    return f"""<svg version="1.1" width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
-<path d="{' '.join(corner_1)}" fill="#fff"/>
-<path d="{' '.join(corner_2)}" fill="#fff"/>
-<path d="{' '.join(border_1)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>
-<path d="{' '.join(border_2)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>
-</svg>"""
+    return f"""<svg version="1.1" width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">""" \
+           f"""<path d="{' '.join(corner_1)}" fill="#fff"/>""" \
+           f"""<path d="{' '.join(corner_2)}" fill="#fff"/>""" \
+           f"""<path d="{' '.join(border_1)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>""" \
+           f"""<path d="{' '.join(border_2)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>""" \
+           f"""</svg>"""
 
 ratio = eval(argv[1]) if len(argv) >= 2 else 1
 print(generate_frame(ratio))

@@ -42,7 +42,7 @@ export default class Overlayer {
   private async drawFrame () {
     const ctx = this.#outputCanvas.getContext('2d')
     const svgText = await fetch(
-      `/frames/frame_${this.#frame.ratio}.svg`
+      `/frames/${this.#frame.ratio}.svg`
     ).then(data => data.text())
     const frame = (() => {
       const tmp = document.createElement('div')

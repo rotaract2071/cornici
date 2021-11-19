@@ -6,7 +6,7 @@
     "lint": "eslint src/ts/**",
     "build-js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --outfile=public/app.js",
     "build-html": "html-minifier --collapse-boolean-attributes --collapse-whitespace src/index.html > public/index.html",
-    "build-css": "esbuild src/style.css --bundle --minify --legal-comments=none --outfile=public/style.css && purgecss --content public/index.html --css public/style.css --output public",
+    "build-css": "sass --no-source-map src/style.scss | esbuild --loader=css --bundle --minify --legal-comments=none --outfile=public/style.css && purgecss --content public/index.html --safelist is-loading --css public/style.css --output public",
     "build": "npm run build-js && npm run build-html && npm run build-css"
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",
@@ -25,6 +25,7 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.1"
+    "eslint-plugin-promise": "^5.1.1",
+    "sass": "^1.43.4"
   }
 }

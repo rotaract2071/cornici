@@ -25,6 +25,7 @@ ratioInput.onchange = () => {
 
 form.onsubmit = async (e: Event) => {
   e.preventDefault()
+  applyButton.classList.add('is-loading')
   const ratio: Ratio = <Ratio>ratioInput.value
   const zone: Zone = <Zone>zoneInput.value
   const croppedCanvas: HTMLCanvasElement = Cropper.croppedCanvas
@@ -35,4 +36,5 @@ form.onsubmit = async (e: Event) => {
   const dataUrl = overlayer.imageAsDataURL
   const file: File = imageInput.files[0]
   Downloader.download(dataUrl, file)
+  applyButton.classList.remove('is-loading')
 }

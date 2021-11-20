@@ -31,17 +31,17 @@ export default class Overlayer {
     this.#outputCanvas.height = height
     this.#cache = await window.caches.open('images')
 
-    this.drawImage()
-    await this.drawFrame()
-    await this.drawLogo()
+    this.#drawImage()
+    await this.#drawFrame()
+    await this.#drawLogo()
   }
 
-  private drawImage () {
+  #drawImage () {
     const ctx = this.#outputCanvas.getContext('2d')
     ctx.drawImage(this.#inputCanvas, 0, 0, this.#outputCanvas.width, this.#outputCanvas.height)
   }
 
-  private async drawFrame () {
+  async #drawFrame () {
     const ctx = this.#outputCanvas.getContext('2d')
     const frameURL = new URL(`${this.#frame.ratio}.svg`, `${window.location.origin}/frames/`)
     const frameResponse = await this.#getFromCache(frameURL)
@@ -71,7 +71,7 @@ export default class Overlayer {
     })
   }
 
-  private async drawLogo () {
+  async #drawLogo () {
     const ctx = this.#outputCanvas.getContext('2d')
 
     for (const logoName of ['distretto.avif', `${this.#frame.logo}`]) {

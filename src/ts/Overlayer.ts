@@ -5,6 +5,7 @@ export default class Overlayer {
   #inputCanvas: HTMLCanvasElement
   #outputCanvas?: HTMLCanvasElement
   #frame: Frame
+  #cache: Cache
 
   constructor (
     canvas: HTMLCanvasElement,
@@ -28,6 +29,7 @@ export default class Overlayer {
     this.#outputCanvas = document.createElement('canvas')
     this.#outputCanvas.width = width
     this.#outputCanvas.height = height
+    this.#cache = await window.caches.open('images')
 
     this.drawImage()
     await this.drawFrame()
@@ -41,9 +43,9 @@ export default class Overlayer {
 
   private async drawFrame () {
     const ctx = this.#outputCanvas.getContext('2d')
-    const svgText = await fetch(
-      `/frames/${this.#frame.ratio}.svg`
-    ).then(data => data.text())
+    const frameURL = new URL(`${this.#frame.ratio}.svg`, `${window.location.origin}/frames/`)
+    const frameResponse = await this.#getFromCache(frameURL)
+    const svgText = await frameResponse.text()
     const frame = (() => {
       const tmp = document.createElement('div')
       tmp.innerHTML = svgText
@@ -72,12 +74,22 @@ export default class Overlayer {
   private async drawLogo () {
     const ctx = this.#outputCanvas.getContext('2d')
 
-    for (const logoUrl of ['/logos/distretto.avif', `/logos/${this.#frame.logo}`]) {
-      const logo: Blob = await fetch(logoUrl).then(data => data.blob())
+    for (const logoName of ['distretto.avif', `${this.#frame.logo}`]) {
+      const logoURL = new URL(logoName, `${window.location.origin}/logos/`)
+      const logo: Blob = await this.#getFromCache(logoURL).then(data => data.blob())
       const logoBitmap: ImageBitmap = await createImageBitmap(logo)
-      const [dx, dy] = logoUrl.indexOf('distretto') !== -1 ? [0, 0] : [this.#outputCanvas.width - 125, this.#outputCanvas.height - 125]
+      const [dx, dy] = logoName.indexOf('distretto') !== -1 ? [0, 0] : [this.#outputCanvas.width - 125, this.#outputCanvas.height - 125]
       ctx.drawImage(logoBitmap, dx, dy, 125, 125)
     }
+  }
+
+  async #getFromCache(path: URL): Promise<Response> {
+    let response = await this.#cache.match(path.href)
+    if (!response) {
+      await this.#cache.add(path.href)
+      response = await this.#cache.match(path.href)
+    }
+    return response
   }
 
   get imageAsDataURL (): URL {

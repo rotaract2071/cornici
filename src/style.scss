@@ -14,8 +14,5 @@ $primary: $cranberry;
 @import '../node_modules/bulma/sass/form/select.sass';
 @import '../node_modules/bulma/sass/grid/columns.sass';
 @import '../node_modules/bulma/sass/helpers/color.sass';
+@import '../node_modules/bulma/sass/helpers/spacing.sass';
 @import '../node_modules/bulma/sass/helpers/typography.sass';
-
-#image-section {
-    margin: 0 20vw;
-}

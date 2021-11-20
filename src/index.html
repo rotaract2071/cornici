@@ -11,10 +11,11 @@
 </head>
 
 <body>
-	<h1 class="title is-1 is-uppercase has-text-centered has-background-primary has-text-light" id="header">Cornici</h1>
+	<h1 class="title p-5 is-1 is-uppercase has-text-centered has-text-weight-light has-background-primary has-text-light"
+		id="header">Cornici</h1>
 	<main class="container" id="main">
 		<section class="columns is-centered" id="form-section">
-			<form id="upload-form">
+			<form id="upload-form" class="column is-one-third">
 
 				<div class="field is-horizontal">
 					<div class="field-label is-normal">
@@ -22,17 +23,27 @@
 					</div>
 					<div class="field-body">
 						<div class="field">
-							<div class="file">
+							<div class="file is-fullwidth is-info is-right">
 								<label class="file-label" for="image-input">
-									<input class="file-input" id="image-input" type="file" name="image" accept=".jpg,.jpeg,.png">
+									<input class="file-input" id="image-input" type="file" name="image"
+										accept=".jpg,.jpeg,.png">
 									<span class="file-cta">
 										<span class="file-label">Scegli…</span>
 									</span>
+									<span class="file-name">Nessun file</span>
 								</label>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div class="field is-horizontal">
+					<div class="field-label is-normal">
+						<label class="label" for="zone">Formato</label>
+					</div>
+					<div class="field-body">
 						<div class="field">
-							<div class="control">
+							<div class="control is-expanded">
 								<div class="select is-fullwidth">
 									<select id="ratio" name="ratio">
 										<option value="square">Quadrata</option>
@@ -51,7 +62,7 @@
 					</div>
 					<div class="field-body">
 						<div class="field">
-							<div class="control">
+							<div class="control is-expanded">
 								<div class="select is-fullwidth">
 									<select id="zone" name="zone">
 										<option value="doc">DOC</option>
@@ -83,8 +94,10 @@
 			</form>
 		</section>
 
-		<section id="image-section">
-			<img id="image">
+		<section id="image-section" class="columns is-centered">
+			<div class="column is-half">
+				<img id="image">
+			</div>
 		</section>
 
 	</main>

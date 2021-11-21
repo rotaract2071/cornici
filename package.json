@@ -10,7 +10,7 @@
     "build-html": "html-minifier --collapse-boolean-attributes --collapse-whitespace src/index.html -o public/index.html",
     "build-css": "sass --no-source-map src/style.scss public/style.css && esbuild --bundle --minify --legal-comments=none public/style.css --outfile=public/style.css --allow-overwrite && purgecss --config purgecss.config.js",
     "build": "npm run build-js && npm run build-html && npm run build-css && npm run build-svg",
-    "start": "npm run build && node ."
+    "start": "node ."
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",
   "license": "MIT",

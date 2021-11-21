@@ -13,8 +13,8 @@ const applyButton: HTMLButtonElement = <HTMLButtonElement>document.getElementByI
 
 imageInput.onchange = async () => {
   if (imageInput.files.length === 0) return
-  const fileName = document.querySelector('.file-name');
-  fileName.textContent = imageInput.files[0].name;
+  const fileName = document.querySelector('.file-name')
+  fileName.textContent = imageInput.files[0].name
   const ratio: Ratio = <Ratio>ratioInput.value
   const file: File = imageInput.files[0]
   await Cropper.initialize(file, image, ratio)

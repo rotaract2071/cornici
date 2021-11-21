@@ -32,7 +32,7 @@ export default abstract class Cropper {
         return 1;
       case Ratio.Landscape:
         return 3 / 2;
-        case Ratio.Landscape:
+        case Ratio.Portrait:
           return 2 / 3;
     }
   }

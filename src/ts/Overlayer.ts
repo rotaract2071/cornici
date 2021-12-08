@@ -1,13 +1,16 @@
-import { Ratio } from './constants.d'
+import { Ratio, District, Zone, LogoSize } from './constants.d'
 import Frame from './Frame'
+import ImageFetcher from "./ImageFetcher";
+
+type Coordinates = [number, number];
 
 export default class Overlayer {
   #inputCanvas: HTMLCanvasElement
   #outputCanvas?: HTMLCanvasElement
   #frame: Frame
-  #cache: Cache
+  #imageFetcher: ImageFetcher
 
-  constructor (
+  constructor(
     canvas: HTMLCanvasElement,
     frame: Frame
   ) {
@@ -15,7 +18,7 @@ export default class Overlayer {
     this.#frame = frame
   }
 
-  public async overlay () {
+  async overlay() {
     const [width, height] = (() => {
       switch (this.#frame.ratio) {
         case Ratio.Square:
@@ -29,28 +32,22 @@ export default class Overlayer {
     this.#outputCanvas = document.createElement('canvas')
     this.#outputCanvas.width = width
     this.#outputCanvas.height = height
-    this.#cache = await window.caches.open('images')
+
+    this.#imageFetcher = await ImageFetcher.getInstance()
 
     this.#drawImage()
     await this.#drawFrame()
-    await this.#drawLogo()
+    await this.#drawLogos()
   }
 
-  #drawImage () {
+  #drawImage() {
     const ctx = this.#outputCanvas.getContext('2d')
     ctx.drawImage(this.#inputCanvas, 0, 0, this.#outputCanvas.width, this.#outputCanvas.height)
   }
 
-  async #drawFrame () {
+  async #drawFrame() {
     const ctx = this.#outputCanvas.getContext('2d')
-    const frameURL = new URL(`${this.#frame.ratio}.svg`, `${window.location.origin}/frames/`)
-    const frameResponse = await this.#getFromCache(frameURL)
-    const svgText = await frameResponse.text()
-    const frame = (() => {
-      const tmp = document.createElement('div')
-      tmp.innerHTML = svgText
-      return tmp.firstElementChild
-    })()
+    const frame = await this.#imageFetcher.getFrame(this.#frame.ratio)
     const paths = Array.from(frame.querySelectorAll('path'))
 
     paths.forEach(path => {
@@ -71,28 +68,27 @@ export default class Overlayer {
     })
   }
 
-  async #drawLogo () {
+  #getCoordinates(logo: typeof District | Zone): Coordinates {
+    if (logo === District) {
+      return [LogoSize.Margin, LogoSize.Margin]
+    }
+    return [
+      this.#outputCanvas.width - LogoSize.Width - LogoSize.Margin,
+      this.#outputCanvas.height - LogoSize.Height - LogoSize.Margin
+    ]
+  }
+
+  async #drawLogos() {
     const ctx = this.#outputCanvas.getContext('2d')
 
-    for (const logoName of ['distretto.avif', `${this.#frame.logo}`]) {
-      const logoURL = new URL(logoName, `${window.location.origin}/logos/`)
-      const logo: Blob = await this.#getFromCache(logoURL).then(data => data.blob())
-      const logoBitmap: ImageBitmap = await createImageBitmap(logo)
-      const [dx, dy] = logoName.indexOf('distretto') !== -1 ? [0, 0] : [this.#outputCanvas.width - 125, this.#outputCanvas.height - 125]
-      ctx.drawImage(logoBitmap, dx, dy, 125, 125)
+    for (const logoName of [District, this.#frame.logo]) {
+      const logoBitmap: ImageBitmap = await this.#imageFetcher.getLogo(logoName)
+      const [dx, dy] = this.#getCoordinates(logoName as typeof District | Zone)
+      ctx.drawImage(logoBitmap, dx, dy, LogoSize.Width, LogoSize.Height)
     }
   }
 
-  async #getFromCache(path: URL): Promise<Response> {
-    let response = await this.#cache.match(path.href)
-    if (!response) {
-      await this.#cache.add(path.href)
-      response = await this.#cache.match(path.href)
-    }
-    return response
-  }
-
-  get imageAsDataURL (): URL {
+  get imageAsDataURL(): URL {
     if (!this.#outputCanvas) { throw new Error('Devi prima sovrapporre una cornice!') }
     return new URL(this.#outputCanvas.toDataURL('image/jpeg'))
   }

@@ -1,15 +1,14 @@
 {
   "name": "cornici",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src/ts/**",
-    "build-svg": "python3 src/generate_frame.py 1 > public/frames/square.svg && python3 src/generate_frame.py 3/2 > public/frames/landscape.svg && python3 src/generate_frame.py 2/3 > public/frames/portrait.svg",
-    "build-js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --outfile=public/app.js",
-    "build-html": "html-minifier --collapse-boolean-attributes --collapse-whitespace src/index.html -o public/index.html",
-    "build-css": "sass --no-source-map src/style.scss public/style.css && esbuild --bundle --minify --legal-comments=none public/style.css --outfile=public/style.css --allow-overwrite && purgecss --config purgecss.config.js",
-    "build": "npm run build-js && npm run build-html && npm run build-css && npm run build-svg",
+    "build:svg": "python3 src/generate_frame.py 1 > public/frames/square.svg && python3 src/generate_frame.py 3/2 > public/frames/landscape.svg && python3 src/generate_frame.py 2/3 > public/frames/portrait.svg",
+    "build:js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --format=esm --outfile=public/app.js",
+    "build:html": "html-minifier --collapse-boolean-attributes --collapse-whitespace src/index.html -o public/index.html",
+    "build:css": "sass --no-source-map src/style.scss public/style.css && esbuild --bundle --minify --legal-comments=none public/style.css --outfile=public/style.css --allow-overwrite && purgecss --config purgecss.config.js",
+    "build": "npm run build:js && npm run build:html && npm run build:css && npm run build:svg",
     "start": "node ."
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",

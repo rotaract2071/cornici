@@ -4,6 +4,12 @@ export enum Ratio {
     Portrait = 'portrait'
 }
 
+export enum ImageFormat {
+    Avif = 'avif',
+    Webp = 'webp',
+    Jpeg = 'jpg'
+}
+
 export enum Zone {
     Doc = 'doc',
     Etruria = 'etruria',
@@ -22,11 +28,10 @@ export enum Color {
     Tirreno = '#ee7046'
 }
 
-export enum Logo {
-    Doc = 'doc.avif',
-    Etruria = 'etruria.avif',
-    Galileo = 'galileo.avif',
-    Magnifico = 'magnifico.avif',
-    Montalbano = 'montalbano.avif',
-    Tirreno = 'tirreno.avif'
+export const District = 'distretto'
+
+export enum LogoSize {
+    Width = 110,
+    Height = 110,
+    Margin = 5
 }

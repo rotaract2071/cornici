@@ -2,7 +2,7 @@ import CropperLib from 'cropperjs'
 import { Ratio } from './constants.d'
 
 export default abstract class Cropper {
-  static #cropper?: CropperLib = null
+  static #cropper?: CropperLib
 
   static async initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<Boolean> {
     return new Promise(resolve => {
@@ -12,7 +12,8 @@ export default abstract class Cropper {
         image.src = <string>e.target.result
         this.#cropper = new CropperLib(image, {
           zoomable: false,
-          viewMode: 3
+          viewMode: 3,
+          responsive: false
         })
         this.setAspectRatio(ratio)
         resolve(true)
@@ -22,7 +23,7 @@ export default abstract class Cropper {
   }
 
   static setAspectRatio(ratio: Ratio) {
-    if (this.#cropper !== null)
+    if (this.#cropper)
       this.#cropper.setAspectRatio(this.#getActualRatio(ratio))
   }
 

@@ -61,11 +61,10 @@ export default class ImageFetcher {
             if (!response) {
                 response = await fetch(logoPath)
             }
-            const responseClone = response.clone()
-            const imageData = await response.blob()
+            const imageData = await response.clone().blob()
             try {
                 const imageBitmap = await createImageBitmap(imageData)
-                this.#cache.put(logoPath, responseClone)
+                this.#cache.put(logoPath, response)
                 window.sessionStorage.setItem(PreferredBitmapFormatKey, format)
                 return imageBitmap
             } catch (error) { }

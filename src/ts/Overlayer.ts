@@ -82,7 +82,7 @@ export default class Overlayer {
     const ctx = this.#outputCanvas.getContext('2d')
 
     for (const logoName of [District, this.#frame.logo]) {
-      const logoBitmap: ImageBitmap = await this.#imageFetcher.getLogo(logoName)
+      const logoBitmap = await this.#imageFetcher.getLogo(logoName)
       const [dx, dy] = this.#getCoordinates(logoName as typeof District | Zone)
       ctx.drawImage(logoBitmap, dx, dy, LogoSize.Width, LogoSize.Height)
     }

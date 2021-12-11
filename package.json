@@ -7,7 +7,7 @@
     "build:js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --format=esm --target=safari11 --outfile=public/app.js",
     "build:html": "html-minifier --collapse-boolean-attributes --collapse-whitespace src/index.html -o public/index.html",
     "build:css": "sass --no-source-map src/style.scss public/style.css && esbuild --bundle --minify --legal-comments=none public/style.css --outfile=public/style.css --allow-overwrite && purgecss --config purgecss.config.js",
-    "build": "npm run build:js && npm run build:html && npm run build:css && npm run build:svg",
+    "build": "npm run build:js && npm run build:html && npm run build:css",
     "start": "node ."
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",

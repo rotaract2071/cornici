@@ -1,30 +1,35 @@
-import CropperLib from 'cropperjs'
-import { Ratio } from './constants.d'
+import CropperLib from "cropperjs";
+import { Ratio } from "./constants.d";
 
 export default abstract class Cropper {
-	static #cropper?: CropperLib
+	static #cropper?: CropperLib;
 
-	static async initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<boolean> {
-		return new Promise(resolve => {
-			if (this.#cropper) this.#cropper.destroy()
-			const fileReader = new FileReader()
-			fileReader.onload = e => {
-				image.src = e.target.result as string
+	static async initialize(
+		file: File,
+		image: HTMLImageElement,
+		ratio: Ratio,
+	): Promise<boolean> {
+		return new Promise((resolve) => {
+			if (this.#cropper) this.#cropper.destroy();
+			const fileReader = new FileReader();
+			fileReader.onload = (e) => {
+				image.src = e.target.result as string;
 				this.#cropper = new CropperLib(image, {
 					zoomable: false,
 					viewMode: 3,
-					responsive: false
-				})
-				this.setAspectRatio(ratio)
-				resolve(true)
-			}
-			fileReader.readAsDataURL(file)
-		})
+					responsive: false,
+				});
+				this.setAspectRatio(ratio);
+				resolve(true);
+			};
+			fileReader.readAsDataURL(file);
+		});
 	}
 
 	static setAspectRatio(ratio: Ratio) {
-		if (this.#cropper)
-			this.#cropper.setAspectRatio(this.#getActualRatio(ratio))
+		if (this.#cropper) {
+			this.#cropper.setAspectRatio(this.#getActualRatio(ratio));
+		}
 	}
 
 	static #getActualRatio(ratio: Ratio): number {
@@ -39,6 +44,6 @@ export default abstract class Cropper {
 	}
 
 	static get croppedCanvas(): HTMLCanvasElement {
-		return this.#cropper.getCroppedCanvas()
+		return this.#cropper.getCroppedCanvas();
 	}
 }

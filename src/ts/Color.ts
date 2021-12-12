@@ -1,37 +1,41 @@
 export default class Color {
 	static HexRegex = /^#[0-9A-Fa-f]{6}$/;
 
-	#r: number; #g: number; #b: number;
+	#r: number;
+	#g: number;
+	#b: number;
 
 	constructor(hex: string) {
 		if (false === Color.HexRegex.test(hex)) {
-			throw new Error('Invalid hex string')
+			throw new Error("Invalid hex string");
 		}
-		this.#r = parseInt(hex.slice(1, 3), 16)
-		this.#g = parseInt(hex.slice(3, 5), 16)
-		this.#b = parseInt(hex.slice(5, 7), 16)
+		this.#r = parseInt(hex.slice(1, 3), 16);
+		this.#g = parseInt(hex.slice(3, 5), 16);
+		this.#b = parseInt(hex.slice(5, 7), 16);
 	}
 
 	static #RGBtoHSL(r: number, g: number, b: number): [number, number, number] {
-		[r, g, b] = [r, g, b].map(c => c/= 255)
+		[r, g, b] = [r, g, b].map((c) => c /= 255);
 
 		let min = Math.min(r, g, b),
 			max = Math.max(r, g, b),
 			chroma = max - min,
 			[h, s, l] = [0, 0, 0];
 
-		if (chroma === 0)
+		if (chroma === 0) {
 			h = 0;
-		else if (max === r)
+		} else if (max === r) {
 			h = ((g - b) / chroma) % 6;
-		else if (max === g)
+		} else if (max === g) {
 			h = (b - r) / chroma + 2;
-		else
+		} else {
 			h = (r - g) / chroma + 4;
+		}
 
 		h *= 60;
-		if (h < 0)
+		if (h < 0) {
 			h += 360;
+		}
 
 		l = (max + min) / 2;
 		s = chroma === 0 ? 0 : chroma / (1 - Math.abs(2 * l - 1));
@@ -59,11 +63,15 @@ export default class Color {
 			[r, g, b] = [chroma, 0, second];
 		}
 
-		return [r, g, b].map(c => Math.round((c + m) * 255)) as [number, number, number];
+		return [r, g, b].map((c) => Math.round((c + m) * 255)) as [
+			number,
+			number,
+			number,
+		];
 	}
 
 	static #RGBtoHEX(r: number, g: number, b: number): string {
-		return '#' + [r, g, b].map(c => c.toString(16).padStart(2, '0')).join('')
+		return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
 	}
 
 	darken(ratio: number): Color {
@@ -76,5 +84,4 @@ export default class Color {
 	get hex() {
 		return Color.#RGBtoHEX(this.#r, this.#g, this.#b);
 	}
-
 }

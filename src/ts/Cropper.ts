@@ -4,12 +4,12 @@ import { Ratio } from './constants.d'
 export default abstract class Cropper {
 	static #cropper?: CropperLib
 
-	static async initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<Boolean> {
+	static async initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<boolean> {
 		return new Promise(resolve => {
 			if (this.#cropper) this.#cropper.destroy()
 			const fileReader = new FileReader()
 			fileReader.onload = e => {
-				image.src = <string>e.target.result
+				image.src = e.target.result as string
 				this.#cropper = new CropperLib(image, {
 					zoomable: false,
 					viewMode: 3,

@@ -4,7 +4,7 @@ import ImageFormatNegotiator from "./ImageFormatNegotiator";
 const PreferredBitmapFormatKey = 'preferredBitmapFormat'
 
 export default class ImageFetcher {
-	#cache: Cache
+	#cache?: Cache
 	static #instance: ImageFetcher
 
 	private constructor() { }
@@ -12,11 +12,7 @@ export default class ImageFetcher {
 	static async getInstance(): Promise<ImageFetcher> {
 		if (!this.#instance) {
 			this.#instance = new ImageFetcher()
-			try {
-				this.#instance.#cache = await window.caches.open('images')
-			} catch (error) {
-				this.#instance.#cache = null
-			}
+			this.#instance.#cache = (await window?.caches.open('images')) || null
 		}
 		return this.#instance
 	}
@@ -25,7 +21,7 @@ export default class ImageFetcher {
 	 * Picks the right strategy to retrieve the image and builds a canvas-usable
 	 * in-memory representation.
 	 * 
-	 * @param logoName The name of the logo to retrieve.
+	 * @param {string} logoName The name of the logo to retrieve.
 	 * @returns {ImageBitmap | HTMLImageElement} The constructed image.
 	 */
 	async getLogo(logoName: string): Promise<ImageBitmap | HTMLImageElement> {
@@ -36,11 +32,10 @@ export default class ImageFetcher {
 	async getFrame(format: string): Promise<SVGElement> {
 		let framePath = `/frames/${format}.svg`;
 		try {
-			var response = await this.#getFromCache(framePath)
+			return this.#createSVG(await this.#getFromCache(framePath))
 		} catch (error) {
-			var response = await this.#fetchAndCache(framePath)
+			return this.#createSVG(await this.#fetchAndCache(framePath))
 		}
-		return this.#createSVG(response)
 	}
 
 	async #negotiateFormat() {
@@ -61,11 +56,10 @@ export default class ImageFetcher {
 		if (!preferredFormat) throw new Error('No preferred format found')
 		const logoPath = `/logos/${logoName}.${preferredFormat}`;
 		try {
-			var response = await this.#getFromCache(logoPath)
+			return this.#createImage(await this.#getFromCache(logoPath))
 		} catch (error) {
-			var response = await this.#fetchAndCache(logoPath)
+			return this.#createImage(await this.#fetchAndCache(logoPath))
 		}
-		return this.#createImage(response)
 	}
 
 	/**
@@ -73,12 +67,12 @@ export default class ImageFetcher {
 	 * or a cache miss occurs, an Error is thrown.
 	 * 
 	 * @param {RequestInfo} request The request to retrieve from the cache.
-	 * @returns The cached response.
+	 * @returns {Promise<Response>} The cached response.
 	 * @throws {Error} Throws an Error if the Cache API is not supported or a cache miss occurs.
 	 */
 	async #getFromCache(request: RequestInfo): Promise<Response> {
 		if (!this.#cache) throw new Error('Cache is not available!')
-		let response = await this.#cache.match(request)
+		const response = await this.#cache.match(request)
 		if (!response) throw new Error('Cache miss')
 		return response
 	}
@@ -90,7 +84,7 @@ export default class ImageFetcher {
 	 * @returns {Promise<Response>} The fetched response.
 	 */
 	async #fetchAndCache(request: RequestInfo): Promise<Response> {
-		let response = await fetch(request)
+		const response = await fetch(request)
 		this.#cache?.put(request, response.clone())
 		return response
 	}
@@ -99,18 +93,18 @@ export default class ImageFetcher {
 		const imageData = await response.clone().blob()
 		if (window.hasOwnProperty('createImageBitmap')) {
 			return await createImageBitmap(imageData)
-		} else {
-			const image = new Image()
-			image.src = await (async (blob: Blob): Promise<string> => {
-				return new Promise(resolve => {
-					const reader = new FileReader();
-					reader.onloadend = () => resolve(reader.result as string);
-					reader.readAsDataURL(blob);
-				})
-			})(imageData)
-			await new Promise(resolve => image.onload = resolve);
-			return image
 		}
+		const image = new Image()
+		image.src = await (async (blob: Blob): Promise<string> => {
+			return new Promise(resolve => {
+				const reader = new FileReader();
+				reader.onloadend = () => resolve(reader.result as string);
+				reader.readAsDataURL(blob);
+			})
+		})(imageData)
+		await new Promise(resolve => image.onload = resolve);
+		return image
+
 	}
 
 	async #createSVG(response: Response): Promise<SVGElement> {

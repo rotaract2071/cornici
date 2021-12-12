@@ -2,9 +2,9 @@ export default abstract class ImageFormatNegotiator {
 
 	static async supportsAvif(): Promise<boolean> {
 		const dataURL = 'data:image/avif;base64,AAAAHGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZgAAARNtZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAImlsb2MAAAAAREAAAQABAAAAAAE3AAEAAAAAAAAAGQAAACNpaW5mAAAAAAABAAAAFWluZmUCAAAAAAEAAGF2MDEAAAAAk2lwcnAAAABzaXBjbwAAABNjb2xybmNseAABAA0ABoAAAAAMYXYxQ4EADAAAAAAUaXNwZQAAAAAAAAABAAAAAQAAAChjbGFwAAAAAQAAAAEAAAABAAAAAf////EAAAAC////8QAAAAIAAAAQcGl4aQAAAAADCAgIAAAAGGlwbWEAAAAAAAAAAQABBYGCA4SFAAAAIW1kYXQSAAoIGAAGiAhoNCAyCx/wYAALAACE88rA'
-		if (window.createImageBitmap) {
+		if (window.hasOwnProperty('createImageBitmap')) {
+			const blob = await fetch(dataURL).then(res => res.blob())
 			try {
-				const blob = await fetch(dataURL).then(res => res.blob())
 				await createImageBitmap(blob)
 				return true
 			} catch (error) {

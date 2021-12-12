@@ -24,10 +24,11 @@ imageInput.onchange = async () => {
 	const file = imageInput.files[0]
 	try {
 		await Cropper.initialize(file, image, ratio)
-		applyButton.removeAttribute('disabled')
 	} catch (error) {
 		alert(errorMessage)
+		return
 	}
+	applyButton.removeAttribute('disabled')
 }
 
 ratioInput.onchange = () => {
@@ -45,12 +46,12 @@ form.onsubmit = async (e: Event) => {
 	const overlayer = new Overlayer(croppedCanvas, frame)
 	try {
 		await overlayer.overlay()
-
-		const dataURL = overlayer.imageAsDataURL
-		const file = imageInput.files[0]
-		Downloader.download(dataURL, file)
-		applyButton.classList.remove('is-loading')
 	} catch (error) {
 		alert(errorMessage)
+		return
 	}
+	applyButton.classList.remove('is-loading')
+	const dataURL = overlayer.imageAsDataURL
+	const file = imageInput.files[0]
+	Downloader.download(dataURL, file)
 }

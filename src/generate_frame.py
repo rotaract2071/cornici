@@ -1,5 +1,4 @@
 from sys import argv
-from colorsys import hls_to_rgb
 
 width = height = 1080
 stroke_width = 2
@@ -8,33 +7,8 @@ border_fraction = 18
 border_width = 1080 // border_fraction
 corner_side = 1080 // corner_fraction
 
-class HSLColor:
-    hue: int
-    saturation: int
-    lightness: int
-    __darkening_constant = 20
-
-    def __init__(self, hue, saturation, lightness):
-        self.hue = hue
-        self.saturation = saturation
-        self.lightness = lightness
-    
-    def __str__(self) -> str:
-        return f"hsl({self.hue}, {self.saturation}%, {self.lightness}%)"
-    
-    def darken(self) -> "HSLColor":
-        return HSLColor(
-            self.hue,
-            self.saturation,
-            (self.lightness - self.__darkening_constant) if (self.lightness - self.__darkening_constant) >= 0 else 0
-        )
-    
-    def to_rgb_hex(self) -> str:
-        rgb_values = hls_to_rgb(self.hue / 360, self.lightness / 100, self.saturation / 100)
-        return '#%02x%02x%02x' % tuple(map(lambda x: int(x * 256), rgb_values))
-
-fill_color = HSLColor(0, 0, 50)
-stroke_color = fill_color.darken()
+fill_color = "#888"
+stroke_color = "#444"
 
 def generate_frame(ratio: float) -> str:
     global width, height
@@ -81,11 +55,11 @@ def generate_frame(ratio: float) -> str:
         "Z"
     ]
 
-    return f"""<svg version="1.1" width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">""" \
+    return f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">""" \
            f"""<path d="{' '.join(corner_1)}" fill="#fff"/>""" \
            f"""<path d="{' '.join(corner_2)}" fill="#fff"/>""" \
-           f"""<path d="{' '.join(border_1)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>""" \
-           f"""<path d="{' '.join(border_2)}" fill="{fill_color.to_rgb_hex()}" stroke="{stroke_color.to_rgb_hex()}" stroke-width="{stroke_width * 2}" class="border"/>""" \
+           f"""<path d="{' '.join(border_1)}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width * 2}" class="border"/>""" \
+           f"""<path d="{' '.join(border_2)}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width * 2}" class="border"/>""" \
            f"""</svg>"""
 
 ratio = eval(argv[1]) if len(argv) >= 2 else 1

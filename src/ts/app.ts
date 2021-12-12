@@ -1,8 +1,11 @@
 import { Ratio, Zone } from './constants'
+import VersionChecker from "./VersionChecker"
 import Cropper from './Cropper'
 import Frame from './Frame'
 import Overlayer from './Overlayer'
 import Downloader from './Downloader'
+
+VersionChecker.check()
 
 const form = document.getElementById('upload-form') as HTMLFormElement
 const imageInput = document.getElementById('image-input') as HTMLInputElement

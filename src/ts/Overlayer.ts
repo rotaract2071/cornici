@@ -1,6 +1,7 @@
 import { Ratio, District, Zone, LogoSize } from './constants.d'
 import Frame from './Frame'
 import ImageFetcher from "./ImageFetcher";
+import Color from "./Color";
 
 type Coordinates = [number, number];
 
@@ -61,7 +62,7 @@ export default class Overlayer {
 			ctx.fill(path2d)
 
 			if (path.getAttribute('stroke') !== null) {
-				ctx.strokeStyle = path.getAttribute('stroke')
+				ctx.strokeStyle = (new Color(this.#frame.color)).darken(0.15).hex
 				ctx.lineWidth = parseInt(path.getAttribute('stroke-width'))
 				ctx.stroke(path2d)
 			}

@@ -12,7 +12,7 @@ export default class ImageFetcher {
 	static async getInstance(): Promise<ImageFetcher> {
 		if (!this.#instance) {
 			this.#instance = new ImageFetcher()
-			this.#instance.#cache = (await window?.caches.open('images')) || null
+			this.#instance.#cache = (await window.caches?.open('images')) || null
 		}
 		return this.#instance
 	}

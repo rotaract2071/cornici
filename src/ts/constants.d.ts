@@ -1,4 +1,4 @@
-export const CurrentVersion = "2.0.0-rc2";
+export const CurrentVersion = "2.0.0";
 
 export enum Ratio {
 	Square = "square",

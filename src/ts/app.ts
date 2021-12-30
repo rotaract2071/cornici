@@ -12,6 +12,7 @@ const imageInput = document.getElementById("image-input") as HTMLInputElement;
 const zoneInput = document.getElementById("zone") as HTMLInputElement;
 const ratioInput = document.getElementById("ratio") as HTMLInputElement;
 const image = document.getElementById("image") as HTMLImageElement;
+const fileName = document.querySelector(".file-name") as HTMLSpanElement;
 const applyButton = document.getElementById("apply") as HTMLButtonElement;
 
 const errorMessage =
@@ -19,8 +20,7 @@ const errorMessage =
 
 imageInput.onchange = async () => {
 	if (imageInput.files.length === 0) return;
-	const fileName = document.querySelector(".file-name");
-	fileName.textContent = imageInput.files[0].name;
+	fileName.innerText = imageInput.files[0].name;
 	const ratio = ratioInput.value as Ratio;
 	const file = imageInput.files[0];
 	try {

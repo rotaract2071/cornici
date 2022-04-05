@@ -1,6 +1,7 @@
 import { Color, Ratio, Zone } from "./constants.d";
 
 const colorMap: Record<Zone, Color> = {
+	[Zone.None]: Color.None,
 	[Zone.Doc]: Color.Doc,
 	[Zone.Etruria]: Color.Etruria,
 	[Zone.Galileo]: Color.Galileo,

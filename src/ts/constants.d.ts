@@ -13,6 +13,7 @@ export enum ImageFormat {
 }
 
 export enum Zone {
+	None = "none",
 	Doc = "doc",
 	Etruria = "etruria",
 	Galileo = "galileo",
@@ -22,6 +23,7 @@ export enum Zone {
 }
 
 export enum Color {
+	None = "#d41367",
 	Doc = "#0d4e8c",
 	Etruria = "#17b2dc",
 	Galileo = "#f5a14d",

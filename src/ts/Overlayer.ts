@@ -1,4 +1,4 @@
-import { District, LogoSize, Ratio, Zone } from "./constants.d";
+import { District, LogoSize, Ratio, Logo } from "./constants.d";
 import Frame from "./Frame";
 import ImageFetcher from "./ImageFetcher";
 import Color from "./Color";
@@ -75,7 +75,7 @@ export default class Overlayer {
 		});
 	}
 
-	#getCoordinates(logo: typeof District | Zone): Coordinates {
+	#getCoordinates(logo: typeof District | Logo): Coordinates {
 		if (logo === District) {
 			return [LogoSize.Margin, LogoSize.Margin];
 		}
@@ -89,9 +89,9 @@ export default class Overlayer {
 		const ctx = this.#outputCanvas.getContext("2d");
 
 		for (const logoName of [District, this.#frame.logo]) {
-			if (logoName === Zone.None) continue;
+			if (logoName === Logo.None) continue;
 			const logoBitmap = await this.#imageFetcher.getLogo(logoName);
-			const [dx, dy] = this.#getCoordinates(logoName as typeof District | Zone);
+			const [dx, dy] = this.#getCoordinates(logoName as typeof District | Logo);
 			ctx.drawImage(logoBitmap, dx, dy, LogoSize.Width, LogoSize.Height);
 		}
 	}

@@ -1,23 +1,20 @@
-import { Color, Ratio, Zone } from "./constants.d";
+import { Color, Ratio, Logo } from "./constants.d";
 
-const colorMap: Record<Zone, Color> = {
-	[Zone.None]: Color.None,
-	[Zone.Doc]: Color.Doc,
-	[Zone.Etruria]: Color.Etruria,
-	[Zone.Galileo]: Color.Galileo,
-	[Zone.Magnifico]: Color.Magnifico,
-	[Zone.Montalbano]: Color.Montalbano,
-	[Zone.Tirreno]: Color.Tirreno,
+const colorMap: Record<Logo, Color> = {
+	[Logo.None]: Color.None,
+	[Logo.Doc]: Color.Doc,
+	[Logo.Etruria]: Color.Etruria,
+	[Logo.Galileo]: Color.Galileo,
+	[Logo.Magnifico]: Color.Magnifico,
+	[Logo.Montalbano]: Color.Montalbano,
+	[Logo.Tirreno]: Color.Tirreno,
 };
 
 export default class Frame {
-	readonly ratio: Ratio;
 	readonly color: Color;
-	readonly logo: Zone;
 
-	constructor(ratio: Ratio, zone: Zone) {
+	constructor(readonly ratio: Ratio, readonly logo: Logo) {
 		this.ratio = ratio;
-		this.color = colorMap[zone];
-		this.logo = zone;
+		this.color = colorMap[logo];
 	}
 }

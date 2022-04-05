@@ -12,7 +12,7 @@ export enum ImageFormat {
 	Jpeg = "jpg",
 }
 
-export enum Zone {
+export enum Logo {
 	None = "none",
 	Doc = "doc",
 	Etruria = "etruria",

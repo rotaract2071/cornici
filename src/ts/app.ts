@@ -1,4 +1,4 @@
-import { Ratio, Zone } from "./constants";
+import { Ratio, Logo } from "./constants";
 import VersionChecker from "./VersionChecker";
 import Cropper from "./Cropper";
 import Frame from "./Frame";
@@ -9,7 +9,7 @@ VersionChecker.check();
 
 const form = document.getElementById("upload-form") as HTMLFormElement;
 const imageInput = document.getElementById("image-input") as HTMLInputElement;
-const zoneInput = document.getElementById("zone") as HTMLInputElement;
+const logoInput = document.getElementById("logo") as HTMLInputElement;
 const ratioInput = document.getElementById("ratio") as HTMLInputElement;
 const image = document.getElementById("image") as HTMLImageElement;
 const fileName = document.querySelector(".file-name") as HTMLSpanElement;
@@ -41,9 +41,9 @@ form.onsubmit = async (e: Event) => {
 	e.preventDefault();
 	applyButton.classList.add("is-loading");
 	const ratio = ratioInput.value as Ratio;
-	const zone = zoneInput.value as Zone;
+	const logo = logoInput.value as Logo;
 	const croppedCanvas = Cropper.croppedCanvas;
-	const frame = new Frame(ratio, zone);
+	const frame = new Frame(ratio, logo);
 	const overlayer = new Overlayer(croppedCanvas, frame);
 	try {
 		await overlayer.overlay();

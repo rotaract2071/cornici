@@ -1,11 +1,8 @@
 import { Ratio, Logo } from "./constants";
-import VersionChecker from "./VersionChecker";
-import Cropper from "./Cropper";
-import Frame from "./Frame";
-import Overlayer from "./Overlayer";
-import Downloader from "./Downloader";
-
-VersionChecker.check();
+import { initialize, getActualAspectRatio } from "./cropper";
+import { overlay } from "./overlayer";
+import { download } from "./downloader";
+import type Cropper from "cropperjs";
 
 const form = document.querySelector("form");
 const fieldset = form.querySelector("fieldset");
@@ -17,12 +14,17 @@ const image = document.querySelector("img");
 
 const errorMessage = "Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare l'ultima versione di Google Chrome).";
 
+let cropper: Cropper = null;
+
 imageInput.onchange = async () => {
 	if (imageInput.files.length === 0) return;
 	const ratio = ratioInput.value as Ratio;
 	const file = imageInput.files[0];
 	try {
-		await Cropper.initialize(file, image, ratio);
+		if (cropper !== null) {
+			cropper.destroy();
+		}
+		cropper = await initialize(file, image, ratio);
 	} catch (error) {
 		alert(errorMessage);
 		return;
@@ -31,28 +33,23 @@ imageInput.onchange = async () => {
 };
 
 ratioInput.onchange = () => {
-	const ratio: Ratio = ratioInput.value as Ratio;
-	Cropper.setAspectRatio(ratio);
+	cropper.setAspectRatio(getActualAspectRatio(ratioInput.value as Ratio));
 };
 
 form.onsubmit = async (e: Event) => {
 	e.preventDefault();
-	applyButton.classList.add("is-loading");
+	applyButton.setAttribute("aria-busy", "true");
 	const ratio = ratioInput.value as Ratio;
 	const logo = logoInput.value as Logo;
-	const croppedCanvas = Cropper.croppedCanvas;
-	const frame = new Frame(ratio, logo);
-	const overlayer = new Overlayer(croppedCanvas, frame);
+	const croppedCanvas = cropper.getCroppedCanvas();
 	try {
-		await overlayer.overlay();
+		const dataURL = await overlay(croppedCanvas, ratio, logo);
+		applyButton.removeAttribute("aria-busy");
+		const file = imageInput.files[0];
+		download(dataURL, file);
 	} catch (error) {
 		alert(errorMessage);
-		return;
 	}
-	applyButton.classList.remove("is-loading");
-	const dataURL = overlayer.imageAsDataURL;
-	const file = imageInput.files[0];
-	Downloader.download(dataURL, file);
 };
 
 fieldset.removeAttribute("disabled");

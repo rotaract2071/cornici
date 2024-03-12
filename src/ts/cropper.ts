@@ -8,8 +8,9 @@ export async function initialize(file: File, image: HTMLImageElement, ratio: Rat
 			image.src = fileReader.result as string;
 			const cropper = new CropperLib(image, {
 				zoomable: false,
-				viewMode: 3,
+				viewMode: 2,
 				responsive: false,
+				background: false,
 			});
 			cropper.setAspectRatio(getActualAspectRatio(ratio));
 			resolve(cropper);

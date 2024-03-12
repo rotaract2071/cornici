@@ -52,4 +52,9 @@ form.onsubmit = async (e: Event) => {
 	}
 };
 
+form.onreset = () => {
+	image.removeAttribute("src");
+	cropper.destroy();
+};
+
 fieldset.removeAttribute("disabled");

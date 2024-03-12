@@ -7,7 +7,7 @@ export enum Ratio {
 }
 
 export enum Logo {
-	None = "none",
+	None = "",
 	Distretto = "distretto",
 	Doc = "doc",
 	Etruria = "etruria",
@@ -20,5 +20,5 @@ export enum Logo {
 export enum LogoSize {
 	Width = 110,
 	Height = 110,
-	Margin = 5,
+	Margin = 20,
 }

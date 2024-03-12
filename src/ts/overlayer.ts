@@ -19,65 +19,95 @@ const color: Record<Logo, Color> = {
 	[Logo.Tirreno]: new Color("#ee7046"),
 };
 
-export async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo): Promise<URL> {
-	const [width, height] = size[ratio];
-	const outputCanvas = document.createElement("canvas");
-	outputCanvas.width = width;
-	outputCanvas.height = height;
+let drawnLogosCount = 0;
 
-	drawImage(inputCanvas, outputCanvas);
-	await drawFrame(ratio, color[logo], outputCanvas);
-	await drawLogo(outputCanvas, Logo.Distretto);
-	await drawLogo(outputCanvas, logo);
+export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo): Promise<URL> {
+	const outputCanvas = document.createElement("canvas");
+	const outputCanvasContext = outputCanvas.getContext("2d");
+	if (outputCanvasContext === null) {
+		throw new Error("Canvas 2D rendering context is not supported");
+	}
+	const [outputCanvasWidth, outputCanvasHeight] = size[ratio];
+	outputCanvas.width = outputCanvasWidth;
+	outputCanvas.height = outputCanvasHeight;
+
+	// Draw the cropped portion of the input image on the output canvas
+	outputCanvasContext.drawImage(inputCanvas, 0, 0, outputCanvasWidth, outputCanvasHeight);
+
+	// Draw the frame on the output canvas
+	await drawFrame(ratio, color[logo], outputCanvasContext);
+
+	// Draw district's logo on the output canvas
+	await drawLogo(outputCanvasContext, outputCanvasWidth, outputCanvasHeight, Logo.Distretto);
+
+	if (logo !== Logo.None) {
+		// Draw the optional logo on the output canvas
+		await drawLogo(outputCanvasContext, outputCanvasWidth, outputCanvasHeight, logo);
+	}
+
+	// Return a data URL to the rendered image encoded as JPEG
 	return new URL(outputCanvas.toDataURL("image/jpeg"));
 }
 
-function drawImage(inputCanvas: HTMLCanvasElement, outputCanvas: HTMLCanvasElement) {
-	outputCanvas.getContext("2d").drawImage(
-		inputCanvas,
-		0,
-		0,
-		outputCanvas.width,
-		outputCanvas.height,
-	);
-}
-
-async function drawFrame(ratio: Ratio, color: Color, outputCanvas: HTMLCanvasElement) {
-	const ctx = outputCanvas.getContext("2d");
+async function drawFrame(ratio: Ratio, color: Color, outputCanvasContext: CanvasRenderingContext2D) {
 	const frameSVG = await fetchFrame(ratio);
 	const paths = Array.from(frameSVG.querySelectorAll("path"));
 
 	paths.forEach((path) => {
-		const path2d = new Path2D(path.getAttribute("d"));
+		const pathData = path.getAttribute("d");
+		if (pathData === null) {
+			return;
+		}
+		const path2d = new Path2D(pathData);
 
 		if (path.classList.contains("border")) {
-			ctx.fillStyle = color.hex;
+			outputCanvasContext.fillStyle = color.hex;
 		} else {
-			ctx.fillStyle = path.getAttribute("fill");
+			const fill = path.getAttribute("fill");
+			if (fill === null) {
+				return;
+			}
+			outputCanvasContext.fillStyle = fill;
 		}
-		ctx.fill(path2d);
+		outputCanvasContext.fill(path2d);
 
 		if (path.getAttribute("stroke") !== null) {
-			ctx.strokeStyle = color.darken(0.15).hex;
-			ctx.lineWidth = parseInt(path.getAttribute("stroke-width"));
-			ctx.stroke(path2d);
+			outputCanvasContext.strokeStyle = color.darken(0.15).hex;
+			const strokeWidth = path.getAttribute("stroke-width");
+			if (strokeWidth === null) {
+				return;
+			}
+			outputCanvasContext.lineWidth = parseInt(strokeWidth);
+			outputCanvasContext.stroke(path2d);
 		}
 	});
 }
 
-async function drawLogo(outputCanvas: HTMLCanvasElement, logo: Logo) {
-	if (logo === Logo.None) return;
+async function drawLogo(canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number, logo: Logo) {
+	if (drawnLogosCount >= 2) {
+		throw new Error("Unsupported number of logos to draw");
+	}
 	const logoBitmap = await fetchLogo(logo);
-	const [dx, dy] = getCoordinates(logo, outputCanvas);
-	outputCanvas.getContext("2d").drawImage(logoBitmap, dx, dy, LogoSize.Width, LogoSize.Height);
+	const [dx, dy] = getCoordinates(canvasWidth, canvasHeight);
+	canvasContext.drawImage(logoBitmap, dx, dy, LogoSize.Width, LogoSize.Height);
+	++drawnLogosCount;
 }
 
-function getCoordinates(logo: Logo, outputCanvas: HTMLCanvasElement): [number, number] {
-	if (logo === Logo.Distretto) {
-		return [LogoSize.Margin, LogoSize.Margin];
+function getCoordinates(canvasWidth: number, canvasHeight: number): [number, number] {
+	switch (drawnLogosCount) {
+		case 0:
+			// Place the logo to bottom right
+			return [
+				canvasWidth - LogoSize.Width - LogoSize.Margin,
+				canvasHeight - LogoSize.Height - LogoSize.Margin,
+			];
+		case 1:
+			// Place the logo to bottom left
+			return [
+				LogoSize.Margin,
+				canvasHeight - LogoSize.Height - LogoSize.Margin,
+			];
+		default:
+			throw new Error("Unsupported number of logos to draw");
 	}
-	return [
-		outputCanvas.width - LogoSize.Width - LogoSize.Margin,
-		outputCanvas.height - LogoSize.Height - LogoSize.Margin,
-	];
 }

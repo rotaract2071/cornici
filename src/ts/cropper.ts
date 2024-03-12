@@ -5,7 +5,7 @@ export async function initialize(file: File, image: HTMLImageElement, ratio: Rat
 	return new Promise((resolve) => {
 		const fileReader = new FileReader();
 		fileReader.onload = (e) => {
-			image.src = e.target.result as string;
+			image.src = fileReader.result as string;
 			const cropper = new CropperLib(image, {
 				zoomable: false,
 				viewMode: 3,

@@ -1,6 +1,6 @@
-export function download(url: URL, file: File) {
+export default function download(url: URL, originalFilename: string) {
 	const a = document.createElement("a");
 	a.href = url.href;
-	a.download = file.name.split(".").slice(0, -1).join(".") + "_cornice.jpg";
+	a.download = originalFilename.split(".").slice(0, -1).join(".") + "_con_cornice.jpg";
 	a.click();
 }

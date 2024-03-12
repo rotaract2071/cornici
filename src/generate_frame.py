@@ -1,14 +1,7 @@
 from sys import argv
 
 width = height = 1080
-stroke_width = 2
-corner_fraction = 4
-border_fraction = 18
-border_width = 1080 // border_fraction
-corner_side = 1080 // corner_fraction
-
-fill_color = "#888"
-stroke_color = "#444"
+frame_width = 20
 
 def generate_frame(ratio: float) -> str:
     global width, height
@@ -17,49 +10,49 @@ def generate_frame(ratio: float) -> str:
     else:
         height = int(height / ratio)
 
-    border_1 = [
-        f"M{stroke_width},{corner_side + stroke_width}",
-        f"H{border_width - stroke_width}",
-        f"V{height - border_width + stroke_width}",
-        f"H{width - corner_side - stroke_width}",
-        f"V{height - stroke_width}",
-        f"H{stroke_width}",
-        "Z"
-    ]
-
-    border_2 = [
-        f"M{corner_side + stroke_width},{stroke_width}",
-        f"H{width - stroke_width}",
-        f"V{height - corner_side - stroke_width}",
-        f"H{width - border_width + stroke_width}",
-        f"V{border_width - stroke_width}",
-        f"H{corner_side + stroke_width}",
-        "Z"
-    ]
-
-    corner_1 = [
+    frame_1 = [
         f"M0,0",
-        f"H{corner_side}",
-        f"V{border_width}",
-        f"S{border_width},{border_width},{border_width},{corner_side}",
-        f"H0",
-        "Z"
+        f"V{height}",
+        f"H{height}",
+        f"V0",
+        f"Z",
+        f"M{frame_width},{frame_width}",
+        f"H{width - frame_width}",
+        f"V{height - frame_width}",
+        f"H{frame_width}",
+        f"Z",
     ]
-
-    corner_2 = [
-        f"M{width},{height}",
-        f"H{width - corner_side}",
-        f"V{height - border_width}",
-        f"S{width - border_width},{height - border_width},{width - border_width},{height - corner_side}",
-        f"H{width}",
-        "Z"
+    
+    frame_2 = [
+        f"M{frame_width},{frame_width}",
+        f"V{height - frame_width}",
+        f"H{width - frame_width}",
+        f"V{frame_width}",
+        f"Z",
+        f"M{frame_width * 2},{frame_width * 2}",
+        f"H{width - frame_width * 2}",
+        f"V{height - frame_width * 2}",
+        f"H{frame_width * 2}",
+        f"Z",
+    ]
+    
+    frame_3 = [
+        f"M{frame_width * 2},{frame_width * 2}",
+        f"V{height - frame_width * 2}",
+        f"H{width - frame_width * 2}",
+        f"V{frame_width * 2}",
+        f"Z",
+        f"M{frame_width * 3},{frame_width * 3}",
+        f"H{width - frame_width * 3}",
+        f"V{height - frame_width * 3}",
+        f"H{frame_width * 3}",
+        f"Z",
     ]
 
     return f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">""" \
-           f"""<path d="{' '.join(corner_1)}" fill="#fff"/>""" \
-           f"""<path d="{' '.join(corner_2)}" fill="#fff"/>""" \
-           f"""<path d="{' '.join(border_1)}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width * 2}" class="border"/>""" \
-           f"""<path d="{' '.join(border_2)}" fill="{fill_color}" stroke="{stroke_color}" stroke-width="{stroke_width * 2}" class="border"/>""" \
+           f"""<path d="{' '.join(frame_1)}" fill="red"/>""" \
+           f"""<path d="{' '.join(frame_2)}" fill="white"/>""" \
+           f"""<path d="{' '.join(frame_3)}" fill="purple"/>""" \
            f"""</svg>"""
 
 ratio = eval(argv[1]) if len(argv) >= 2 else 1

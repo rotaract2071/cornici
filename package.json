@@ -1,29 +1,16 @@
 {
   "name": "cornici",
   "version": "2.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "build:js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --format=esm --target=safari11 --outfile=public/app.js",
-    "build:html": "html-minifier --collapse-boolean-attributes --collapse-whitespace src/index.html -o public/index.html",
-    "build:css": "sass --no-source-map src/style.scss public/style.css && esbuild --bundle --minify --legal-comments=none public/style.css --outfile=public/style.css --allow-overwrite && purgecss --config purgecss.config.js",
-    "build": "npm run build:js && npm run build:html && npm run build:css",
-    "start": "node ."
+    "build:js": "esbuild src/ts/app.ts --bundle --minify --legal-comments=none --format=esm --target=safari11 --entry-names=[name]-[hash] --outfile=public/app.js",
+    "build:css": "sass --load-path=node_modules/@picocss/pico/scss/ --load-path=node_modules/cropperjs/dist/ --no-source-map src/style.scss | esbuild --bundle --minify --loader=css --legal-comments=none --entry-names=[name]-[hash] --outfile=public/style.css"
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.2"
-  },
   "devDependencies": {
-    "bulma": "^0.9.3",
-    "cropperjs": "^1.5.12",
-    "esbuild": "^0.14.9",
-    "html-minifier": "^4.0.0",
-    "purgecss": "^4.1.3",
-    "sass": "^1.45.1"
-  },
-  "engines": {
-    "node": "17.x"
+    "@picocss/pico": "^2.0.6",
+    "cropperjs": "^1.6.1",
+    "esbuild": "^0.20.1",
+    "sass": "^1.71.1"
   }
 }

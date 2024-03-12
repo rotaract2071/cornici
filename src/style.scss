@@ -1,19 +1,51 @@
-@import '../node_modules/bulma/sass/utilities/initial-variables.sass';
+@use "pico" with (
+  $enable-semantic-container: true,
+  $modules: (
+    // Theme
+    "themes/default": true,
 
-$cranberry: #D13467;
-$primary: $cranberry;
+    // Layout
+    "layout/document": true,
+    "layout/landmarks": true,
+    "layout/container": false,
+    "layout/section": false,
+    "layout/grid": true,
+    "layout/overflow-auto": false,
 
-@import '../node_modules/bulma/sass/utilities/_all.sass';
-@import '../node_modules/bulma/sass/base/_all.sass';
-@import '../node_modules/bulma/sass/elements/button.sass';
-@import '../node_modules/bulma/sass/elements/title.sass';
-@import '../node_modules/bulma/sass/form/shared.sass';
-@import '../node_modules/bulma/sass/form/tools.sass';
-@import '../node_modules/bulma/sass/form/file.sass';
-@import '../node_modules/bulma/sass/form/select.sass';
-@import '../node_modules/bulma/sass/grid/columns.sass';
-@import '../node_modules/bulma/sass/helpers/color.sass';
-@import '../node_modules/bulma/sass/helpers/spacing.sass';
-@import '../node_modules/bulma/sass/helpers/typography.sass';
+    // Content
+    "content/link": false,
+    "content/typography": true,
+    "content/embedded": false,
+    "content/button": true,
+    "content/table": false,
+    "content/code": false,
+    "content/figure": true,
+    "content/miscs": true,
 
-@import '../node_modules/cropperjs/dist/cropper.css';
+    // Forms
+    "forms/basics": true,
+    "forms/checkbox-radio-switch": false,
+    "forms/input-color": false,
+    "forms/input-date": false,
+    "forms/input-file": true,
+    "forms/input-range": false,
+    "forms/input-search": false,
+
+    // Components
+    "components/accordion": false,
+    "components/card": false,
+    "components/dropdown": false,
+    "components/group": false,
+    "components/loading": false,
+    "components/modal": false,
+    "components/nav": false,
+    "components/progress": false,
+    "components/tooltip": false,
+
+    // Utilities
+    "utilities/accessibility": false,
+    "utilities/reduce-motion": false
+  )
+);
+
+@use 'cropper.css';

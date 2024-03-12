@@ -7,20 +7,18 @@ import Downloader from "./Downloader";
 
 VersionChecker.check();
 
-const form = document.getElementById("upload-form") as HTMLFormElement;
-const imageInput = document.getElementById("image-input") as HTMLInputElement;
-const logoInput = document.getElementById("logo") as HTMLInputElement;
-const ratioInput = document.getElementById("ratio") as HTMLInputElement;
-const image = document.getElementById("image") as HTMLImageElement;
-const fileName = document.querySelector(".file-name") as HTMLSpanElement;
-const applyButton = document.getElementById("apply") as HTMLButtonElement;
+const form = document.querySelector("form");
+const fieldset = form.querySelector("fieldset");
+const imageInput = fieldset.querySelector('input[name="image"]') as HTMLInputElement;
+const ratioInput = fieldset.querySelector('select[name="ratio"]') as HTMLSelectElement;
+const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectElement;
+const applyButton = form.querySelector("button");
+const image = document.querySelector("img");
 
-const errorMessage =
-	"Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare l'ultima versione di Google Chrome).";
+const errorMessage = "Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare l'ultima versione di Google Chrome).";
 
 imageInput.onchange = async () => {
 	if (imageInput.files.length === 0) return;
-	fileName.innerText = imageInput.files[0].name;
 	const ratio = ratioInput.value as Ratio;
 	const file = imageInput.files[0];
 	try {
@@ -56,3 +54,5 @@ form.onsubmit = async (e: Event) => {
 	const file = imageInput.files[0];
 	Downloader.download(dataURL, file);
 };
+
+fieldset.removeAttribute("disabled");

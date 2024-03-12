@@ -55,6 +55,7 @@ form.onsubmit = async (e: Event) => {
 form.onreset = () => {
 	image.removeAttribute("src");
 	cropper.destroy();
+	applyButton.toggleAttribute("disabled", true);
 };
 
 fieldset.removeAttribute("disabled");

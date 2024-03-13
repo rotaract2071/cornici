@@ -1,6 +1,5 @@
 @use "pico" with (
   $enable-semantic-container: true,
-  $enable-classes: false,
   $enable-transitions: false,
   $modules: (
     // Theme
@@ -11,7 +10,7 @@
     "layout/landmarks": true,
     "layout/container": false,
     "layout/section": false,
-    "layout/grid": false,
+    "layout/grid": true,
     "layout/overflow-auto": false,
 
     // Content

@@ -20,5 +20,5 @@ export enum Logo {
 export enum LogoSize {
 	Width = 110,
 	Height = 110,
-	Margin = 20,
+	Margin = 25,
 }

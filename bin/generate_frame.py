@@ -3,7 +3,7 @@
 from sys import argv
 
 width = height = 1080
-frame_width = 20
+frame_width = 25
 
 
 def generate_frame(ratio: float) -> str:
@@ -54,9 +54,9 @@ def generate_frame(ratio: float) -> str:
 
     return (
         f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">"""
-        f"""<path d="{' '.join(frame_1)}" fill="red"/>"""
+        f"""<path d="{' '.join(frame_1)}" fill="#d41367"/>"""
         f"""<path d="{' '.join(frame_2)}" fill="white"/>"""
-        f"""<path d="{' '.join(frame_3)}" fill="purple"/>"""
+        f"""<path d="{' '.join(frame_3)}" fill="#17458f"/>"""
         f"""</svg>"""
     )
 

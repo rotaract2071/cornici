@@ -1,9 +1,11 @@
-export async function fetchLogo(logoName: string): Promise<ImageBitmap | HTMLImageElement> {
-    return createImage(await fetch(`/logos/${logoName}.jpg`));
+import type { Logo, Ratio } from "./constants";
+
+export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {
+    return createImage(await fetch(`/logos/${logo}.jpg`));
 }
 
-export async function fetchFrame(format: string): Promise<SVGElement> {
-    return createSVG(await fetch(`/frames/${format}.svg`));
+export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
+    return createSVG(await fetch(`/frames/${ratio}.svg`));
 }
 
 async function createImage(response: Response): Promise<ImageBitmap | HTMLImageElement> {

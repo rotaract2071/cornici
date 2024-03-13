@@ -46,20 +46,20 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 		await drawLogo(outputCanvasContext, outputCanvasWidth, outputCanvasHeight, logo);
 	}
 
-	// Return a data URL to the rendered image encoded as JPEG
-	return new URL(outputCanvas.toDataURL("image/jpeg"));
+	// Return a data URL to the rendered image encoded as PNG
+	return new URL(outputCanvas.toDataURL());
 }
 
 async function drawFrame(ratio: Ratio, color: Color, outputCanvasContext: CanvasRenderingContext2D) {
 	const frameSVG = await fetchFrame(ratio);
-	const paths = Array.from(frameSVG.querySelectorAll("path"));
+	const paths = frameSVG.querySelectorAll("path");
 
-	paths.forEach((path) => {
-		const pathData = path.getAttribute("d");
-		if (pathData === null) {
+	for (const path of paths) {
+		const pathDefinition = path.getAttribute("d");
+		if (pathDefinition === null) {
 			return;
 		}
-		const path2d = new Path2D(pathData);
+		const path2d = new Path2D(pathDefinition);
 
 		if (path.classList.contains("border")) {
 			outputCanvasContext.fillStyle = color.hex;
@@ -81,7 +81,7 @@ async function drawFrame(ratio: Ratio, color: Color, outputCanvasContext: Canvas
 			outputCanvasContext.lineWidth = parseInt(strokeWidth);
 			outputCanvasContext.stroke(path2d);
 		}
-	});
+	}
 }
 
 async function drawLogo(canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number, logo: Logo) {

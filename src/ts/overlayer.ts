@@ -57,30 +57,20 @@ async function drawFrame(ratio: Ratio, color: Color, outputCanvasContext: Canvas
 	for (const path of paths) {
 		const pathDefinition = path.getAttribute("d");
 		if (pathDefinition === null) {
-			return;
+			continue;
 		}
 		const path2d = new Path2D(pathDefinition);
 
-		if (path.classList.contains("border")) {
+		if (false) { // set to false until we decide which part of the frame is customizable
 			outputCanvasContext.fillStyle = color.hex;
 		} else {
 			const fill = path.getAttribute("fill");
 			if (fill === null) {
-				return;
+				continue;
 			}
 			outputCanvasContext.fillStyle = fill;
 		}
 		outputCanvasContext.fill(path2d);
-
-		if (path.getAttribute("stroke") !== null) {
-			outputCanvasContext.strokeStyle = color.darken(0.15).hex;
-			const strokeWidth = path.getAttribute("stroke-width");
-			if (strokeWidth === null) {
-				return;
-			}
-			outputCanvasContext.lineWidth = parseInt(strokeWidth);
-			outputCanvasContext.stroke(path2d);
-		}
 	}
 }
 

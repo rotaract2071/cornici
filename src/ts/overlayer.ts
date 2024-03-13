@@ -37,6 +37,7 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	// Draw the frame on the output canvas
 	await drawFrame(ratio, color[logo], outputCanvasContext);
 
+	drawnLogosCount = 0;
 	// Draw district's logo on the output canvas
 	await drawLogo(outputCanvasContext, outputCanvasWidth, outputCanvasHeight, Logo.Distretto);
 

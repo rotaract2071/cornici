@@ -11,51 +11,45 @@
 </head>
 
 <body>
-	<header>
+	<main>
 		<h1>Cornici</h1>
-	</header>
-
-	<main class="grid">
-		<form>
-			<noscript>Abilita JavaScript per applicare la cornice.</noscript>
-
-			<fieldset disabled>
-				<label>
-					Foto
-					<input type="file" name="image" accept=".jpg,.jpeg,.png">
-				</label>
-
-				<label>
-					Formato
-					<select name="ratio">
-						<option value="square">Quadrato</option>
-						<option value="portrait">Verticale</option>
-						<option value="landscape">Orizzontale</option>
-					</select>
-				</label>
-
-				<label>
-					Logo
-					<select name="logo">
-						<option value="">Nessuno</option>
-						<optgroup label="Zone">
-							<option value="doc">DOC</option>
-							<option value="etruria">Etruria</option>
-							<option value="galileo">Galileo</option>
-							<option value="magnifico">Il Magnifico</option>
-							<option value="montalbano">Montalbano</option>
-							<option value="tirreno">Tirreno</option>
-						</optgroup>
-					</select>
-				</label>
-				<input type="reset">
-			</fieldset>
-
-			<button disabled type="submit">Applica cornice</button>
-		</form>
-
-		<div>
-			<img style="max-width: 100%">
+		<div class="grid">
+			<form>
+				<noscript>Abilita JavaScript per applicare la cornice.</noscript>
+				<fieldset disabled>
+					<label>
+						Foto
+						<input type="file" name="image" accept=".jpg,.jpeg,.png">
+					</label>
+					<label>
+						Formato
+						<select name="ratio">
+							<option value="square">Quadrato</option>
+							<option value="portrait">Verticale</option>
+							<option value="landscape">Orizzontale</option>
+						</select>
+					</label>
+					<label>
+						Logo
+						<select name="logo">
+							<option value="">Nessuno</option>
+							<optgroup label="Zone">
+								<option value="doc">DOC</option>
+								<option value="etruria">Etruria</option>
+								<option value="galileo">Galileo</option>
+								<option value="magnifico">Il Magnifico</option>
+								<option value="montalbano">Montalbano</option>
+								<option value="tirreno">Tirreno</option>
+							</optgroup>
+						</select>
+					</label>
+					<input type="reset">
+				</fieldset>
+				<button disabled type="submit">Applica cornice</button>
+			</form>
+			<div>
+				<img style="max-width: 100%">
+			</div>
 		</div>
 	</main>
 </body>

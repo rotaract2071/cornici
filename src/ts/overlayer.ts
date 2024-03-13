@@ -1,6 +1,6 @@
-import { LogoSize, Ratio, Logo } from "./constants.d";
-import { fetchFrame, fetchLogo } from "./fetchers";
 import Color from "./Color";
+import { Logo, Ratio } from "./constants.d";
+import { fetchFrame, fetchLogo } from "./fetchers";
 
 const size: Record<Ratio, [number, number]> = {
 	[Ratio.Square]: [1080, 1080],
@@ -17,6 +17,12 @@ const color: Record<Logo, Color> = {
 	[Logo.Magnifico]: new Color("#138a62"),
 	[Logo.Montalbano]: new Color("#e71d75"),
 	[Logo.Tirreno]: new Color("#ee7046"),
+};
+
+const logoSettings = {
+	width: 110,
+	height: 110,
+	margin: 25,
 };
 
 let drawnLogosCount = 0;
@@ -80,7 +86,7 @@ async function drawLogo(canvasContext: CanvasRenderingContext2D, canvasWidth: nu
 	}
 	const logoBitmap = await fetchLogo(logo);
 	const [dx, dy] = getCoordinates(canvasWidth, canvasHeight);
-	canvasContext.drawImage(logoBitmap, dx, dy, LogoSize.Width, LogoSize.Height);
+	canvasContext.drawImage(logoBitmap, dx, dy, logoSettings.width, logoSettings.height);
 	++drawnLogosCount;
 }
 
@@ -89,14 +95,14 @@ function getCoordinates(canvasWidth: number, canvasHeight: number): [number, num
 		case 0:
 			// Place the logo to bottom right
 			return [
-				canvasWidth - LogoSize.Width - LogoSize.Margin,
-				canvasHeight - LogoSize.Height - LogoSize.Margin,
+				canvasWidth - logoSettings.width - logoSettings.margin,
+				canvasHeight - logoSettings.height - logoSettings.margin,
 			];
 		case 1:
 			// Place the logo to bottom left
 			return [
-				LogoSize.Margin,
-				canvasHeight - LogoSize.Height - LogoSize.Margin,
+				logoSettings.margin,
+				canvasHeight - logoSettings.height - logoSettings.margin,
 			];
 		default:
 			throw new Error("Unsupported number of logos to draw");

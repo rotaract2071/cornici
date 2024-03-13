@@ -1,11 +1,17 @@
-import type { Logo, Ratio } from "./constants";
+import { Logo, Ratio } from "./constants.d";
+
+const frameHash: Record<Ratio, string> = {
+    [Ratio.Square]: "51377",
+    [Ratio.Landscape]: "41592",
+    [Ratio.Portrait]: "42552",
+}
 
 export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {
     return createImage(await fetch(`/logos/${logo}.jpg`));
 }
 
 export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
-    return createSVG(await fetch(`/frames/${ratio}.svg`));
+    return createSVG(await fetch(`/frames/${ratio}-${frameHash[ratio]}.svg`));
 }
 
 async function createImage(response: Response): Promise<ImageBitmap | HTMLImageElement> {

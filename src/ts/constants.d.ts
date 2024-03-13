@@ -1,5 +1,3 @@
-export const CurrentVersion = "2.1.0";
-
 export enum Ratio {
 	Square = "square",
 	Landscape = "landscape",
@@ -15,10 +13,4 @@ export enum Logo {
 	Magnifico = "magnifico",
 	Montalbano = "montalbano",
 	Tirreno = "tirreno",
-}
-
-export enum LogoSize {
-	Width = 110,
-	Height = 110,
-	Margin = 25,
 }

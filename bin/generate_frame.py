@@ -62,4 +62,4 @@ def generate_frame(ratio: float) -> str:
 
 
 ratio = eval(argv[1]) if len(argv) >= 2 else 1
-print(generate_frame(ratio))
+print(generate_frame(ratio), end="")

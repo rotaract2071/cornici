@@ -75,8 +75,8 @@ form.onsubmit = async (e: Event) => {
 		if (imageInput.files?.length !== 1) {
 			return;
 		}
-		const file = imageInput.files[0];
-		download(dataURL, file.name);
+		download(dataURL, imageInput.files[0].name);
+		URL.revokeObjectURL(dataURL.href);
 	} catch (error) {
 		alert(errorMessage);
 	}

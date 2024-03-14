@@ -39,25 +39,29 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	// Draw the cropped portion of the input image on the output canvas
 	outputCanvasContext.drawImage(inputCanvas, 0, 0, outputCanvasWidth, outputCanvasHeight);
 
+	const frame = await fetchFrame(ratio);
 	// Draw the frame on the output canvas
-	await drawFrame(ratio, color[logo], outputCanvasContext);
+	await drawFrame(frame, color[logo], outputCanvasContext);
 
+	const districtLogo = await fetchLogo(Logo.Distretto);
 	drawnLogosCount = 0;
 	// Draw district's logo on the output canvas
-	await drawLogo(outputCanvasContext, outputCanvasWidth, outputCanvasHeight, Logo.Distretto);
+	await drawLogo(districtLogo, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
+	++drawnLogosCount;
 
 	if (logo !== Logo.None) {
+		const optionalLogo = await fetchLogo(logo);
 		// Draw the optional logo on the output canvas
-		await drawLogo(outputCanvasContext, outputCanvasWidth, outputCanvasHeight, logo);
+		await drawLogo(optionalLogo, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
+		++drawnLogosCount;
 	}
 
 	// Return a data URL to the rendered image encoded as PNG
 	return new URL(outputCanvas.toDataURL());
 }
 
-async function drawFrame(ratio: Ratio, color: string, outputCanvasContext: CanvasRenderingContext2D) {
-	const frameSVG = await fetchFrame(ratio);
-	const paths = frameSVG.querySelectorAll("path");
+async function drawFrame(frame: SVGElement, color: string, outputCanvasContext: CanvasRenderingContext2D) {
+	const paths = frame.querySelectorAll("path");
 
 	for (const path of paths) {
 		const pathDefinition = path.getAttribute("d");
@@ -79,14 +83,9 @@ async function drawFrame(ratio: Ratio, color: string, outputCanvasContext: Canva
 	}
 }
 
-async function drawLogo(canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number, logo: Logo) {
-	if (drawnLogosCount >= 2) {
-		throw new Error("Unsupported number of logos to draw");
-	}
-	const logoBitmap = await fetchLogo(logo);
+async function drawLogo(logo: ImageBitmap | HTMLImageElement, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
 	const [dx, dy] = getCoordinates(canvasWidth, canvasHeight);
-	canvasContext.drawImage(logoBitmap, dx, dy, logoSettings.width, logoSettings.height);
-	++drawnLogosCount;
+	canvasContext.drawImage(logo, dx, dy, logoSettings.width, logoSettings.height);
 }
 
 function getCoordinates(canvasWidth: number, canvasHeight: number): [number, number] {

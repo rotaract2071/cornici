@@ -1,4 +1,3 @@
-import Color from "./Color";
 import { Logo, Ratio } from "./constants.d";
 import { fetchFrame, fetchLogo } from "./fetchers";
 
@@ -8,15 +7,15 @@ const size: Record<Ratio, [number, number]> = {
 	[Ratio.Portrait]: [1080, 1620],
 };
 
-const color: Record<Logo, Color> = {
-	[Logo.None]: new Color("#d41367"),
-	[Logo.Distretto]: new Color("#d41367"),
-	[Logo.Doc]: new Color("#0d4e8c"),
-	[Logo.Etruria]: new Color("#17b2dc"),
-	[Logo.Galileo]: new Color("#f5a14d"),
-	[Logo.Magnifico]: new Color("#138a62"),
-	[Logo.Montalbano]: new Color("#e71d75"),
-	[Logo.Tirreno]: new Color("#ee7046"),
+const color: Record<Logo, string> = {
+	[Logo.None]: "#d41367",
+	[Logo.Distretto]: "#d41367",
+	[Logo.Doc]: "#0d4e8c",
+	[Logo.Etruria]: "#17b2dc",
+	[Logo.Galileo]: "#f5a14d",
+	[Logo.Magnifico]: "#138a62",
+	[Logo.Montalbano]: "#e71d75",
+	[Logo.Tirreno]: "#ee7046",
 };
 
 const logoSettings = {
@@ -56,7 +55,7 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	return new URL(outputCanvas.toDataURL());
 }
 
-async function drawFrame(ratio: Ratio, color: Color, outputCanvasContext: CanvasRenderingContext2D) {
+async function drawFrame(ratio: Ratio, color: string, outputCanvasContext: CanvasRenderingContext2D) {
 	const frameSVG = await fetchFrame(ratio);
 	const paths = frameSVG.querySelectorAll("path");
 
@@ -68,7 +67,7 @@ async function drawFrame(ratio: Ratio, color: Color, outputCanvasContext: Canvas
 		const path2d = new Path2D(pathDefinition);
 
 		if (false) { // set to false until we decide which part of the frame is customizable
-			outputCanvasContext.fillStyle = color.hex;
+			outputCanvasContext.fillStyle = color;
 		} else {
 			const fill = path.getAttribute("fill");
 			if (fill === null) {

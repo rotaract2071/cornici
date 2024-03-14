@@ -1,4 +1,4 @@
-#1/usr/bin/env sh
+#!/usr/bin/env sh
 
 project_root=$(dirname $(dirname $(realpath $0)))
 

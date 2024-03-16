@@ -24,6 +24,10 @@ const logoSettings = {
 	margin: 25,
 };
 
+const frameSettings = {
+	border: 75,
+}
+
 let drawnLogosCount = 0;
 
 export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo): Promise<URL> {
@@ -37,7 +41,7 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	outputCanvas.height = outputCanvasHeight;
 
 	// Draw the cropped portion of the input image on the output canvas
-	outputCanvasContext.drawImage(inputCanvas, 0, 0, outputCanvasWidth, outputCanvasHeight);
+	drawImage(inputCanvas, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 
 	const frame = await fetchFrame(ratio);
 	// Draw the frame on the output canvas
@@ -58,6 +62,10 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 
 	// Return a data URL to the rendered image encoded as PNG
 	return new URL(outputCanvas.toDataURL());
+}
+
+function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRenderingContext2D, outputCanvasWidth: number, outputCanvasHeight: number) {
+	outputCanvasContext.drawImage(inputCanvas, frameSettings.border, frameSettings.border, outputCanvasWidth - frameSettings.border * 2, outputCanvasHeight - frameSettings.border * 2);
 }
 
 async function drawFrame(frame: SVGElement, color: string, outputCanvasContext: CanvasRenderingContext2D) {

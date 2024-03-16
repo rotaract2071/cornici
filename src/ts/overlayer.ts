@@ -48,12 +48,12 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	const districtLogo = await fetchLogo(Logo.Distretto);
 	let drawnLogosCount = 0;
 	// Draw district's logo on the output canvas
-	await drawLogo(districtLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
+	drawLogo(districtLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 
 	if (logo !== Logo.None) {
 		const optionalLogo = await fetchLogo(logo);
 		// Draw the optional logo on the output canvas
-		await drawLogo(optionalLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
+		drawLogo(optionalLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 	}
 
 	// Return a data URL to the rendered image encoded as PNG
@@ -87,14 +87,38 @@ async function drawFrame(frame: SVGElement, logo: Logo, outputCanvasContext: Can
 	}
 }
 
-async function drawLogo(logo: ImageBitmap | HTMLImageElement, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
-	const [dx, dy] = getCoordinates(canvasWidth, canvasHeight, drawnLogosCount);
+function drawLogo(logo: ImageBitmap | HTMLImageElement, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+	const [signX, signY] = getAxisSign(drawnLogosCount);
+
+	const [circleCenterX, circleCenterY] = getCircleCoordinates(signX, signY, canvasWidth, canvasHeight);
+	drawLogoCircleBackground(circleCenterX, circleCenterY, canvasContext);
+
+	const [dx, dy] = getLogoCoordinates(signX, signY, canvasWidth, canvasHeight);
 	canvasContext.drawImage(logo, dx, dy, logoSettings.width, logoSettings.height);
 }
 
-function getCoordinates(canvasWidth: number, canvasHeight: number, drawnLogosCount: number): [number, number] {
+function getAxisSign(drawnLogosCount: number): [number, number] {
 	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount;
 	const [signX, signY] = [Math.cos, Math.sin].map((trigonometricFunction) => Math.sign(trigonometricFunction(angle)));
+	return [signX, signY];
+}
+
+function drawLogoCircleBackground(centerX: number, centerY: number, canvasContext: CanvasRenderingContext2D) {
+	canvasContext.beginPath();
+	canvasContext.ellipse(centerX, centerY, logoSettings.width / 2, logoSettings.height / 2, 0, 0, Math.PI * 2);
+	canvasContext.closePath();
+	canvasContext.fillStyle = "white";
+	canvasContext.fill();
+}
+
+function getCircleCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
+	return [
+		canvasWidth / 2 + signX * (canvasWidth / 2 - logoSettings.margin - logoSettings.width / 2),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - logoSettings.margin - logoSettings.height / 2),
+	];
+}
+
+function getLogoCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
 	return [
 		canvasWidth / 2 + signX * (canvasWidth / 2 - logoSettings.margin - (signX > 0 ? logoSettings.width : 0)),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - logoSettings.margin - (signY < 0 ? logoSettings.height : 0)),

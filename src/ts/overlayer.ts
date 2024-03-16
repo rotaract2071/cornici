@@ -18,17 +18,15 @@ const color: Record<Logo, string> = {
 	[Logo.Tirreno]: "#ee7046",
 };
 
+const frameSettings = {
+	border: 75,
+}
+
 const logoSettings = {
 	width: 110,
 	height: 110,
 	margin: 25,
 };
-
-const frameSettings = {
-	border: 75,
-}
-
-let drawnLogosCount = 0;
 
 export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo): Promise<URL> {
 	const outputCanvas = document.createElement("canvas");
@@ -45,19 +43,17 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 
 	const frame = await fetchFrame(ratio);
 	// Draw the frame on the output canvas
-	await drawFrame(frame, color[logo], outputCanvasContext);
+	await drawFrame(frame, logo, outputCanvasContext);
 
 	const districtLogo = await fetchLogo(Logo.Distretto);
-	drawnLogosCount = 0;
+	let drawnLogosCount = 0;
 	// Draw district's logo on the output canvas
-	await drawLogo(districtLogo, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
-	++drawnLogosCount;
+	await drawLogo(districtLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 
 	if (logo !== Logo.None) {
 		const optionalLogo = await fetchLogo(logo);
 		// Draw the optional logo on the output canvas
-		await drawLogo(optionalLogo, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
-		++drawnLogosCount;
+		await drawLogo(optionalLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 	}
 
 	// Return a data URL to the rendered image encoded as PNG
@@ -68,7 +64,7 @@ function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRe
 	outputCanvasContext.drawImage(inputCanvas, frameSettings.border, frameSettings.border, outputCanvasWidth - frameSettings.border * 2, outputCanvasHeight - frameSettings.border * 2);
 }
 
-async function drawFrame(frame: SVGElement, color: string, outputCanvasContext: CanvasRenderingContext2D) {
+async function drawFrame(frame: SVGElement, logo: Logo, outputCanvasContext: CanvasRenderingContext2D) {
 	const paths = frame.querySelectorAll("path");
 
 	for (const path of paths) {
@@ -78,8 +74,8 @@ async function drawFrame(frame: SVGElement, color: string, outputCanvasContext: 
 		}
 		const path2d = new Path2D(pathDefinition);
 
-		if (false) { // set to false until we decide which part of the frame is customizable
-			outputCanvasContext.fillStyle = color;
+		if (path.classList.contains("customizable") && logo !== Logo.None) {
+			outputCanvasContext.fillStyle = color[logo];
 		} else {
 			const fill = path.getAttribute("fill");
 			if (fill === null) {
@@ -91,26 +87,16 @@ async function drawFrame(frame: SVGElement, color: string, outputCanvasContext: 
 	}
 }
 
-async function drawLogo(logo: ImageBitmap | HTMLImageElement, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
-	const [dx, dy] = getCoordinates(canvasWidth, canvasHeight);
+async function drawLogo(logo: ImageBitmap | HTMLImageElement, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+	const [dx, dy] = getCoordinates(canvasWidth, canvasHeight, drawnLogosCount);
 	canvasContext.drawImage(logo, dx, dy, logoSettings.width, logoSettings.height);
 }
 
-function getCoordinates(canvasWidth: number, canvasHeight: number): [number, number] {
-	switch (drawnLogosCount) {
-		case 0:
-			// Place the logo to bottom right
-			return [
-				canvasWidth - logoSettings.width - logoSettings.margin,
-				canvasHeight - logoSettings.height - logoSettings.margin,
-			];
-		case 1:
-			// Place the logo to bottom left
-			return [
-				logoSettings.margin,
-				canvasHeight - logoSettings.height - logoSettings.margin,
-			];
-		default:
-			throw new Error("Unsupported number of logos to draw");
-	}
+function getCoordinates(canvasWidth: number, canvasHeight: number, drawnLogosCount: number): [number, number] {
+	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount;
+	const [signX, signY] = [Math.cos, Math.sin].map((trigonometricFunction) => Math.sign(trigonometricFunction(angle)));
+	return [
+		canvasWidth / 2 + signX * (canvasWidth / 2 - logoSettings.margin - (signX > 0 ? logoSettings.width : 0)),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - logoSettings.margin - (signY < 0 ? logoSettings.height : 0)),
+	];
 }

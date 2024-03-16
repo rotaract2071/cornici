@@ -54,9 +54,9 @@ def generate_frame(ratio: float) -> str:
 
     return (
         f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">"""
-        f"""<path d="{' '.join(frame_1)}" fill="#d41367"/>"""
+        f"""<path class="customizable" d="{' '.join(frame_1)}" fill="#d41367"/>"""
         f"""<path d="{' '.join(frame_2)}" fill="white"/>"""
-        f"""<path d="{' '.join(frame_3)}" fill="#17458f"/>"""
+        f"""<path class="customizable" d="{' '.join(frame_3)}" fill="#17458f"/>"""
         f"""</svg>"""
     )
 

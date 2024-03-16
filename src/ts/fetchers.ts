@@ -1,9 +1,9 @@
 import { Logo, Ratio } from "./constants.d";
 
 const frameHash: Record<Ratio, string> = {
-    [Ratio.Square]: "51377",
-    [Ratio.Landscape]: "41592",
-    [Ratio.Portrait]: "42552",
+    [Ratio.Square]: "24840",
+    [Ratio.Landscape]: "28846",
+    [Ratio.Portrait]: "18461",
 }
 
 export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {

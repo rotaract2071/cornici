@@ -7,15 +7,16 @@ const frameHash: Record<Ratio, string> = {
 }
 
 export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {
-    return createImage(await fetch(`/logos/${logo}.jpg`));
+    const response = await fetch(`/logos/${logo}.jpg`);
+    return createImage(await response.blob());
 }
 
 export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
-    return createSVG(await fetch(`/frames/${ratio}-${frameHash[ratio]}.svg`));
+    const response = await fetch(`/frames/${ratio}-${frameHash[ratio]}.svg`);
+    return createSVG(await response.text());
 }
 
-async function createImage(response: Response): Promise<ImageBitmap | HTMLImageElement> {
-    const imageData = await response.blob();
+async function createImage(imageData: Blob): Promise<ImageBitmap | HTMLImageElement> {
     if (window.hasOwnProperty("createImageBitmap")) {
         return createImageBitmap(imageData);
     }
@@ -31,8 +32,7 @@ async function createImage(response: Response): Promise<ImageBitmap | HTMLImageE
     return image;
 }
 
-async function createSVG(response: Response): Promise<SVGElement> {
-    const svgText = await response.text();
+function createSVG(svgText: string): SVGElement {
     const frame: SVGElement = (() => {
         const tmp = document.createElement("div");
         tmp.innerHTML = svgText;

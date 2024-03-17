@@ -1,6 +1,6 @@
 import type Cropper from "cropperjs";
 import { Logo, Ratio } from "./constants";
-import { getActualAspectRatio, initialize as initializeCropper } from "./cropper";
+import { initialize as initializeCropper, updateAspectRatio } from "./cropper";
 import download from "./downloader";
 import overlay from "./overlayer";
 
@@ -60,7 +60,7 @@ imageInput.addEventListener("change", async () => {
 
 ratioInput.addEventListener("change", () => {
 	for (const cropper of croppers.values()) {
-		cropper.setAspectRatio(getActualAspectRatio(ratioInput.value as Ratio));
+		updateAspectRatio(cropper, ratioInput.value as Ratio);
 	}
 });
 

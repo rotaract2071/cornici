@@ -12,17 +12,17 @@ export async function initialize(file: File, image: HTMLImageElement, ratio: Rat
 				responsive: false,
 				background: false,
 			});
-			cropper.setAspectRatio(getActualAspectRatio(ratio));
+			updateAspectRatio(cropper, ratio);
 			resolve(cropper);
 		};
 		fileReader.readAsDataURL(file);
 	});
 }
 
-export function getActualAspectRatio(ratio: Ratio): number {
-	return {
+export function updateAspectRatio(cropper: CropperLib, ratio: Ratio) {
+	cropper.setAspectRatio({
 		[Ratio.Square]: 1,
 		[Ratio.Landscape]: 3/2,
 		[Ratio.Portrait]: 2/3,
-	}[ratio];
+	}[ratio]);
 }

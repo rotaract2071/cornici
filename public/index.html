@@ -5,8 +5,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
-	<link rel="stylesheet" href="/style-SOWBIDXH.css">
-	<script src="/app-UXKPPZWO.js" type="module"></script>
+	<link rel="stylesheet" href="/style-AB6SP7HQ.css">
+	<script src="/app-NFUE7AAB.js" type="module"></script>
 	<title>Cornici</title>
 </head>
 
@@ -19,7 +19,8 @@
 				<fieldset disabled>
 					<label>
 						Foto
-						<input type="file" name="image" accept=".jpg,.jpeg,.png">
+						<input type="file" name="image" accept=".jpg,.jpeg,.png" multiple required>
+						<small>Puoi selezionare anche più file.</small>
 					</label>
 					<label>
 						Formato
@@ -43,13 +44,11 @@
 							</optgroup>
 						</select>
 					</label>
+					<button type="submit">Applica cornice</button>
 					<input type="reset">
 				</fieldset>
-				<button disabled type="submit">Applica cornice</button>
 			</form>
-			<div>
-				<img style="max-width: 100%">
-			</div>
+			<div class="croppers"></div>
 		</div>
 	</main>
 </body>

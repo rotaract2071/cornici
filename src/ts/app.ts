@@ -28,67 +28,72 @@ const applyButton = form.querySelector("button");
 if (applyButton === null) {
 	throw new Error("submit button not found");
 }
-const image = document.querySelector("img");
-if (image === null) {
-	throw new Error("image element not found");
+const croppersDiv = document.querySelector(".croppers") as HTMLDivElement | null;
+if (croppersDiv === null) {
+	throw new Error("croppers div not found");
 }
 
 const errorMessage = "Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare l'ultima versione di Google Chrome).";
 
-let cropper: Cropper | null = null;
+const croppers: Map<File, Cropper> = new Map();
 
-imageInput.onchange = async () => {
-	if (imageInput.files?.length !== 1) {
+imageInput.addEventListener("change", async () => {
+	if (imageInput.files?.length === undefined) {
 		return;
 	}
+	reset();
 	const ratio = ratioInput.value as Ratio;
-	const file = imageInput.files[0];
-	if (cropper !== null) {
-		cropper.destroy();
-	}
-	try {
-		cropper = await initializeCropper(file, image, ratio);
-		applyButton.removeAttribute("disabled");
-	} catch (error) {
-		alert(errorMessage);
-	}
-};
 
-ratioInput.onchange = () => {
-	if (cropper === null) {
-		return;
-	}
-	cropper.setAspectRatio(getActualAspectRatio(ratioInput.value as Ratio));
-};
-
-form.onsubmit = async (e: Event) => {
-	e.preventDefault();
-	if (cropper === null) {
-		return;
-	}
-	applyButton.setAttribute("aria-busy", "true");
-	const ratio = ratioInput.value as Ratio;
-	const logo = logoInput.value as Logo | "";
-	const croppedCanvas = cropper.getCroppedCanvas();
-	try {
-		const dataURL = await overlay(croppedCanvas, ratio, logo !== "" ? logo : null);
-		if (imageInput.files?.length !== 1) {
+	for (const file of imageInput.files) {
+		const wrapper = document.createElement("div");
+		const image = document.createElement("img");
+		wrapper.appendChild(image);
+		croppersDiv.appendChild(wrapper);
+		try {
+			croppers.set(file, await initializeCropper(file, image, ratio));
+		} catch (error) {
+			alert(errorMessage);
 			return;
 		}
-		download(dataURL, imageInput.files[0].name);
-		URL.revokeObjectURL(dataURL.href);
-	} catch (error) {
-		alert(errorMessage);
 	}
-	applyButton.removeAttribute("aria-busy");
-};
+});
 
-form.onreset = () => {
-	image.removeAttribute("src");
-	if (cropper !== null) {
-		cropper.destroy();
+ratioInput.addEventListener("change", () => {
+	for (const cropper of croppers.values()) {
+		cropper.setAspectRatio(getActualAspectRatio(ratioInput.value as Ratio));
 	}
-	applyButton.toggleAttribute("disabled", true);
-};
+});
+
+form.addEventListener("submit", async (e) => {
+	e.preventDefault();
+	if (imageInput.files?.length === undefined) {
+		return;
+	}
+
+	applyButton.setAttribute("aria-busy", "true");
+
+	const ratio = ratioInput.value as Ratio;
+	const logo = logoInput.value !== "" ? logoInput.value as Logo : null;
+
+	for (const [file, cropper] of croppers.entries()) {
+		const inputCanvas = cropper.getCroppedCanvas();
+		try {
+			const dataURL = await overlay(inputCanvas, ratio, logo);
+			download(dataURL, file.name);
+			URL.revokeObjectURL(dataURL.href);
+		} catch (error) {
+			alert(errorMessage);
+		}
+	}
+		
+	applyButton.removeAttribute("aria-busy");
+});
+
+form.addEventListener("reset", reset);
+
+function reset() {
+	croppersDiv!.innerHTML = "";
+	croppers.clear();
+}
 
 fieldset.removeAttribute("disabled");

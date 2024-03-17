@@ -55,8 +55,13 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 		drawLogo(optionalLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 	}
 
-	// Return a data URL to the rendered image encoded as PNG
-	return new URL(outputCanvas.toDataURL());
+	// Create a URL to the rendered image encoded as PNG
+	const url = URL.createObjectURL(await getImageBlob(outputCanvas));
+
+	// Cleanup output canvas
+	outputCanvas.remove();
+
+	return new URL(url);
 }
 
 function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRenderingContext2D, outputCanvasWidth: number, outputCanvasHeight: number) {
@@ -122,4 +127,16 @@ function getLogoCoordinates(signX: number, signY: number, canvasWidth: number, c
 		canvasWidth / 2 + signX * (canvasWidth / 2 - logoSettings.margin - (signX > 0 ? logoSettings.width : 0)),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - logoSettings.margin - (signY < 0 ? logoSettings.height : 0)),
 	];
+}
+
+async function getImageBlob(canvas: HTMLCanvasElement): Promise<Blob> {
+	return new Promise((resolve, reject) => {
+		canvas.toBlob((blob) => {
+			if (blob === null) {
+				reject();
+				return;
+			}
+			resolve(blob);
+		});
+	})
 }

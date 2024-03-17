@@ -1,7 +1,7 @@
 import type Cropper from "cropperjs";
 import { Logo, Ratio } from "./constants";
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper";
-import download from "./downloader";
+import downloadAndRevoke from "./downloader";
 import overlay from "./overlayer";
 
 const form = document.querySelector("form");
@@ -81,8 +81,7 @@ form.addEventListener("submit", async (e) => {
 
 	for (const [file, url] of entries) {
 		try {
-			download(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
-			URL.revokeObjectURL(url.href);
+			downloadAndRevoke(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
 		} catch (error) {
 			alert(error);
 		}

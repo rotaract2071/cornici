@@ -8,7 +8,6 @@ const logoHashes: Record<Logo, string> = {
     [Logo.Magnifico]: "13043",
     [Logo.Montalbano]: "16037",
     [Logo.Tirreno]: "63195",
-    [Logo.None]: "",
 }
 
 const frameHashes: Record<Ratio, string> = {

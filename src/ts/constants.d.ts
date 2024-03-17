@@ -5,7 +5,6 @@ export const enum Ratio {
 }
 
 export const enum Logo {
-	None = "",
 	Distretto = "distretto",
 	Doc = "doc",
 	Etruria = "etruria",

@@ -68,10 +68,10 @@ form.onsubmit = async (e: Event) => {
 	}
 	applyButton.setAttribute("aria-busy", "true");
 	const ratio = ratioInput.value as Ratio;
-	const logo = logoInput.value as Logo;
+	const logo = logoInput.value as Logo | "";
 	const croppedCanvas = cropper.getCroppedCanvas();
 	try {
-		const dataURL = await overlay(croppedCanvas, ratio, logo);
+		const dataURL = await overlay(croppedCanvas, ratio, logo !== "" ? logo : null);
 		if (imageInput.files?.length !== 1) {
 			return;
 		}

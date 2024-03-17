@@ -1,14 +1,13 @@
 import { Logo, Ratio } from "./constants.d";
 import { fetchFrame, fetchLogo } from "./fetchers";
 
-const size: Record<Ratio, [number, number]> = {
+const sizes: Record<Ratio, [number, number]> = {
 	[Ratio.Square]: [1080, 1080],
 	[Ratio.Landscape]: [1620, 1080],
 	[Ratio.Portrait]: [1080, 1620],
 };
 
-const color: Record<Logo, string> = {
-	[Logo.None]: "#d41367",
+const colors: Record<Logo, string> = {
 	[Logo.Distretto]: "#d41367",
 	[Logo.Doc]: "#0d4e8c",
 	[Logo.Etruria]: "#17b2dc",
@@ -28,13 +27,13 @@ const logoSettings = {
 	margin: 25,
 };
 
-export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo): Promise<URL> {
+export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo | null): Promise<URL> {
 	const outputCanvas = document.createElement("canvas");
 	const outputCanvasContext = outputCanvas.getContext("2d");
 	if (outputCanvasContext === null) {
 		throw new Error("Canvas 2D rendering context is not supported");
 	}
-	const [outputCanvasWidth, outputCanvasHeight] = size[ratio];
+	const [outputCanvasWidth, outputCanvasHeight] = sizes[ratio];
 	outputCanvas.width = outputCanvasWidth;
 	outputCanvas.height = outputCanvasHeight;
 
@@ -50,7 +49,7 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	// Draw district's logo on the output canvas
 	drawLogo(districtLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 
-	if (logo !== Logo.None) {
+	if (logo !== null) {
 		const optionalLogo = await fetchLogo(logo);
 		// Draw the optional logo on the output canvas
 		drawLogo(optionalLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
@@ -64,7 +63,7 @@ function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRe
 	outputCanvasContext.drawImage(inputCanvas, frameSettings.border, frameSettings.border, outputCanvasWidth - frameSettings.border * 2, outputCanvasHeight - frameSettings.border * 2);
 }
 
-async function drawFrame(frame: SVGElement, logo: Logo, outputCanvasContext: CanvasRenderingContext2D) {
+async function drawFrame(frame: SVGElement, logo: Logo | null, outputCanvasContext: CanvasRenderingContext2D) {
 	const paths = frame.querySelectorAll("path");
 
 	for (const path of paths) {
@@ -74,8 +73,8 @@ async function drawFrame(frame: SVGElement, logo: Logo, outputCanvasContext: Can
 		}
 		const path2d = new Path2D(pathDefinition);
 
-		if (path.classList.contains("customizable") && logo !== Logo.None) {
-			outputCanvasContext.fillStyle = color[logo];
+		if (logo !== null && path.classList.contains("customizable")) {
+			outputCanvasContext.fillStyle = colors[logo];
 		} else {
 			const fill = path.getAttribute("fill");
 			if (fill === null) {

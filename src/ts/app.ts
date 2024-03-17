@@ -33,7 +33,7 @@ if (croppersDiv === null) {
 	throw new Error("croppers div not found");
 }
 
-const errorMessage = "Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare l'ultima versione di Google Chrome).";
+const errorMessage = "Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare Google Chrome).";
 
 const croppers: Map<File, Cropper> = new Map();
 
@@ -81,7 +81,7 @@ form.addEventListener("submit", async (e) => {
 
 	for (const [file, url] of entries) {
 		try {
-			download(url, file.name);
+			download(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
 			URL.revokeObjectURL(url.href);
 		} catch (error) {
 			alert(error);

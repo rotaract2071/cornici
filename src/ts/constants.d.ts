@@ -1,10 +1,10 @@
-export enum Ratio {
+export const enum Ratio {
 	Square = "square",
 	Landscape = "landscape",
 	Portrait = "portrait",
 }
 
-export enum Logo {
+export const enum Logo {
 	None = "",
 	Distretto = "distretto",
 	Doc = "doc",

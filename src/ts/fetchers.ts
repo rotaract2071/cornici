@@ -17,7 +17,7 @@ export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
 async function createImage(response: Response): Promise<ImageBitmap | HTMLImageElement> {
     const imageData = await response.blob();
     if (window.hasOwnProperty("createImageBitmap")) {
-        return await createImageBitmap(imageData);
+        return createImageBitmap(imageData);
     }
     const image = new Image();
     image.src = await (async (blob: Blob): Promise<string> => {

@@ -23,8 +23,8 @@ const frameSettings = {
 }
 
 const logoSettings = {
-	width: 110,
-	height: 110,
+	width: 130,
+	height: 130,
 	margin: 25,
 };
 

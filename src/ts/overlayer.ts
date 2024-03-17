@@ -1,6 +1,22 @@
 import { Logo, Ratio } from "./constants.d";
 import { fetchFrame, fetchLogo } from "./fetchers";
 
+const settings = {
+	frame: {
+		border: 75,
+	},
+	logo: {
+		image: {
+			width: 130,
+			height: 130,
+			margin: 25,
+		},
+		circle: {
+			radius: 70,
+		},
+	},
+}
+
 const sizes: Record<Ratio, [number, number]> = {
 	[Ratio.Square]: [1080, 1080],
 	[Ratio.Landscape]: [1620, 1080],
@@ -15,16 +31,6 @@ const colors: Record<Logo, string> = {
 	[Logo.Magnifico]: "#138a62",
 	[Logo.Montalbano]: "#e71d75",
 	[Logo.Tirreno]: "#ee7046",
-};
-
-const frameSettings = {
-	border: 75,
-}
-
-const logoSettings = {
-	width: 130,
-	height: 130,
-	margin: 25,
 };
 
 export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo | null): Promise<URL> {
@@ -65,7 +71,7 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 }
 
 function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRenderingContext2D, outputCanvasWidth: number, outputCanvasHeight: number) {
-	outputCanvasContext.drawImage(inputCanvas, frameSettings.border, frameSettings.border, outputCanvasWidth - frameSettings.border * 2, outputCanvasHeight - frameSettings.border * 2);
+	outputCanvasContext.drawImage(inputCanvas, settings.frame.border, settings.frame.border, outputCanvasWidth - settings.frame.border * 2, outputCanvasHeight - settings.frame.border * 2);
 }
 
 async function drawFrame(frame: SVGElement, logo: Logo | null, outputCanvasContext: CanvasRenderingContext2D) {
@@ -98,7 +104,7 @@ function drawLogo(logo: ImageBitmap | HTMLImageElement, drawnLogosCount: number,
 	drawLogoCircleBackground(circleCenterX, circleCenterY, canvasContext);
 
 	const [dx, dy] = getLogoCoordinates(signX, signY, canvasWidth, canvasHeight);
-	canvasContext.drawImage(logo, dx, dy, logoSettings.width, logoSettings.height);
+	canvasContext.drawImage(logo, dx, dy, settings.logo.image.width, settings.logo.image.height);
 }
 
 function getAxisSign(drawnLogosCount: number): [number, number] {
@@ -109,7 +115,7 @@ function getAxisSign(drawnLogosCount: number): [number, number] {
 
 function drawLogoCircleBackground(centerX: number, centerY: number, canvasContext: CanvasRenderingContext2D) {
 	canvasContext.beginPath();
-	canvasContext.ellipse(centerX, centerY, logoSettings.width / 2, logoSettings.height / 2, 0, 0, Math.PI * 2);
+	canvasContext.ellipse(centerX, centerY, settings.logo.circle.radius, settings.logo.circle.radius, 0, 0, Math.PI * 2);
 	canvasContext.closePath();
 	canvasContext.fillStyle = "white";
 	canvasContext.fill();
@@ -117,15 +123,15 @@ function drawLogoCircleBackground(centerX: number, centerY: number, canvasContex
 
 function getCircleCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - logoSettings.margin - logoSettings.width / 2),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - logoSettings.margin - logoSettings.height / 2),
+		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - settings.logo.image.width / 2),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - settings.logo.image.height / 2),
 	];
 }
 
 function getLogoCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - logoSettings.margin - (signX > 0 ? logoSettings.width : 0)),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - logoSettings.margin - (signY < 0 ? logoSettings.height : 0)),
+		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.width : 0)),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.height : 0)),
 	];
 }
 

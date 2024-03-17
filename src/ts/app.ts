@@ -75,14 +75,16 @@ form.addEventListener("submit", async (e) => {
 	const ratio = ratioInput.value as Ratio;
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null;
 
-	for (const [file, cropper] of croppers.entries()) {
-		const inputCanvas = cropper.getCroppedCanvas();
+	const entries = await Promise.all(Array.from(croppers.entries()).map(([file, cropper]) => new Promise(async (resolve) => {
+		resolve([file, await overlay(cropper.getCroppedCanvas(), ratio, logo)]);
+	}))) as [File, URL][];
+
+	for (const [file, url] of entries) {
 		try {
-			const dataURL = await overlay(inputCanvas, ratio, logo);
-			download(dataURL, file.name);
-			URL.revokeObjectURL(dataURL.href);
+			download(url, file.name);
+			URL.revokeObjectURL(url.href);
 		} catch (error) {
-			alert(errorMessage);
+			alert(error);
 		}
 	}
 		

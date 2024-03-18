@@ -1,8 +1,8 @@
 import type Cropper from "cropperjs";
-import { Logo, Ratio } from "./constants";
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper";
 import downloadAndRevoke from "./downloader";
 import overlay from "./overlayer";
+import { Logo, Ratio } from "./types";
 
 const form = document.querySelector("form");
 if (form === null) {
@@ -92,7 +92,7 @@ form.addEventListener("submit", async (e) => {
 			alert(errorMessage);
 		}
 	}
-		
+
 	applyButton.removeAttribute("aria-busy");
 });
 

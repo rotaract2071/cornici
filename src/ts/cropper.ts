@@ -1,10 +1,11 @@
 import Cropper from "cropperjs";
-import { Ratio } from "./constants.d";
+import settings from "./settings";
+import { Ratio } from "./types.d";
 
 const ratios: Record<Ratio, number> = {
 	[Ratio.Square]: 1,
-	[Ratio.Landscape]: 3 / 2,
-	[Ratio.Portrait]: 2 / 3,
+	[Ratio.Landscape]: (settings.canvas.longSide - settings.frame.border * 2) / (settings.canvas.shortSide - settings.frame.border * 2),
+	[Ratio.Portrait]: (settings.canvas.shortSide - settings.frame.border * 2) / (settings.canvas.longSide - settings.frame.border * 2),
 };
 
 export async function initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<Cropper> {

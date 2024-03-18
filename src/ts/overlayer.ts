@@ -1,26 +1,11 @@
-import { Logo, Ratio } from "./constants.d";
 import { fetchFrame, fetchLogo } from "./fetchers";
+import settings from "./settings";
+import { Logo, Ratio } from "./types.d";
 
-const settings = {
-	frame: {
-		border: 75,
-	},
-	logo: {
-		image: {
-			width: 130,
-			height: 130,
-			margin: 25,
-		},
-		circle: {
-			radius: 70,
-		},
-	},
-}
-
-const sizes: Record<Ratio, [number, number]> = {
-	[Ratio.Square]: [1080, 1080],
-	[Ratio.Landscape]: [1620, 1080],
-	[Ratio.Portrait]: [1080, 1620],
+const outputCanvasSizes: Record<Ratio, [number, number]> = {
+	[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
+	[Ratio.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
+	[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
 };
 
 const colors: Record<Logo, string> = {
@@ -39,7 +24,7 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	if (outputCanvasContext === null) {
 		throw new Error("Canvas 2D rendering context is not supported");
 	}
-	const [outputCanvasWidth, outputCanvasHeight] = sizes[ratio];
+	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio];
 	outputCanvas.width = outputCanvasWidth;
 	outputCanvas.height = outputCanvasHeight;
 

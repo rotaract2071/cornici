@@ -1,4 +1,4 @@
-import { Logo, Ratio } from "./constants.d";
+import { Logo, Ratio } from "./types.d";
 
 const logoHashes: Record<Logo, string> = {
     [Logo.Distretto]: "06365",

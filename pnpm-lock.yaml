@@ -390,7 +390,3 @@ packages:
     dependencies:
       is-number: 7.0.0
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false

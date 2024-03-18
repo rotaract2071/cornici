@@ -83,7 +83,7 @@ async function drawFrame(frame: SVGElement, customColor: string | null, outputCa
 }
 
 function drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
-	const [signX, signY] = getAxisSign(drawnLogosCount);
+	const [signX, signY] = getAxesSign(drawnLogosCount);
 
 	const [circleCenterX, circleCenterY] = getCircleCenterCoordinates(signX, signY, canvasWidth, canvasHeight);
 	drawLogoCircleBackground(circleCenterX, circleCenterY, circleStrokeColor, canvasContext);
@@ -96,7 +96,7 @@ function drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: strin
  * Returns an array containing the sign of X and Y axes
  * to identify the quadrant in which the logo must be drawn.
  */
-function getAxisSign(drawnLogosCount: number): [number, number] {
+function getAxesSign(drawnLogosCount: number): [number, number] {
 	// This is the angle relative to the center of the image that determines the position of the logo
 	// starting from the bottom right (-π/4) and stepping by 90° clockwise (-π/2)
 	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount;

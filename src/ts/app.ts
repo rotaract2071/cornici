@@ -33,9 +33,14 @@ if (croppersDiv === null) {
 	throw new Error("croppers div not found");
 }
 
-const errorMessage = "Si è verificato un errore! Aggiorna il tuo browser o riprova da PC (ti consigliamo di usare Google Chrome).";
+const croppers = new Map<File, Cropper>();
 
-const croppers: Map<File, Cropper> = new Map();
+const reset = () => {
+	croppersDiv.innerHTML = "";
+	croppers.clear();
+}
+
+const errorMessage = "Si è verificato un errore, riprova con Google Chrome.";
 
 imageInput.addEventListener("change", async () => {
 	if (imageInput.files?.length === undefined) {
@@ -53,6 +58,7 @@ imageInput.addEventListener("change", async () => {
 			croppers.set(file, await initializeCropper(file, image, ratio));
 		} catch (error) {
 			alert(errorMessage);
+			reset();
 			return;
 		}
 	}
@@ -83,7 +89,7 @@ form.addEventListener("submit", async (e) => {
 		try {
 			downloadAndRevoke(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
 		} catch (error) {
-			alert(error);
+			alert(errorMessage);
 		}
 	}
 		
@@ -91,10 +97,5 @@ form.addEventListener("submit", async (e) => {
 });
 
 form.addEventListener("reset", reset);
-
-function reset() {
-	croppersDiv!.innerHTML = "";
-	croppers.clear();
-}
 
 fieldset.removeAttribute("disabled");

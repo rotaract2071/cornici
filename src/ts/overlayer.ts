@@ -33,17 +33,17 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 
 	const frame = await fetchFrame(ratio);
 	// Draw the frame on the output canvas
-	await drawFrame(frame, logo, outputCanvasContext);
+	await drawFrame(frame, logo !== null ? colors[logo] : null, outputCanvasContext);
 
 	const districtLogo = await fetchLogo(Logo.Distretto);
 	let drawnLogosCount = 0;
 	// Draw district's logo on the output canvas
-	drawLogo(districtLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
+	drawLogo(districtLogo, logo !== null ? colors[logo] : colors[Logo.Distretto], drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 
 	if (logo !== null) {
 		const optionalLogo = await fetchLogo(logo);
 		// Draw the optional logo on the output canvas
-		drawLogo(optionalLogo, drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
+		drawLogo(optionalLogo, colors[logo], drawnLogosCount++, outputCanvasContext, outputCanvasWidth, outputCanvasHeight);
 	}
 
 	// Create a URL to the rendered image encoded as PNG
@@ -59,7 +59,7 @@ function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRe
 	outputCanvasContext.drawImage(inputCanvas, settings.frame.border, settings.frame.border, outputCanvasWidth - settings.frame.border * 2, outputCanvasHeight - settings.frame.border * 2);
 }
 
-async function drawFrame(frame: SVGElement, logo: Logo | null, outputCanvasContext: CanvasRenderingContext2D) {
+async function drawFrame(frame: SVGElement, customColor: string | null, outputCanvasContext: CanvasRenderingContext2D) {
 	const paths = frame.querySelectorAll("path");
 
 	for (const path of paths) {
@@ -69,8 +69,8 @@ async function drawFrame(frame: SVGElement, logo: Logo | null, outputCanvasConte
 		}
 		const path2d = new Path2D(pathDefinition);
 
-		if (logo !== null && path.classList.contains("customizable")) {
-			outputCanvasContext.fillStyle = colors[logo];
+		if (customColor !== null && path.classList.contains("customizable")) {
+			outputCanvasContext.fillStyle = customColor;
 		} else {
 			const fill = path.getAttribute("fill");
 			if (fill === null) {
@@ -82,41 +82,50 @@ async function drawFrame(frame: SVGElement, logo: Logo | null, outputCanvasConte
 	}
 }
 
-function drawLogo(logo: ImageBitmap | HTMLImageElement, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+function drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
 	const [signX, signY] = getAxisSign(drawnLogosCount);
 
-	const [circleCenterX, circleCenterY] = getCircleCoordinates(signX, signY, canvasWidth, canvasHeight);
-	drawLogoCircleBackground(circleCenterX, circleCenterY, canvasContext);
+	const [circleCenterX, circleCenterY] = getCircleCenterCoordinates(signX, signY, canvasWidth, canvasHeight);
+	drawLogoCircleBackground(circleCenterX, circleCenterY, circleStrokeColor, canvasContext);
 
 	const [dx, dy] = getLogoCoordinates(signX, signY, canvasWidth, canvasHeight);
-	canvasContext.drawImage(logo, dx, dy, settings.logo.image.width, settings.logo.image.height);
+	canvasContext.drawImage(logo, dx, dy, settings.logo.image.side, settings.logo.image.side);
 }
 
+/**
+ * Returns an array containing the sign of X and Y axes
+ * to identify the quadrant in which the logo must be drawn.
+ */
 function getAxisSign(drawnLogosCount: number): [number, number] {
+	// This is the angle relative to the center of the image that determines the position of the logo
+	// starting from the bottom right (-π/4) and stepping by 90° clockwise (-π/2)
 	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount;
 	const [signX, signY] = [Math.cos, Math.sin].map((trigonometricFunction) => Math.sign(trigonometricFunction(angle)));
 	return [signX, signY];
 }
 
-function drawLogoCircleBackground(centerX: number, centerY: number, canvasContext: CanvasRenderingContext2D) {
+function drawLogoCircleBackground(centerX: number, centerY: number, strokeColor: string, canvasContext: CanvasRenderingContext2D) {
 	canvasContext.beginPath();
 	canvasContext.ellipse(centerX, centerY, settings.logo.circle.radius, settings.logo.circle.radius, 0, 0, Math.PI * 2);
 	canvasContext.closePath();
-	canvasContext.fillStyle = "white";
+	canvasContext.fillStyle = settings.logo.circle.color;
 	canvasContext.fill();
+	canvasContext.strokeStyle = strokeColor;
+	canvasContext.lineWidth = settings.logo.circle.strokeWidth;
+	canvasContext.stroke();
 }
 
-function getCircleCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
+function getCircleCenterCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - settings.logo.image.width / 2),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - settings.logo.image.height / 2),
+		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
 	];
 }
 
 function getLogoCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.width : 0)),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.height : 0)),
+		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.side : 0)),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.side : 0)),
 	];
 }
 

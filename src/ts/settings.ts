@@ -1,4 +1,4 @@
-export default {
+const settings = {
 	canvas: {
 		shortSide: 1080,
 		longSide: 1620,
@@ -8,12 +8,23 @@ export default {
 	},
 	logo: {
 		image: {
-			width: 130,
-			height: 130,
-			margin: 25,
+			side: 118,
+			margin: 0, // Computed
 		},
 		circle: {
-			radius: 70,
+			margin: 25,
+			padding: 4,
+			color: "white",
+			strokeWidth: 8,
+			radius: 0, // Computed
 		},
 	},
 };
+
+// Compute the radius as the nearest even number (ceiling) to the diagonal of the square logo (plus some padding)
+// so that the logo is entirely inscribed in the circumference
+settings.logo.circle.radius = Math.ceil(Math.ceil(settings.logo.image.side / 2 * Math.sqrt(2)) / 2) * 2 + settings.logo.circle.padding;
+
+settings.logo.image.margin = settings.logo.circle.margin + settings.logo.circle.radius - settings.logo.image.side / 2;
+
+export default settings;

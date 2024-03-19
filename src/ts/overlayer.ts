@@ -18,7 +18,11 @@ const colors: Record<Logo, string> = {
 	[Logo.Tirreno]: "#ee7046",
 };
 
-export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Ratio, logo: Logo | null): Promise<URL> {
+export default async function overlay(
+	inputCanvas: HTMLCanvasElement,
+	ratio: Ratio,
+	logo: Logo | null,
+): Promise<URL> {
 	const outputCanvas = document.createElement("canvas");
 	const outputCanvasContext = outputCanvas.getContext("2d");
 	if (outputCanvasContext === null) {
@@ -78,7 +82,12 @@ export default async function overlay(inputCanvas: HTMLCanvasElement, ratio: Rat
 	return new URL(url);
 }
 
-function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRenderingContext2D, outputCanvasWidth: number, outputCanvasHeight: number) {
+function drawImage(
+	inputCanvas: HTMLCanvasElement,
+	outputCanvasContext: CanvasRenderingContext2D,
+	outputCanvasWidth: number,
+	outputCanvasHeight: number,
+) {
 	outputCanvasContext.drawImage(
 		inputCanvas,
 		settings.frame.border,
@@ -88,7 +97,11 @@ function drawImage(inputCanvas: HTMLCanvasElement, outputCanvasContext: CanvasRe
 	);
 }
 
-async function drawFrame(frame: SVGElement, customColor: string | null, outputCanvasContext: CanvasRenderingContext2D) {
+async function drawFrame(
+	frame: SVGElement,
+	customColor: string | null,
+	outputCanvasContext: CanvasRenderingContext2D,
+) {
 	const paths = frame.querySelectorAll("path");
 
 	for (const path of paths) {
@@ -111,10 +124,22 @@ async function drawFrame(frame: SVGElement, customColor: string | null, outputCa
 	}
 }
 
-function drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string, drawnLogosCount: number, canvasContext: CanvasRenderingContext2D, canvasWidth: number, canvasHeight: number) {
+function drawLogo(
+	logo: ImageBitmap | HTMLImageElement,
+	circleStrokeColor: string,
+	drawnLogosCount: number,
+	canvasContext: CanvasRenderingContext2D,
+	canvasWidth: number,
+	canvasHeight: number,
+) {
 	const [signX, signY] = getAxesSign(drawnLogosCount);
 
-	const [circleCenterX, circleCenterY] = getCircleCenterCoordinates(signX, signY, canvasWidth, canvasHeight);
+	const [circleCenterX, circleCenterY] = getCircleCenterCoordinates(
+		signX,
+		signY,
+		canvasWidth,
+		canvasHeight,
+	);
 	drawLogoCircleBackground(
 		circleCenterX,
 		circleCenterY,
@@ -122,7 +147,12 @@ function drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: strin
 		canvasContext,
 	);
 
-	const [dx, dy] = getLogoCoordinates(signX, signY, canvasWidth, canvasHeight);
+	const [dx, dy] = getLogoCoordinates(
+		signX,
+		signY,
+		canvasWidth,
+		canvasHeight,
+	);
 	canvasContext.drawImage(
 		logo,
 		dx,
@@ -145,7 +175,12 @@ function getAxesSign(drawnLogosCount: number): [number, number] {
 	return [signX, signY];
 }
 
-function drawLogoCircleBackground(centerX: number, centerY: number, strokeColor: string, canvasContext: CanvasRenderingContext2D) {
+function drawLogoCircleBackground(
+	centerX: number,
+	centerY: number,
+	strokeColor: string,
+	canvasContext: CanvasRenderingContext2D,
+) {
 	canvasContext.beginPath();
 	canvasContext.ellipse(
 		centerX,
@@ -166,14 +201,24 @@ function drawLogoCircleBackground(centerX: number, centerY: number, strokeColor:
 	canvasContext.stroke();
 }
 
-function getCircleCenterCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
+function getCircleCenterCoordinates(
+	signX: number,
+	signY: number,
+	canvasWidth: number,
+	canvasHeight: number
+): [number, number] {
 	return [
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
 	];
 }
 
-function getLogoCoordinates(signX: number, signY: number, canvasWidth: number, canvasHeight: number): [number, number] {
+function getLogoCoordinates(
+	signX: number,
+	signY: number,
+	canvasWidth: number,
+	canvasHeight: number,
+): [number, number] {
 	return [
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.side : 0)),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.side : 0)),

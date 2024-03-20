@@ -1,4 +1,4 @@
-import { Logo } from "./types.d";
+import { Logo, Ratio } from "./types.d";
 
 const settings = {
 	canvas: {
@@ -30,6 +30,22 @@ const settings = {
 		[Logo.Montalbano]: "#e71d75",
 		[Logo.Tirreno]: "#ee7046",
 	} satisfies Record<Logo, string>,
+	hashes: {
+		frames: {
+			[Ratio.Square]: "24840",
+			[Ratio.Landscape]: "28846",
+			[Ratio.Portrait]: "18461",
+		} satisfies Record<Ratio, string>,
+		logos: {
+			[Logo.Distretto]: "06365",
+			[Logo.Doc]: "36231",
+			[Logo.Etruria]: "08921",
+			[Logo.Galileo]: "45306",
+			[Logo.Magnifico]: "13043",
+			[Logo.Montalbano]: "16037",
+			[Logo.Tirreno]: "63195",
+		} satisfies Record<Logo, string>,
+	},
 };
 
 // Compute the radius as the nearest even number (ceiling) to the diagonal of the square logo (plus some padding)

@@ -1,28 +1,13 @@
-import { Logo, Ratio } from "./types.d";
-
-const logoHashes: Record<Logo, string> = {
-	[Logo.Distretto]: "06365",
-	[Logo.Doc]: "36231",
-	[Logo.Etruria]: "08921",
-	[Logo.Galileo]: "45306",
-	[Logo.Magnifico]: "13043",
-	[Logo.Montalbano]: "16037",
-	[Logo.Tirreno]: "63195",
-}
-
-const frameHashes: Record<Ratio, string> = {
-	[Ratio.Square]: "24840",
-	[Ratio.Landscape]: "28846",
-	[Ratio.Portrait]: "18461",
-}
+import settings from "./settings";
+import type { Logo, Ratio } from "./types.d";
 
 export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {
-	const response = await fetch(`/logos/${logo}-${logoHashes[logo]}.png`);
+	const response = await fetch(`/logos/${logo}-${settings.hashes.logos[logo]}.png`);
 	return createImage(await response.blob());
 }
 
 export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
-	const response = await fetch(`/frames/${ratio}-${frameHashes[ratio]}.svg`);
+	const response = await fetch(`/frames/${ratio}-${settings.hashes.frames[ratio]}.svg`);
 	return createSVG(await response.text());
 }
 

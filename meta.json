@@ -1,0 +1,140 @@
+{
+  "inputs": {
+    "node_modules/.pnpm/cropperjs@1.6.1/node_modules/cropperjs/dist/cropper.js": {
+      "bytes": 113993,
+      "imports": [],
+      "format": "cjs"
+    },
+    "src/ts/types.d.ts": {
+      "bytes": 286,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/ts/settings.ts": {
+      "bytes": 1435,
+      "imports": [
+        {
+          "path": "src/ts/types.d.ts",
+          "kind": "import-statement",
+          "original": "./types.d"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ts/cropper.ts": {
+      "bytes": 1097,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/cropperjs@1.6.1/node_modules/cropperjs/dist/cropper.js",
+          "kind": "import-statement",
+          "original": "cropperjs"
+        },
+        {
+          "path": "src/ts/settings.ts",
+          "kind": "import-statement",
+          "original": "./settings"
+        },
+        {
+          "path": "src/ts/types.d.ts",
+          "kind": "import-statement",
+          "original": "./types.d"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ts/downloader.ts": {
+      "bytes": 215,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/ts/fetchers.ts": {
+      "bytes": 1227,
+      "imports": [
+        {
+          "path": "src/ts/settings.ts",
+          "kind": "import-statement",
+          "original": "./settings"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ts/overlayer.ts": {
+      "bytes": 5876,
+      "imports": [
+        {
+          "path": "src/ts/fetchers.ts",
+          "kind": "import-statement",
+          "original": "./fetchers"
+        },
+        {
+          "path": "src/ts/settings.ts",
+          "kind": "import-statement",
+          "original": "./settings"
+        },
+        {
+          "path": "src/ts/types.d.ts",
+          "kind": "import-statement",
+          "original": "./types.d"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ts/app.ts": {
+      "bytes": 3044,
+      "imports": [
+        {
+          "path": "src/ts/cropper.ts",
+          "kind": "import-statement",
+          "original": "./cropper"
+        },
+        {
+          "path": "src/ts/downloader.ts",
+          "kind": "import-statement",
+          "original": "./downloader"
+        },
+        {
+          "path": "src/ts/overlayer.ts",
+          "kind": "import-statement",
+          "original": "./overlayer"
+        },
+        {
+          "path": "./types",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "public/app-FRIXVA3M.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "src/ts/app.ts",
+      "inputs": {
+        "node_modules/.pnpm/cropperjs@1.6.1/node_modules/cropperjs/dist/cropper.js": {
+          "bytesInOutput": 38323
+        },
+        "src/ts/cropper.ts": {
+          "bytesInOutput": 518
+        },
+        "src/ts/settings.ts": {
+          "bytesInOutput": 684
+        },
+        "src/ts/downloader.ts": {
+          "bytesInOutput": 127
+        },
+        "src/ts/fetchers.ts": {
+          "bytesInOutput": 568
+        },
+        "src/ts/overlayer.ts": {
+          "bytesInOutput": 1895
+        },
+        "src/ts/app.ts": {
+          "bytesInOutput": 1686
+        }
+      },
+      "bytes": 44340
+    }
+  }
+}

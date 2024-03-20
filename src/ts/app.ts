@@ -33,11 +33,11 @@ if (croppersDiv === null) {
 	throw new Error("croppers div not found");
 }
 
-const croppers = new Map<File, Cropper>();
+const croppers = new Array<{ file: File, cropper: Cropper }>();
 
 const resetCroppers = () => {
 	croppersDiv.innerHTML = "";
-	croppers.clear();
+	croppers.length = 0;
 }
 
 const errorMessage = "Si è verificato un errore, riprova con Google Chrome.";
@@ -55,7 +55,8 @@ imageInput.addEventListener("change", async () => {
 		wrapper.appendChild(image);
 		croppersDiv.appendChild(wrapper);
 		try {
-			croppers.set(file, await initializeCropper(file, image, ratio));
+			const cropper = await initializeCropper(file, image, ratio);
+			croppers.push({ file, cropper })
 		} catch (error) {
 			alert(errorMessage);
 			resetCroppers();
@@ -65,7 +66,7 @@ imageInput.addEventListener("change", async () => {
 });
 
 ratioInput.addEventListener("change", () => {
-	for (const cropper of croppers.values()) {
+	for (const { cropper } of croppers) {
 		updateAspectRatio(cropper, ratioInput.value as Ratio);
 	}
 });
@@ -81,11 +82,11 @@ form.addEventListener("submit", async (e) => {
 	const ratio = ratioInput.value as Ratio;
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null;
 
-	const entries = await Promise.all(Array.from(croppers.entries()).map(([file, cropper]) => new Promise(async (resolve) => {
-		resolve([file, await overlay(cropper.getCroppedCanvas(), ratio, logo)]);
-	}))) as [File, URL][];
+	const results = await Promise.all(croppers.map(({ file, cropper }) => new Promise(async (resolve) => {
+		resolve({ file, url: await overlay(cropper.getCroppedCanvas(), ratio, logo) });
+	}))) as { file: File, url: URL }[];
 
-	for (const [file, url] of entries) {
+	for (const { file, url } of results) {
 		try {
 			downloadAndRevoke(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
 		} catch (error) {

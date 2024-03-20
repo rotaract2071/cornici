@@ -23,7 +23,7 @@ async function createImage(imageData: Blob): Promise<ImageBitmap | HTMLImageElem
 			reader.readAsDataURL(blob);
 		});
 	})(imageData);
-	await new Promise((resolve) => image.onload = resolve);
+	await image.decode();
 	return image;
 }
 

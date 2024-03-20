@@ -32,9 +32,9 @@ const settings = {
 	} satisfies Record<Logo, string>,
 	hashes: {
 		frames: {
-			[Ratio.Square]: "24840",
 			[Ratio.Landscape]: "28846",
 			[Ratio.Portrait]: "18461",
+			[Ratio.Square]: "24840",
 		} satisfies Record<Ratio, string>,
 		logos: {
 			[Logo.Distretto]: "06365",

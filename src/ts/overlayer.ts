@@ -3,9 +3,9 @@ import settings from "./settings";
 import { Logo, Ratio } from "./types.d";
 
 const outputCanvasSizes: Record<Ratio, [number, number]> = {
-	[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 	[Ratio.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
 	[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
+	[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 };
 
 export default async function overlay(

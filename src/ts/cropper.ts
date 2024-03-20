@@ -11,8 +11,10 @@ const ratios: Record<Ratio, number> = {
 export async function initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<Cropper> {
 	return new Promise((resolve) => {
 		const fileReader = new FileReader();
-		fileReader.onload = (e) => {
+		fileReader.onload = async () => {
 			image.src = fileReader.result as string;
+			await image.decode();
+			image.addEventListener("ready", () => resolve(cropper));
 			const cropper = new Cropper(image, {
 				zoomable: false,
 				viewMode: 2,
@@ -20,7 +22,6 @@ export async function initialize(file: File, image: HTMLImageElement, ratio: Rat
 				background: false,
 				aspectRatio: ratios[ratio],
 			});
-			resolve(cropper);
 		};
 		fileReader.readAsDataURL(file);
 	});

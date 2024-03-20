@@ -35,7 +35,7 @@ if (croppersDiv === null) {
 
 const croppers = new Map<File, Cropper>();
 
-const reset = () => {
+const resetCroppers = () => {
 	croppersDiv.innerHTML = "";
 	croppers.clear();
 }
@@ -46,7 +46,7 @@ imageInput.addEventListener("change", async () => {
 	if (imageInput.files?.length === undefined) {
 		return;
 	}
-	reset();
+	resetCroppers();
 	const ratio = ratioInput.value as Ratio;
 
 	for (const file of imageInput.files) {
@@ -58,7 +58,7 @@ imageInput.addEventListener("change", async () => {
 			croppers.set(file, await initializeCropper(file, image, ratio));
 		} catch (error) {
 			alert(errorMessage);
-			reset();
+			resetCroppers();
 			return;
 		}
 	}
@@ -96,6 +96,6 @@ form.addEventListener("submit", async (e) => {
 	applyButton.removeAttribute("aria-busy");
 });
 
-form.addEventListener("reset", reset);
+form.addEventListener("reset", resetCroppers);
 
 fieldset.removeAttribute("disabled");

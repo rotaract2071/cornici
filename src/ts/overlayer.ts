@@ -8,16 +8,6 @@ const outputCanvasSizes: Record<Ratio, [number, number]> = {
 	[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
 };
 
-const colors: Record<Logo, string> = {
-	[Logo.Distretto]: "#d41367",
-	[Logo.Doc]: "#0d4e8c",
-	[Logo.Etruria]: "#17b2dc",
-	[Logo.Galileo]: "#f5a14d",
-	[Logo.Magnifico]: "#138a62",
-	[Logo.Montalbano]: "#e71d75",
-	[Logo.Tirreno]: "#ee7046",
-};
-
 export default async function overlay(
 	inputCanvas: HTMLCanvasElement,
 	ratio: Ratio,
@@ -44,7 +34,7 @@ export default async function overlay(
 	// Draw the frame on the output canvas
 	await drawFrame(
 		frame,
-		logo !== null ? colors[logo] : null,
+		logo !== null ? settings.colors[logo] : null,
 		outputCanvasContext,
 	);
 
@@ -53,7 +43,7 @@ export default async function overlay(
 	// Draw district's logo on the output canvas
 	drawLogo(
 		districtLogo,
-		logo !== null ? colors[logo] : colors[Logo.Distretto],
+		logo !== null ? settings.colors[logo] : settings.colors[Logo.Distretto],
 		drawnLogosCount++,
 		outputCanvasContext,
 		outputCanvasWidth,
@@ -65,7 +55,7 @@ export default async function overlay(
 		// Draw the optional logo on the output canvas
 		drawLogo(
 			optionalLogo,
-			colors[logo],
+			settings.colors[logo],
 			drawnLogosCount++,
 			outputCanvasContext,
 			outputCanvasWidth,

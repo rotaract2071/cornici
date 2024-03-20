@@ -83,12 +83,12 @@ form.addEventListener("submit", async (e) => {
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null;
 
 	const results = await Promise.all(croppers.map(({ file, cropper }) => new Promise(async (resolve) => {
-		resolve({ file, url: await overlay(cropper.getCroppedCanvas(), ratio, logo) });
-	}))) as { file: File, url: URL }[];
+		resolve({ originalFilename: file.name, url: await overlay(cropper.getCroppedCanvas(), ratio, logo) });
+	}))) as { originalFilename: string, url: URL }[];
 
-	for (const { file, url } of results) {
+	for (const { originalFilename, url } of results) {
 		try {
-			downloadAndRevoke(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
+			downloadAndRevoke(url, originalFilename.split(".").slice(0, -1).join(".") + "_con_cornice.png");
 		} catch (error) {
 			alert(errorMessage);
 		}

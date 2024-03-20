@@ -51,7 +51,7 @@ imagesInput.addEventListener("change", async () => {
 
 	for (const file of imagesInput.files) {
 		const wrapper = document.createElement("div");
-		const image = document.createElement("img");
+		const image = new Image();
 		wrapper.appendChild(image);
 		croppersDiv.appendChild(wrapper);
 		try {

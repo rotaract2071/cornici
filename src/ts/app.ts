@@ -12,8 +12,8 @@ const fieldset = form.querySelector("fieldset");
 if (fieldset === null) {
 	throw new Error("fieldset element not found");
 }
-const imageInput = fieldset.querySelector('input[name="image"]') as HTMLInputElement | null;
-if (imageInput === null) {
+const imagesInput = fieldset.querySelector('input[name="images"]') as HTMLInputElement | null;
+if (imagesInput === null) {
 	throw new Error("image input not found");
 }
 const ratioInput = fieldset.querySelector('select[name="ratio"]') as HTMLSelectElement | null;
@@ -42,14 +42,14 @@ const resetCroppers = () => {
 
 const errorMessage = "Si è verificato un errore, riprova con Google Chrome.";
 
-imageInput.addEventListener("change", async () => {
-	if (imageInput.files?.length === undefined) {
+imagesInput.addEventListener("change", async () => {
+	if (imagesInput.files?.length === undefined) {
 		return;
 	}
 	resetCroppers();
 	const ratio = ratioInput.value as Ratio;
 
-	for (const file of imageInput.files) {
+	for (const file of imagesInput.files) {
 		const wrapper = document.createElement("div");
 		const image = document.createElement("img");
 		wrapper.appendChild(image);
@@ -73,7 +73,7 @@ ratioInput.addEventListener("change", () => {
 
 form.addEventListener("submit", async (e) => {
 	e.preventDefault();
-	if (imageInput.files?.length === undefined) {
+	if (imagesInput.files?.length === undefined) {
 		return;
 	}
 

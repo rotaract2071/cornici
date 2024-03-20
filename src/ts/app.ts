@@ -37,6 +37,7 @@ const croppers = new Array<{ file: File, cropper: Cropper }>();
 
 const resetCroppers = () => {
 	croppersDiv.innerHTML = "";
+	croppersDiv.style.removeProperty("opacity");
 	croppers.length = 0;
 }
 
@@ -49,6 +50,7 @@ imagesInput.addEventListener("change", async () => {
 	resetCroppers();
 	const ratio = ratioInput.value as Ratio;
 
+	croppersDiv.style.opacity = "0";
 	for (const file of imagesInput.files) {
 		const wrapper = document.createElement("div");
 		const image = new Image();
@@ -63,6 +65,7 @@ imagesInput.addEventListener("change", async () => {
 			return;
 		}
 	}
+	croppersDiv.style.removeProperty("opacity");
 });
 
 ratioInput.addEventListener("change", () => {

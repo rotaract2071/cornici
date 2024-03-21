@@ -2,7 +2,7 @@ import type Cropper from "cropperjs";
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper";
 import downloadAndRevoke from "./downloader";
 import overlay from "./overlayer";
-import { Logo, Ratio } from "./types";
+import type { Logo, Ratio } from "./types";
 
 const form = document.querySelector("form");
 if (form === null) {
@@ -78,7 +78,8 @@ form.addEventListener("submit", async (e) => {
 		return;
 	}
 
-	applyButton.setAttribute("aria-busy", "true");
+	applyButton.disabled = true;
+	applyButton.ariaBusy = "true";
 
 	const ratio = ratioInput.value as Ratio;
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null;
@@ -95,9 +96,10 @@ form.addEventListener("submit", async (e) => {
 		}
 	}
 
-	applyButton.removeAttribute("aria-busy");
+	applyButton.ariaBusy = "false";
+	applyButton.disabled = false;
 });
 
 form.addEventListener("reset", resetCroppers);
 
-fieldset.removeAttribute("disabled");
+fieldset.disabled = false;

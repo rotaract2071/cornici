@@ -8,6 +8,5 @@ export async function fetchLogo(logo: Logo): Promise<ImageBitmap> {
 
 export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
 	const response = await fetch(`/frames/${ratio}-${settings.hashes.frames[ratio]}.svg`)
-	const parser = new DOMParser()
-	return parser.parseFromString(await response.text(), "image/svg+xml").documentElement as unknown as SVGElement
+	return new DOMParser().parseFromString(await response.text(), "image/svg+xml").documentElement as unknown as SVGElement
 }

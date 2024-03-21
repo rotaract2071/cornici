@@ -1,7 +1,7 @@
 export const enum Ratio {
-	Square = "square",
 	Landscape = "landscape",
 	Portrait = "portrait",
+	Square = "square",
 }
 
 export const enum Logo {

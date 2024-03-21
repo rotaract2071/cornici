@@ -13,14 +13,12 @@ export default async function overlay(
 	ratio: Ratio,
 	logo: Logo | null,
 ): Promise<URL> {
-	const outputCanvas = document.createElement("canvas")
+	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio]
+	const outputCanvas = new OffscreenCanvas(outputCanvasWidth, outputCanvasHeight)
 	const outputCanvasContext = outputCanvas.getContext("2d")
 	if (outputCanvasContext === null) {
 		throw new Error("Canvas 2D rendering context is not supported")
 	}
-	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio]
-	outputCanvas.width = outputCanvasWidth
-	outputCanvas.height = outputCanvasHeight
 
 	// Draw the cropped portion of the input image on the output canvas
 	drawImage(
@@ -64,17 +62,12 @@ export default async function overlay(
 	}
 
 	// Create a URL to the rendered image encoded as PNG
-	const url = URL.createObjectURL(await getImageBlob(outputCanvas))
-
-	// Cleanup output canvas
-	outputCanvas.remove()
-
-	return new URL(url)
+	return new URL (URL.createObjectURL(await outputCanvas.convertToBlob()))
 }
 
 function drawImage(
 	inputCanvas: HTMLCanvasElement,
-	outputCanvasContext: CanvasRenderingContext2D,
+	outputCanvasContext: OffscreenCanvasRenderingContext2D,
 	outputCanvasWidth: number,
 	outputCanvasHeight: number,
 ) {
@@ -90,7 +83,7 @@ function drawImage(
 async function drawFrame(
 	frame: SVGElement,
 	customColor: string | null,
-	outputCanvasContext: CanvasRenderingContext2D,
+	outputCanvasContext: OffscreenCanvasRenderingContext2D,
 ) {
 	const paths = frame.querySelectorAll("path")
 
@@ -118,7 +111,7 @@ function drawLogo(
 	logo: ImageBitmap | HTMLImageElement,
 	circleStrokeColor: string,
 	drawnLogosCount: number,
-	canvasContext: CanvasRenderingContext2D,
+	canvasContext: OffscreenCanvasRenderingContext2D,
 	canvasWidth: number,
 	canvasHeight: number,
 ) {
@@ -169,7 +162,7 @@ function drawLogoCircleBackground(
 	centerX: number,
 	centerY: number,
 	strokeColor: string,
-	canvasContext: CanvasRenderingContext2D,
+	canvasContext: OffscreenCanvasRenderingContext2D,
 ) {
 	canvasContext.beginPath()
 	canvasContext.ellipse(
@@ -213,16 +206,4 @@ function getLogoCoordinates(
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.side : 0)),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.side : 0)),
 	]
-}
-
-async function getImageBlob(canvas: HTMLCanvasElement): Promise<Blob> {
-	return new Promise((resolve, reject) => {
-		canvas.toBlob((blob) => {
-			if (blob === null) {
-				reject()
-				return
-			}
-			resolve(blob)
-		})
-	})
 }

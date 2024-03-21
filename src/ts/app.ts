@@ -41,7 +41,7 @@ const resetCroppers = () => {
 	croppers.length = 0;
 }
 
-const errorMessage = "Si è verificato un errore, riprova con Google Chrome.";
+const ERROR_MESSAGE = "Si è verificato un errore, riprova con Google Chrome.";
 
 imagesInput.addEventListener("change", async () => {
 	if (imagesInput.files?.length === undefined) {
@@ -59,7 +59,7 @@ imagesInput.addEventListener("change", async () => {
 			const cropper = await initializeCropper(file, image, ratio);
 			croppers.push({ file, cropper })
 		} catch (error) {
-			alert(errorMessage);
+			alert(ERROR_MESSAGE);
 			resetCroppers();
 			return;
 		}
@@ -84,16 +84,13 @@ form.addEventListener("submit", async (e) => {
 	const ratio = ratioInput.value as Ratio;
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null;
 
-	const results = await Promise.all(croppers.map(({ file, cropper }) => new Promise(async (resolve) => {
-		resolve({ originalFilename: file.name, url: await overlay(cropper.getCroppedCanvas(), ratio, logo) });
-	}))) as { originalFilename: string, url: URL }[];
-
-	for (const { originalFilename, url } of results) {
-		try {
-			downloadAndRevoke(url, originalFilename.split(".").slice(0, -1).join(".") + "_con_cornice.png");
-		} catch (error) {
-			alert(errorMessage);
+	try {
+		for (const { file, cropper } of croppers) {
+			const url = await overlay(cropper.getCroppedCanvas(), ratio, logo);
+			downloadAndRevoke(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png");
 		}
+	} catch (error) {
+		alert(ERROR_MESSAGE);
 	}
 
 	applyButton.ariaBusy = "false";

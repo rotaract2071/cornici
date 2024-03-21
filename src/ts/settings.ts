@@ -1,4 +1,4 @@
-import { Logo, Ratio } from "./types.d";
+import { Logo, Ratio } from "./types.d"
 
 const settings = {
 	canvas: {
@@ -46,12 +46,12 @@ const settings = {
 			[Logo.Tirreno]: "63195",
 		} satisfies Record<Logo, string>,
 	},
-};
+}
 
 // Compute the radius as the nearest even number (ceiling) to the diagonal of the square logo (plus some padding)
 // so that the logo is entirely inscribed in the circumference
-settings.logo.circle.radius = Math.ceil(Math.ceil(settings.logo.image.side / 2 * Math.sqrt(2)) / 2) * 2 + settings.logo.circle.padding;
+settings.logo.circle.radius = Math.ceil(Math.ceil(settings.logo.image.side / 2 * Math.sqrt(2)) / 2) * 2 + settings.logo.circle.padding
 
-settings.logo.image.margin = settings.logo.circle.margin + settings.logo.circle.radius - settings.logo.image.side / 2;
+settings.logo.image.margin = settings.logo.circle.margin + settings.logo.circle.radius - settings.logo.image.side / 2
 
-export default settings;
+export default settings

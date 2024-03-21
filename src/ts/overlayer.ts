@@ -1,26 +1,26 @@
-import { fetchFrame, fetchLogo } from "./fetchers";
-import settings from "./settings";
-import { Logo, Ratio } from "./types.d";
+import { fetchFrame, fetchLogo } from "./fetchers"
+import settings from "./settings"
+import { Logo, Ratio } from "./types.d"
 
 const outputCanvasSizes: Record<Ratio, [number, number]> = {
 	[Ratio.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
 	[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
 	[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
-};
+}
 
 export default async function overlay(
 	inputCanvas: HTMLCanvasElement,
 	ratio: Ratio,
 	logo: Logo | null,
 ): Promise<URL> {
-	const outputCanvas = document.createElement("canvas");
-	const outputCanvasContext = outputCanvas.getContext("2d");
+	const outputCanvas = document.createElement("canvas")
+	const outputCanvasContext = outputCanvas.getContext("2d")
 	if (outputCanvasContext === null) {
-		throw new Error("Canvas 2D rendering context is not supported");
+		throw new Error("Canvas 2D rendering context is not supported")
 	}
-	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio];
-	outputCanvas.width = outputCanvasWidth;
-	outputCanvas.height = outputCanvasHeight;
+	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio]
+	outputCanvas.width = outputCanvasWidth
+	outputCanvas.height = outputCanvasHeight
 
 	// Draw the cropped portion of the input image on the output canvas
 	drawImage(
@@ -28,18 +28,18 @@ export default async function overlay(
 		outputCanvasContext,
 		outputCanvasWidth,
 		outputCanvasHeight,
-	);
+	)
 
-	const frame = await fetchFrame(ratio);
+	const frame = await fetchFrame(ratio)
 	// Draw the frame on the output canvas
 	await drawFrame(
 		frame,
 		logo !== null ? settings.colors[logo] : null,
 		outputCanvasContext,
-	);
+	)
 
-	const districtLogo = await fetchLogo(Logo.Distretto);
-	let drawnLogosCount = 0;
+	const districtLogo = await fetchLogo(Logo.Distretto)
+	let drawnLogosCount = 0
 	// Draw district's logo on the output canvas
 	drawLogo(
 		districtLogo,
@@ -48,10 +48,10 @@ export default async function overlay(
 		outputCanvasContext,
 		outputCanvasWidth,
 		outputCanvasHeight,
-	);
+	)
 
 	if (logo !== null) {
-		const optionalLogo = await fetchLogo(logo);
+		const optionalLogo = await fetchLogo(logo)
 		// Draw the optional logo on the output canvas
 		drawLogo(
 			optionalLogo,
@@ -60,16 +60,16 @@ export default async function overlay(
 			outputCanvasContext,
 			outputCanvasWidth,
 			outputCanvasHeight,
-		);
+		)
 	}
 
 	// Create a URL to the rendered image encoded as PNG
-	const url = URL.createObjectURL(await getImageBlob(outputCanvas));
+	const url = URL.createObjectURL(await getImageBlob(outputCanvas))
 
 	// Cleanup output canvas
-	outputCanvas.remove();
+	outputCanvas.remove()
 
-	return new URL(url);
+	return new URL(url)
 }
 
 function drawImage(
@@ -84,7 +84,7 @@ function drawImage(
 		settings.frame.border,
 		outputCanvasWidth - settings.frame.border * 2,
 		outputCanvasHeight - settings.frame.border * 2,
-	);
+	)
 }
 
 async function drawFrame(
@@ -92,25 +92,25 @@ async function drawFrame(
 	customColor: string | null,
 	outputCanvasContext: CanvasRenderingContext2D,
 ) {
-	const paths = frame.querySelectorAll("path");
+	const paths = frame.querySelectorAll("path")
 
 	for (const path of paths) {
-		const pathDefinition = path.getAttribute("d");
+		const pathDefinition = path.getAttribute("d")
 		if (pathDefinition === null) {
-			continue;
+			continue
 		}
-		const path2d = new Path2D(pathDefinition);
+		const path2d = new Path2D(pathDefinition)
 
 		if (customColor !== null && path.classList.contains("customizable")) {
-			outputCanvasContext.fillStyle = customColor;
+			outputCanvasContext.fillStyle = customColor
 		} else {
-			const fill = path.getAttribute("fill");
+			const fill = path.getAttribute("fill")
 			if (fill === null) {
-				continue;
+				continue
 			}
-			outputCanvasContext.fillStyle = fill;
+			outputCanvasContext.fillStyle = fill
 		}
-		outputCanvasContext.fill(path2d);
+		outputCanvasContext.fill(path2d)
 	}
 }
 
@@ -122,34 +122,34 @@ function drawLogo(
 	canvasWidth: number,
 	canvasHeight: number,
 ) {
-	const [signX, signY] = getAxesSign(drawnLogosCount);
+	const [signX, signY] = getAxesSign(drawnLogosCount)
 
 	const [circleCenterX, circleCenterY] = getCircleCenterCoordinates(
 		signX,
 		signY,
 		canvasWidth,
 		canvasHeight,
-	);
+	)
 	drawLogoCircleBackground(
 		circleCenterX,
 		circleCenterY,
 		circleStrokeColor,
 		canvasContext,
-	);
+	)
 
 	const [dx, dy] = getLogoCoordinates(
 		signX,
 		signY,
 		canvasWidth,
 		canvasHeight,
-	);
+	)
 	canvasContext.drawImage(
 		logo,
 		dx,
 		dy,
 		settings.logo.image.side,
 		settings.logo.image.side,
-	);
+	)
 }
 
 /**
@@ -159,10 +159,10 @@ function drawLogo(
 function getAxesSign(drawnLogosCount: number): [number, number] {
 	// This is the angle relative to the center of the image that determines the position of the logo
 	// starting from the bottom right (-π/4) and stepping by 90° clockwise (-π/2)
-	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount;
+	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount
 	const [signX, signY] = [Math.cos, Math.sin]
-		.map((trigonometricFunction) => Math.sign(trigonometricFunction(angle)));
-	return [signX, signY];
+		.map((trigonometricFunction) => Math.sign(trigonometricFunction(angle)))
+	return [signX, signY]
 }
 
 function drawLogoCircleBackground(
@@ -171,7 +171,7 @@ function drawLogoCircleBackground(
 	strokeColor: string,
 	canvasContext: CanvasRenderingContext2D,
 ) {
-	canvasContext.beginPath();
+	canvasContext.beginPath()
 	canvasContext.ellipse(
 		centerX,
 		centerY,
@@ -180,15 +180,15 @@ function drawLogoCircleBackground(
 		0,
 		0,
 		Math.PI * 2,
-	);
-	canvasContext.closePath();
+	)
+	canvasContext.closePath()
 
-	canvasContext.fillStyle = settings.logo.circle.color;
-	canvasContext.fill();
+	canvasContext.fillStyle = settings.logo.circle.color
+	canvasContext.fill()
 
-	canvasContext.strokeStyle = strokeColor;
-	canvasContext.lineWidth = settings.logo.circle.strokeWidth;
-	canvasContext.stroke();
+	canvasContext.strokeStyle = strokeColor
+	canvasContext.lineWidth = settings.logo.circle.strokeWidth
+	canvasContext.stroke()
 }
 
 function getCircleCenterCoordinates(
@@ -200,7 +200,7 @@ function getCircleCenterCoordinates(
 	return [
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
-	];
+	]
 }
 
 function getLogoCoordinates(
@@ -212,17 +212,17 @@ function getLogoCoordinates(
 	return [
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.side : 0)),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.side : 0)),
-	];
+	]
 }
 
 async function getImageBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 	return new Promise((resolve, reject) => {
 		canvas.toBlob((blob) => {
 			if (blob === null) {
-				reject();
-				return;
+				reject()
+				return
 			}
-			resolve(blob);
-		});
+			resolve(blob)
+		})
 	})
 }

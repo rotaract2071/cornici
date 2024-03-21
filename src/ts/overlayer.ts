@@ -108,7 +108,7 @@ async function drawFrame(
 }
 
 function drawLogo(
-	logo: ImageBitmap | HTMLImageElement,
+	logo: ImageBitmap,
 	circleStrokeColor: string,
 	drawnLogosCount: number,
 	canvasContext: OffscreenCanvasRenderingContext2D,

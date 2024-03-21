@@ -41,7 +41,7 @@ const resetCroppers = () => {
 	croppers.length = 0
 }
 
-const ERROR_MESSAGE = "Si è verificato un errore, riprova con Google Chrome."
+const ERROR_MESSAGE = "Si è verificato un errore, riprova con Google Chrome da PC o Android."
 
 imagesInput.addEventListener("change", async () => {
 	if (imagesInput.files?.length === undefined) {

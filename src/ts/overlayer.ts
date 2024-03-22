@@ -63,13 +63,14 @@ export default async function overlay(
 }
 
 function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
-	if (window.hasOwnProperty("OffscreenCanvas")) {
+	try {
 		return new OffscreenCanvas(width, height)
+	} catch {
+		const canvas = document.createElement("canvas")
+		canvas.width = width
+		canvas.height = height
+		return canvas
 	}
-	const canvas = document.createElement("canvas")
-	canvas.width = width
-	canvas.height = height
-	return canvas
 }
 
 function drawImage(

@@ -14,7 +14,7 @@ export default async function overlay(
 	logo: Logo | null,
 ): Promise<URL> {
 	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio]
-	const outputCanvas = new OffscreenCanvas(outputCanvasWidth, outputCanvasHeight)
+	const outputCanvas = createCanvas(outputCanvasWidth, outputCanvasHeight);
 	const outputCanvasContext = outputCanvas.getContext("2d")
 	if (outputCanvasContext === null) {
 		throw new Error("Canvas 2D rendering context is not supported")
@@ -57,14 +57,24 @@ export default async function overlay(
 			outputCanvasHeight,
 		)
 	}
-
+	
 	// Create a URL to the rendered image encoded as PNG
-	return new URL(URL.createObjectURL(await outputCanvas.convertToBlob()))
+	return new URL(URL.createObjectURL(await getBlobAndDestroy(outputCanvas)))
+}
+
+function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
+	if (window.hasOwnProperty("OffscreenCanvas")) {
+		return new OffscreenCanvas(width, height)
+	}
+	const canvas = document.createElement("canvas")
+	canvas.width = width
+	canvas.height = height
+	return canvas
 }
 
 function drawImage(
 	inputCanvas: HTMLCanvasElement,
-	outputCanvasContext: OffscreenCanvasRenderingContext2D,
+	outputCanvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 	outputCanvasWidth: number,
 	outputCanvasHeight: number,
 ) {
@@ -80,7 +90,7 @@ function drawImage(
 function drawFrame(
 	frame: SVGElement,
 	customColor: string | null,
-	outputCanvasContext: OffscreenCanvasRenderingContext2D,
+	outputCanvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
 	for (const path of frame.querySelectorAll("path")) {
 		const pathDefinition = path.getAttribute("d")
@@ -102,10 +112,10 @@ function drawFrame(
 }
 
 function drawLogo(
-	logo: ImageBitmap,
+	logo: ImageBitmap | HTMLImageElement,
 	circleStrokeColor: string,
 	drawnLogosCount: number,
-	canvasContext: OffscreenCanvasRenderingContext2D,
+	canvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 	canvasWidth: number,
 	canvasHeight: number,
 ) {
@@ -156,7 +166,7 @@ function drawLogoCircleBackground(
 	centerX: number,
 	centerY: number,
 	strokeColor: string,
-	canvasContext: OffscreenCanvasRenderingContext2D,
+	canvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
 	canvasContext.beginPath()
 	canvasContext.ellipse(
@@ -200,4 +210,20 @@ function getLogoCoordinates(
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.side : 0)),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.side : 0)),
 	]
+}
+
+async function getBlobAndDestroy(canvas: OffscreenCanvas | HTMLCanvasElement): Promise<Blob> {
+	if (canvas instanceof OffscreenCanvas) {
+		return canvas.convertToBlob()
+	}
+	return new Promise((resolve, reject) => {
+		canvas.toBlob((blob) => {
+			if (blob === null) {
+				reject()
+				return
+			}
+			canvas.remove()
+			resolve(blob)
+		})
+	})
 }

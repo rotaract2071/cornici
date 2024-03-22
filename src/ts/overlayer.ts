@@ -47,10 +47,9 @@ export default async function overlay(
 	)
 
 	if (logo !== null) {
-		const optionalLogo = await fetchLogo(logo)
 		// Draw the optional logo on the output canvas
 		drawLogo(
-			optionalLogo,
+			await fetchLogo(logo),
 			settings.colors[logo],
 			drawnLogosCount++,
 			outputCanvasContext,

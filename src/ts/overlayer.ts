@@ -158,9 +158,7 @@ function getAxesSign(drawnLogosCount: number): [number, number] {
 	// This is the angle relative to the center of the image that determines the position of the logo
 	// starting from the bottom right (-π/4) and stepping by 90° clockwise (-π/2)
 	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount
-	const [signX, signY] = [Math.cos, Math.sin]
-		.map((trigonometricFunction) => Math.sign(trigonometricFunction(angle)))
-	return [signX, signY]
+	return [Math.cos, Math.sin].map((trigonometricFunction) => Math.sign(trigonometricFunction(angle))) as [number, number]
 }
 
 function drawLogoCircleBackground(

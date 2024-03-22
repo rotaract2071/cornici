@@ -82,14 +82,11 @@ function drawFrame(
 	customColor: string | null,
 	outputCanvasContext: OffscreenCanvasRenderingContext2D,
 ) {
-	const paths = frame.querySelectorAll("path")
-
-	for (const path of paths) {
+	for (const path of frame.querySelectorAll("path")) {
 		const pathDefinition = path.getAttribute("d")
 		if (pathDefinition === null) {
 			continue
 		}
-		const path2d = new Path2D(pathDefinition)
 
 		if (customColor !== null && path.classList.contains("customizable")) {
 			outputCanvasContext.fillStyle = customColor
@@ -100,7 +97,7 @@ function drawFrame(
 			}
 			outputCanvasContext.fillStyle = fill
 		}
-		outputCanvasContext.fill(path2d)
+		outputCanvasContext.fill(new Path2D(pathDefinition))
 	}
 }
 

@@ -28,19 +28,17 @@ export default async function overlay(
 		outputCanvasHeight,
 	)
 
-	const frame = await fetchFrame(ratio)
 	// Draw the frame on the output canvas
-	await drawFrame(
-		frame,
+	drawFrame(
+		await fetchFrame(ratio),
 		logo !== null ? settings.colors[logo] : null,
 		outputCanvasContext,
 	)
 
-	const districtLogo = await fetchLogo(Logo.Distretto)
 	let drawnLogosCount = 0
 	// Draw district's logo on the output canvas
 	drawLogo(
-		districtLogo,
+		await fetchLogo(Logo.Distretto),
 		logo !== null ? settings.colors[logo] : settings.colors[Logo.Distretto],
 		drawnLogosCount++,
 		outputCanvasContext,
@@ -62,7 +60,7 @@ export default async function overlay(
 	}
 
 	// Create a URL to the rendered image encoded as PNG
-	return new URL (URL.createObjectURL(await outputCanvas.convertToBlob()))
+	return new URL(URL.createObjectURL(await outputCanvas.convertToBlob()))
 }
 
 function drawImage(
@@ -80,7 +78,7 @@ function drawImage(
 	)
 }
 
-async function drawFrame(
+function drawFrame(
 	frame: SVGElement,
 	customColor: string | null,
 	outputCanvasContext: OffscreenCanvasRenderingContext2D,

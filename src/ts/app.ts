@@ -3,6 +3,7 @@ import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import generateAnchor from "./downloader"
 import overlay from "./overlayer"
 import type { Logo, Ratio } from "./types"
+import { Status as ButtonStatus, setStatus as setButtonStatus } from "./button"
 
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!
@@ -12,9 +13,12 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ file: File, cropper: Cropper, url?: URL }>()
+const croppers = new Array<{ file: File, cropper: Cropper }>()
 
-const resetCroppers = () => {
+function resetCroppers() {
+	for (const { cropper } of croppers) {
+		cropper.destroy()
+	}
 	croppersContainer.innerHTML = ""
 	croppers.length = 0
 }
@@ -26,6 +30,7 @@ imagesInput.addEventListener("change", async () => {
 		return
 	}
 	resetCroppers()
+	setButtonStatus(applyButton, ButtonStatus.Busy)
 	const ratio = ratioInput.value as Ratio
 
 	for (const file of imagesInput.files) {
@@ -39,9 +44,11 @@ imagesInput.addEventListener("change", async () => {
 		} catch (error) {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
+			setButtonStatus(applyButton, ButtonStatus.Disabled)
 			return
 		}
 	}
+	setButtonStatus(applyButton, ButtonStatus.Clickable)
 })
 
 ratioInput.addEventListener("change", () => {
@@ -56,8 +63,7 @@ form.addEventListener("submit", async (e) => {
 		return
 	}
 
-	applyButton.disabled = true
-	applyButton.ariaBusy = "true"
+	setButtonStatus(applyButton, ButtonStatus.Busy)
 
 	const ratio = ratioInput.value as Ratio
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
@@ -67,10 +73,12 @@ form.addEventListener("submit", async (e) => {
 	resetCroppers()
 	croppersContainer.append(...anchors)
 
-	applyButton.ariaBusy = "false"
-	applyButton.disabled = false
+	setButtonStatus(applyButton, ButtonStatus.Hidden)
 })
 
-form.addEventListener("reset", resetCroppers)
+form.addEventListener("reset", () => {
+	resetCroppers()
+	setButtonStatus(applyButton, ButtonStatus.Disabled)
+})
 
 fieldset.disabled = false

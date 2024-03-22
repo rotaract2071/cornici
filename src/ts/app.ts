@@ -1,6 +1,6 @@
 import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
-import downloadAndRevoke from "./downloader"
+import generateAnchor from "./downloader"
 import overlay from "./overlayer"
 import type { Logo, Ratio } from "./types"
 
@@ -12,7 +12,7 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ file: File, cropper: Cropper }>()
+const croppers = new Array<{ file: File, cropper: Cropper, url?: URL }>()
 
 const resetCroppers = () => {
 	croppersContainer.innerHTML = ""
@@ -62,14 +62,10 @@ form.addEventListener("submit", async (e) => {
 	const ratio = ratioInput.value as Ratio
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
 
-	try {
-		for (const { file, cropper } of croppers) {
-			const url = await overlay(cropper.getCroppedCanvas(), ratio, logo)
-			downloadAndRevoke(url, file.name.split(".").slice(0, -1).join(".") + "_con_cornice.png")
-		}
-	} catch (error) {
-		alert(ERROR_MESSAGE)
-	}
+	const anchors = await Promise.all(croppers.map(async ({ file, cropper }) => generateAnchor(await overlay(cropper.getCroppedCanvas(), ratio, logo), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
+
+	resetCroppers()
+	croppersContainer.append(...anchors)
 
 	applyButton.ariaBusy = "false"
 	applyButton.disabled = false

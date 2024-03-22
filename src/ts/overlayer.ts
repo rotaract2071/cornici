@@ -57,7 +57,7 @@ export default async function overlay(
 			outputCanvasHeight,
 		)
 	}
-	
+
 	// Create a URL to the rendered image encoded as PNG
 	return new URL(URL.createObjectURL(await getBlobAndDestroy(outputCanvas)))
 }
@@ -214,17 +214,17 @@ function getLogoCoordinates(
 }
 
 async function getBlobAndDestroy(canvas: OffscreenCanvas | HTMLCanvasElement): Promise<Blob> {
-	if (canvas instanceof OffscreenCanvas) {
-		return canvas.convertToBlob()
-	}
-	return new Promise((resolve, reject) => {
-		canvas.toBlob((blob) => {
-			if (blob === null) {
-				reject()
-				return
-			}
-			canvas.remove()
-			resolve(blob)
+	if (canvas instanceof HTMLCanvasElement) {
+		return new Promise((resolve, reject) => {
+			canvas.toBlob((blob) => {
+				if (blob === null) {
+					reject()
+					return
+				}
+				canvas.remove()
+				resolve(blob)
+			})
 		})
-	})
+	}
+	return canvas.convertToBlob()
 }

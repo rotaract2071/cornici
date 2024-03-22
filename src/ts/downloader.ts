@@ -3,7 +3,7 @@ export default function generateAnchor(url: URL, filename: string): HTMLAnchorEl
 	a.href = url.href
 	a.download = filename
 	const small = document.createElement("small")
-	small.innerText = "Clicca qui o sull'immagine per scaricarla"
+	small.innerText = "Clicca sull'immagine per scaricarla"
 	a.appendChild(small)
 	const image = new Image()
 	image.src = url.href

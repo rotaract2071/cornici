@@ -12,17 +12,12 @@ export async function fetchFrame(ratio: Ratio): Promise<SVGElement> {
 }
 
 async function createImage(imageData: Blob): Promise<ImageBitmap | HTMLImageElement> {
-	if (window.hasOwnProperty("createImageBitmap")) {
+	try {
 		return createImageBitmap(imageData)
+	} catch {
+		const image = new Image()
+		image.src = URL.createObjectURL(imageData)
+		await image.decode()
+		return image
 	}
-	const image = new Image()
-	image.src = await (async (blob: Blob): Promise<string> => {
-		return new Promise((resolve) => {
-			const reader = new FileReader()
-			reader.onloadend = () => resolve(reader.result as string)
-			reader.readAsDataURL(blob)
-		})
-	})(imageData)
-	await image.decode()
-	return image
 }

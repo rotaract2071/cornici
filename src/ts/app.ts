@@ -30,6 +30,7 @@ imagesInput.addEventListener("change", async () => {
 	if (!imagesInput.files?.length) {
 		return
 	}
+	fieldset.disabled = true
 	setButtonStatus(applyButton, ButtonStatus.Busy)
 	const ratio = ratioInput.value as Ratio
 
@@ -45,10 +46,12 @@ imagesInput.addEventListener("change", async () => {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
 			setButtonStatus(applyButton, ButtonStatus.Disabled)
+			fieldset.disabled = false
 			return
 		}
 	}
 	setButtonStatus(applyButton, ButtonStatus.Clickable)
+	fieldset.disabled = false
 })
 
 ratioInput.addEventListener("change", () => {

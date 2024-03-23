@@ -1,7 +1,6 @@
 import type Cropper from "cropperjs"
-import { Status as ButtonStatus, setStatus as setButtonStatus } from "./button"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
-import generateAnchor from "./downloader"
+import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
 import overlay from "./overlayer"
 import type { Logo, Ratio } from "./types"
 

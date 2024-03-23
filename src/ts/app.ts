@@ -1,9 +1,9 @@
 import type Cropper from "cropperjs"
+import { Status as ButtonStatus, setStatus as setButtonStatus } from "./button"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import generateAnchor from "./downloader"
 import overlay from "./overlayer"
 import type { Logo, Ratio } from "./types"
-import { Status as ButtonStatus, setStatus as setButtonStatus } from "./button"
 
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!

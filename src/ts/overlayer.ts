@@ -7,6 +7,8 @@ const outputCanvasSizes: Record<Ratio, [number, number]> = {
 	[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
 	[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 }
+const circleRadius = computeCircleRadius()
+const logoMargin = computeLogoMargin()
 
 export default async function overlay(
 	inputCanvas: HTMLCanvasElement,
@@ -135,7 +137,7 @@ function drawLogo(
 		canvasContext,
 	)
 
-	const [dx, dy] = getLogoCoordinates(
+	const [dx, dy] = getLogoTopLeftCoordinates(
 		signX,
 		signY,
 		canvasWidth,
@@ -171,8 +173,8 @@ function drawLogoCircleBackground(
 	canvasContext.ellipse(
 		centerX,
 		centerY,
-		settings.logo.circle.radius,
-		settings.logo.circle.radius,
+		circleRadius,
+		circleRadius,
 		0,
 		0,
 		Math.PI * 2,
@@ -193,21 +195,22 @@ function getCircleCenterCoordinates(
 	canvasWidth: number,
 	canvasHeight: number
 ): [number, number] {
+	const circleRadius = computeCircleRadius()
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - settings.logo.circle.radius),
+		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
 	]
 }
 
-function getLogoCoordinates(
+function getLogoTopLeftCoordinates(
 	signX: number,
 	signY: number,
 	canvasWidth: number,
 	canvasHeight: number,
 ): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.image.margin - (signX > 0 ? settings.logo.image.side : 0)),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.image.margin - (signY < 0 ? settings.logo.image.side : 0)),
+		canvasWidth / 2 + signX * (canvasWidth / 2 - logoMargin - (signX > 0 ? settings.logo.image.side : 0)),
+		canvasHeight / 2 - signY * (canvasHeight / 2 - logoMargin - (signY < 0 ? settings.logo.image.side : 0)),
 	]
 }
 
@@ -225,4 +228,17 @@ async function getBlobAndDestroy(canvas: OffscreenCanvas | HTMLCanvasElement): P
 		})
 	}
 	return canvas.convertToBlob()
+}
+
+/**
+ * Compute the radius as the nearest even number (ceiling) to the diagonal of the square logo
+ * (plus some padding and stroke width compensation)
+ * so that the logo is entirely inscribed in the circumference.
+ */
+function computeCircleRadius(): number {
+	return Math.ceil(Math.ceil(settings.logo.image.side / 2 * Math.sqrt(2)) / 2) * 2 + settings.logo.circle.padding + Math.floor(settings.logo.circle.strokeWidth / 2)
+}
+
+function computeLogoMargin(): number {
+	return settings.logo.circle.margin + Math.floor(settings.logo.circle.strokeWidth / 2) + circleRadius - settings.logo.image.side / 2
 }

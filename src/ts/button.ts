@@ -1,30 +1,30 @@
 export const enum Status {
-    Clickable,
-    Hidden,
     Busy,
+    Clickable,
     Disabled,
+    Hidden,
 }
 
 const attributes: Record<Status, { hidden: boolean, ariaBusy: "true" | "false", disabled: boolean }> = {
-    [Status.Clickable]: {
-        hidden: false,
-        ariaBusy: "false",
-        disabled: false,
-    },
-    [Status.Hidden]: {
-        hidden: true,
-        ariaBusy: "false",
-        disabled: false,
-    },
     [Status.Busy]: {
         hidden: false,
         ariaBusy: "true",
         disabled: true,
     },
+    [Status.Clickable]: {
+        hidden: false,
+        ariaBusy: "false",
+        disabled: false,
+    },
     [Status.Disabled]: {
         hidden: false,
         ariaBusy: "false",
         disabled: true,
+    },
+    [Status.Hidden]: {
+        hidden: true,
+        ariaBusy: "false",
+        disabled: false,
     },
 }
 

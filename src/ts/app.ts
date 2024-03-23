@@ -26,18 +26,19 @@ function resetCroppers() {
 const ERROR_MESSAGE = "Si è verificato un errore, riprova con Google Chrome da PC o Android."
 
 imagesInput.addEventListener("change", async () => {
-	if (imagesInput.files?.length === undefined) {
+	resetCroppers()
+	setButtonStatus(applyButton, ButtonStatus.Disabled)
+	if (!imagesInput.files?.length) {
 		return
 	}
-	resetCroppers()
 	setButtonStatus(applyButton, ButtonStatus.Busy)
 	const ratio = ratioInput.value as Ratio
 
 	for (const file of imagesInput.files) {
-		const wrapper = document.createElement("div")
+		const container = document.createElement("div")
 		const image = new Image()
-		wrapper.appendChild(image)
-		croppersContainer.appendChild(wrapper)
+		container.appendChild(image)
+		croppersContainer.appendChild(container)
 		try {
 			const cropper = await initializeCropper(file, image, ratio)
 			croppers.push({ file, cropper })
@@ -59,10 +60,6 @@ ratioInput.addEventListener("change", () => {
 
 form.addEventListener("submit", async (e) => {
 	e.preventDefault()
-	if (imagesInput.files?.length === undefined) {
-		return
-	}
-
 	setButtonStatus(applyButton, ButtonStatus.Busy)
 
 	const ratio = ratioInput.value as Ratio

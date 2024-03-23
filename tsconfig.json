@@ -4,8 +4,5 @@
         "target": "ESNext",
         "moduleResolution": "Bundler",
         "strict": true,
-    },
-    "exclude": [
-        "node_modules"
-    ]
+    }
 }

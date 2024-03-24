@@ -60,3 +60,11 @@
     max-width: 100%;
   }
 }
+
+@media screen and (min-width: 768px) {
+  form {
+    position: sticky;
+    top: 0;
+    height: max-content;
+  }
+}

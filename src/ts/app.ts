@@ -1,8 +1,10 @@
 import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
+import { fetchFrame, fetchLogo } from "./fetchers"
 import overlay from "./overlayer"
-import type { Logo, Ratio } from "./types"
+import settings from "./settings"
+import { Logo, Ratio } from "./types.d"
 
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!
@@ -65,9 +67,26 @@ form.addEventListener("submit", async (e) => {
 	setButtonStatus(applyButton, ButtonStatus.Busy)
 
 	const ratio = ratioInput.value as Ratio
+	const [width, height] = ({
+		[Ratio.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
+		[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
+		[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
+	} satisfies Record<Ratio, [number, number]>)[ratio]
+	const frame = await fetchFrame(ratio)
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
+	const districtLogo = await fetchLogo(Logo.Distretto)
+	const optionalLogo = logo !== null ? await fetchLogo(logo) : null
+	const customColor = logo !== null ? settings.colors[logo] : null
 
-	const anchors = await Promise.all(croppers.map(async ({ file, cropper }) => generateAnchor(await overlay(cropper.getCroppedCanvas(), ratio, logo), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
+	const anchors = await Promise.all(croppers.map(async ({ file, cropper }) => generateAnchor(await overlay(
+		cropper.getCroppedCanvas(),
+		width,
+		height,
+		frame,
+		districtLogo,
+		optionalLogo,
+		customColor,
+	), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
 
 	resetCroppers()
 	croppersContainer.append(...anchors)

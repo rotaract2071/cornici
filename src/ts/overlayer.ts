@@ -1,22 +1,19 @@
-import { fetchFrame, fetchLogo } from "./fetchers"
 import settings from "./settings"
-import { Logo, Ratio } from "./types.d"
+import { Logo } from "./types.d"
 
-const outputCanvasSizes: Record<Ratio, [number, number]> = {
-	[Ratio.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
-	[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
-	[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
-}
 const circleRadius = computeCircleRadius()
 const logoMargin = computeLogoMargin()
 
 export default async function overlay(
 	inputCanvas: HTMLCanvasElement,
-	ratio: Ratio,
-	logo: Logo | null,
+	width: number,
+	height: number,
+	frame: SVGElement,
+	districtLogo: ImageBitmap | HTMLImageElement,
+	optionalLogo: ImageBitmap | HTMLImageElement | null,
+	customColor: string | null,
 ): Promise<URL> {
-	const [outputCanvasWidth, outputCanvasHeight] = outputCanvasSizes[ratio]
-	const outputCanvas = createCanvas(outputCanvasWidth, outputCanvasHeight);
+	const outputCanvas = createCanvas(width, height)
 	const outputCanvasContext = outputCanvas.getContext("2d")
 	if (outputCanvasContext === null) {
 		throw new Error("Canvas 2D rendering context is not supported")
@@ -26,37 +23,37 @@ export default async function overlay(
 	drawImage(
 		inputCanvas,
 		outputCanvasContext,
-		outputCanvasWidth,
-		outputCanvasHeight,
+		width,
+		height,
 	)
 
 	// Draw the frame on the output canvas
 	drawFrame(
-		await fetchFrame(ratio),
-		logo !== null ? settings.colors[logo] : null,
+		frame,
+		customColor,
 		outputCanvasContext,
 	)
 
 	let drawnLogosCount = 0
 	// Draw district's logo on the output canvas
 	drawLogo(
-		await fetchLogo(Logo.Distretto),
-		logo !== null ? settings.colors[logo] : settings.colors[Logo.Distretto],
+		districtLogo,
+		customColor ?? settings.colors[Logo.Distretto],
 		drawnLogosCount++,
 		outputCanvasContext,
-		outputCanvasWidth,
-		outputCanvasHeight,
+		width,
+		height,
 	)
 
-	if (logo !== null) {
+	if (optionalLogo !== null && customColor !== null) {
 		// Draw the optional logo on the output canvas
 		drawLogo(
-			await fetchLogo(logo),
-			settings.colors[logo],
+			optionalLogo,
+			customColor,
 			drawnLogosCount++,
 			outputCanvasContext,
-			outputCanvasWidth,
-			outputCanvasHeight,
+			width,
+			height,
 		)
 	}
 

@@ -2,7 +2,7 @@ import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
 import overlay from "./overlayer"
-import type { Logo, Ratio } from "./types"
+import type { Logo, Ratio } from "./types.d"
 
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!

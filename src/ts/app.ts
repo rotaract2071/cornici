@@ -42,7 +42,10 @@ imagesInput.addEventListener("change", async () => {
 		container.appendChild(image)
 		croppersContainer.appendChild(container)
 		try {
-			const cropper = await initializeCropper(file, image, format)
+			const url = URL.createObjectURL(file)
+			image.src = url
+			await image.decode()
+			const cropper = await initializeCropper(image, format)
 			croppers.push({ file, cropper })
 		} catch (error) {
 			alert(ERROR_MESSAGE)

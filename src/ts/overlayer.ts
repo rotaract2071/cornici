@@ -192,7 +192,6 @@ function getCircleCenterCoordinates(
 	canvasWidth: number,
 	canvasHeight: number
 ): [number, number] {
-	const circleRadius = computeCircleRadius()
 	return [
 		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
 		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),

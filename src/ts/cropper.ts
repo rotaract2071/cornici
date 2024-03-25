@@ -1,14 +1,14 @@
 import Cropper from "cropperjs"
 import settings from "./settings"
-import { Ratio } from "./types.d"
+import { Format } from "./types.d"
 
-const ratios: Record<Ratio, number> = {
-	[Ratio.Square]: 1,
-	[Ratio.Landscape]: (settings.canvas.longSide - settings.frame.border * 2) / (settings.canvas.shortSide - settings.frame.border * 2),
-	[Ratio.Portrait]: (settings.canvas.shortSide - settings.frame.border * 2) / (settings.canvas.longSide - settings.frame.border * 2),
+const ratios: Record<Format, number> = {
+	[Format.Square]: 1,
+	[Format.Landscape]: (settings.canvas.longSide - settings.frame.border * 2) / (settings.canvas.shortSide - settings.frame.border * 2),
+	[Format.Portrait]: (settings.canvas.shortSide - settings.frame.border * 2) / (settings.canvas.longSide - settings.frame.border * 2),
 }
 
-export async function initialize(file: File, image: HTMLImageElement, ratio: Ratio): Promise<Cropper> {
+export async function initialize(file: File, image: HTMLImageElement, format: Format): Promise<Cropper> {
 	return new Promise(async (resolve, reject) => {
 		image.src = URL.createObjectURL(file)
 		try {
@@ -23,11 +23,11 @@ export async function initialize(file: File, image: HTMLImageElement, ratio: Rat
 			viewMode: 2,
 			responsive: false,
 			background: false,
-			aspectRatio: ratios[ratio],
+			aspectRatio: ratios[format],
 		})
 	})
 }
 
-export function updateAspectRatio(cropper: Cropper, ratio: Ratio) {
-	cropper.setAspectRatio(ratios[ratio])
+export function updateAspectRatio(cropper: Cropper, format: Format) {
+	cropper.setAspectRatio(ratios[format])
 }

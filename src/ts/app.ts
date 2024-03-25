@@ -4,12 +4,12 @@ import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
 import { fetchFrame, fetchLogo } from "./fetchers"
 import overlay from "./overlayer"
 import settings from "./settings"
-import { Logo, Ratio } from "./types.d"
+import { Format, Logo } from "./types.d"
 
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!
 const imagesInput = fieldset.querySelector('input[name="images"]') as HTMLInputElement
-const ratioInput = fieldset.querySelector('select[name="ratio"]') as HTMLSelectElement
+const formatInput = fieldset.querySelector('select[name="format"]') as HTMLSelectElement
 const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectElement
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
@@ -34,7 +34,7 @@ imagesInput.addEventListener("change", async () => {
 	}
 	fieldset.disabled = true
 	setButtonStatus(applyButton, ButtonStatus.Busy)
-	const ratio = ratioInput.value as Ratio
+	const format = formatInput.value as Format
 
 	for (const file of imagesInput.files) {
 		const container = document.createElement("div")
@@ -42,7 +42,7 @@ imagesInput.addEventListener("change", async () => {
 		container.appendChild(image)
 		croppersContainer.appendChild(container)
 		try {
-			const cropper = await initializeCropper(file, image, ratio)
+			const cropper = await initializeCropper(file, image, format)
 			croppers.push({ file, cropper })
 		} catch (error) {
 			alert(ERROR_MESSAGE)
@@ -56,9 +56,9 @@ imagesInput.addEventListener("change", async () => {
 	fieldset.disabled = false
 })
 
-ratioInput.addEventListener("change", () => {
+formatInput.addEventListener("change", () => {
 	for (const { cropper } of croppers) {
-		updateAspectRatio(cropper, ratioInput.value as Ratio)
+		updateAspectRatio(cropper, formatInput.value as Format)
 	}
 })
 
@@ -66,13 +66,13 @@ form.addEventListener("submit", async (e) => {
 	e.preventDefault()
 	setButtonStatus(applyButton, ButtonStatus.Busy)
 
-	const ratio = ratioInput.value as Ratio
+	const format = formatInput.value as Format
 	const [width, height] = ({
-		[Ratio.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
-		[Ratio.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
-		[Ratio.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
-	} satisfies Record<Ratio, [number, number]>)[ratio]
-	const frame = await fetchFrame(ratio)
+		[Format.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
+		[Format.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
+		[Format.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
+	} satisfies Record<Format, [number, number]>)[format]
+	const frame = await fetchFrame(format)
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
 	const districtLogo = await fetchLogo(Logo.Distretto)
 	const optionalLogo = logo !== null ? await fetchLogo(logo) : null

@@ -1,4 +1,4 @@
-export const enum Ratio {
+export const enum Format {
 	Landscape = "landscape",
 	Portrait = "portrait",
 	Square = "square",

@@ -1,4 +1,4 @@
-import { Logo, Ratio } from "./types.d"
+import { Format, Logo } from "./types.d"
 
 export default {
 	canvas: {
@@ -30,10 +30,10 @@ export default {
 	} satisfies Record<Logo, string>,
 	hashes: {
 		frames: {
-			[Ratio.Landscape]: "28846",
-			[Ratio.Portrait]: "18461",
-			[Ratio.Square]: "24840",
-		} satisfies Record<Ratio, string>,
+			[Format.Landscape]: "28846",
+			[Format.Portrait]: "18461",
+			[Format.Square]: "24840",
+		} satisfies Record<Format, string>,
 		logos: {
 			[Logo.Distretto]: "06365",
 			[Logo.Doc]: "36231",

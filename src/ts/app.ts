@@ -14,7 +14,7 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ filename: string, cropper: Cropper }>()
+const croppers = new Array<{ file: File, cropper: Cropper }>()
 
 function resetCroppers() {
 	for (const { cropper } of croppers) {
@@ -46,7 +46,7 @@ imagesInput.addEventListener("change", async () => {
 			image.src = url
 			await image.decode()
 			const cropper = await initializeCropper(image, format)
-			croppers.push({ filename: file.name, cropper })
+			croppers.push({ file, cropper })
 		} catch (error) {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
@@ -85,7 +85,7 @@ form.addEventListener("submit", async (e) => {
 	const optionalLogo = logo !== null ? await fetchLogo(logo) : null
 	const customColor = logo !== null ? settings.colors[logo] : null
 
-	const anchors = await Promise.all(croppers.map(async ({ filename, cropper }) => generateAnchor(await overlay(
+	const anchors = await Promise.all(croppers.map(async ({ file, cropper }) => generateAnchor(await overlay(
 		width,
 		height,
 		cropper.getCroppedCanvas(),
@@ -93,7 +93,7 @@ form.addEventListener("submit", async (e) => {
 		districtLogo,
 		optionalLogo,
 		customColor,
-	), filename.split(".").slice(0, -1).join() + "_con_cornice.png")))
+	), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
 
 	resetCroppers()
 	croppersContainer.append(...anchors)

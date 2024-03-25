@@ -21,3 +21,22 @@ export interface Frame {
 		customizable: boolean,
 	}[],
 }
+
+export interface WorkerRequest {
+	images: {
+		filename: string,
+		url: string,
+		x: number,
+		y: number,
+		width: number,
+		height: number,
+	}[],
+	format: Format,
+	frame: Frame,
+	logo: Logo | null,
+}
+
+export type WorkerResponse = {
+	filename: string,
+	url: string,
+}[]

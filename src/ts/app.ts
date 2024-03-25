@@ -1,10 +1,8 @@
 import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import { ButtonStatus, convertSVGToFrame, generateAnchor, setButtonStatus } from "./dom-utils"
-import { fetchFrame, fetchLogo } from "./fetchers"
-import overlay from "./overlayer"
-import settings from "./settings"
-import { Format, Logo } from "./types.d"
+import { fetchFrame } from "./fetchers"
+import type { Format, Logo, WorkerRequest, WorkerResponse } from "./types.d"
 
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!
@@ -14,7 +12,19 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ filename: string, cropper: Cropper }>()
+const croppers = new Array<{ filename: string, url: string, cropper: Cropper }>()
+const worker = new Worker("worker-3KKM3KKO.js")
+
+worker.addEventListener("message", async (e) => {
+	const data = e.data as WorkerResponse
+
+	const anchors = await Promise.all(data.map(({ url, filename }) => generateAnchor(new URL(url), filename)))
+
+	resetCroppers()
+	croppersContainer.append(...anchors)
+
+	setButtonStatus(applyButton, ButtonStatus.Hidden)
+})
 
 function resetCroppers() {
 	for (const { cropper } of croppers) {
@@ -46,7 +56,7 @@ imagesInput.addEventListener("change", async () => {
 			image.src = url
 			await image.decode()
 			const cropper = await initializeCropper(image, format)
-			croppers.push({ filename: file.name, cropper })
+			croppers.push({ filename: file.name, url, cropper })
 		} catch (error) {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
@@ -70,35 +80,28 @@ form.addEventListener("submit", async (e) => {
 	setButtonStatus(applyButton, ButtonStatus.Busy)
 
 	const format = formatInput.value as Format
-	const [width, height] = ({
-		[Format.Landscape]: [settings.canvas.longSide, settings.canvas.shortSide],
-		[Format.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
-		[Format.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
-	} satisfies Record<Format, [number, number]>)[format]
 
 	const frameSVG = await fetchFrame(format)
 	const frame = convertSVGToFrame(frameSVG)
 
-	const districtLogo = await fetchLogo(Logo.Distretto)
-
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
-	const optionalLogo = logo !== null ? await fetchLogo(logo) : null
-	const customColor = logo !== null ? settings.colors[logo] : null
 
-	const anchors = await Promise.all(croppers.map(async ({ filename, cropper }) => generateAnchor(await overlay(
-		width,
-		height,
-		cropper.getCroppedCanvas(),
+	worker.postMessage({
+		format,
+		images: croppers.map(({ filename, url, cropper }) => {
+			const { x, y, width, height } = cropper.getData(true)
+			return {
+				filename,
+				url,
+				x,
+				y,
+				width,
+				height,
+			}
+		}),
 		frame,
-		districtLogo,
-		optionalLogo,
-		customColor,
-	), filename.split(".").slice(0, -1).join() + "_con_cornice.png")))
-
-	resetCroppers()
-	croppersContainer.append(...anchors)
-
-	setButtonStatus(applyButton, ButtonStatus.Hidden)
+		logo,
+	} satisfies WorkerRequest)
 })
 
 form.addEventListener("reset", () => {

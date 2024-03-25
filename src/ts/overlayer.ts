@@ -1,5 +1,5 @@
 import settings from "./settings"
-import { Logo } from "./types.d"
+import { Logo, type Frame } from "./types.d"
 
 const circleRadius = computeCircleRadius()
 const logoMargin = computeLogoMargin()
@@ -8,7 +8,7 @@ export default async function overlay(
 	width: number,
 	height: number,
 	image: HTMLCanvasElement,
-	frame: SVGElement,
+	frame: Frame,
 	districtLogo: ImageBitmap | HTMLImageElement,
 	optionalLogo: ImageBitmap | HTMLImageElement | null,
 	customColor: string | null,
@@ -88,26 +88,17 @@ function drawImage(
 }
 
 function drawFrame(
-	frame: SVGElement,
+	frame: Frame,
 	customColor: string | null,
 	outputCanvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
-	for (const path of frame.querySelectorAll("path")) {
-		const pathDefinition = path.getAttribute("d")
-		if (pathDefinition === null) {
-			continue
-		}
-
-		if (customColor !== null && path.classList.contains("customizable")) {
+	for (const path of frame.paths) {
+		if (customColor !== null && path.customizable) {
 			outputCanvasContext.fillStyle = customColor
 		} else {
-			const fill = path.getAttribute("fill")
-			if (fill === null) {
-				continue
-			}
-			outputCanvasContext.fillStyle = fill
+			outputCanvasContext.fillStyle = path.fill
 		}
-		outputCanvasContext.fill(new Path2D(pathDefinition))
+		outputCanvasContext.fill(new Path2D(path.definition))
 	}
 }
 

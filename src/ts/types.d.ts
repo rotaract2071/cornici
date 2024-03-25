@@ -13,3 +13,11 @@ export const enum Logo {
 	Montalbano = "montalbano",
 	Tirreno = "tirreno",
 }
+
+export interface Frame {
+	paths: {
+		definition: string,
+		fill: string,
+		customizable: boolean,
+	}[],
+}

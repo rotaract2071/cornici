@@ -1,6 +1,6 @@
 import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
-import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
+import { ButtonStatus, convertSVGToFrame, generateAnchor, setButtonStatus } from "./dom-utils"
 import { fetchFrame, fetchLogo } from "./fetchers"
 import overlay from "./overlayer"
 import settings from "./settings"
@@ -76,7 +76,8 @@ form.addEventListener("submit", async (e) => {
 		[Format.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 	} satisfies Record<Format, [number, number]>)[format]
 
-	const frame = await fetchFrame(format)
+	const frameSVG = await fetchFrame(format)
+	const frame = convertSVGToFrame(frameSVG)
 
 	const districtLogo = await fetchLogo(Logo.Distretto)
 

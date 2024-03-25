@@ -24,3 +24,7 @@ export async function initialize(image: HTMLImageElement, format: Format): Promi
 export function updateAspectRatio(cropper: Cropper, format: Format) {
 	cropper.setAspectRatio(ratios[format])
 }
+
+export async function getCroppedImage(blob: Blob, data: Cropper.Data) {
+	return createImageBitmap(blob, data.x, data.y, data.width, data.height)
+}

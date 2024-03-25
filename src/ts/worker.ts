@@ -1,7 +1,7 @@
 import { fetchLogo } from "./fetchers"
 import overlay from "./overlayer"
 import settings from "./settings"
-import { Format, Logo, WorkerResponse, type WorkerRequest } from "./types.d"
+import { Format, Logo, type WorkerRequest, type WorkerResponse } from "./types.d"
 
 addEventListener("message", async (e) => {
     const { format, frame, logo, images } = e.data as WorkerRequest

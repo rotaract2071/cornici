@@ -13,7 +13,7 @@ const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
 const croppers = new Array<{ file: File, url: URL, cropper: Cropper }>()
-const worker = new Worker("worker-3KKM3KKO.js")
+const worker = new Worker("worker-6QFWWSKU.js")
 
 worker.addEventListener("message", async (e) => {
 	const data = e.data as WorkerResponse

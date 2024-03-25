@@ -12,7 +12,7 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ filename: string, url: string, cropper: Cropper }>()
+const croppers = new Array<{ file: File, url: URL, cropper: Cropper }>()
 const worker = new Worker("worker-3KKM3KKO.js")
 
 worker.addEventListener("message", async (e) => {
@@ -52,11 +52,11 @@ imagesInput.addEventListener("change", async () => {
 		container.appendChild(image)
 		croppersContainer.appendChild(container)
 		try {
-			const url = URL.createObjectURL(file)
-			image.src = url
+			const url = new URL(URL.createObjectURL(file))
+			image.src = url.href
 			await image.decode()
 			const cropper = await initializeCropper(image, format)
-			croppers.push({ filename: file.name, url, cropper })
+			croppers.push({ file, url, cropper })
 		} catch (error) {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
@@ -88,11 +88,11 @@ form.addEventListener("submit", async (e) => {
 
 	worker.postMessage({
 		format,
-		images: croppers.map(({ filename, url, cropper }) => {
+		images: croppers.map(({ file, url, cropper }) => {
 			const { x, y, width, height } = cropper.getData(true)
 			return {
-				filename,
-				url,
+				filename: file.name,
+				url: url.href,
 				x,
 				y,
 				width,

@@ -15,17 +15,6 @@ const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 const croppers = new Array<{ file: File, url: URL, cropper: Cropper }>()
 const worker = new Worker("worker-6QFWWSKU.js")
 
-worker.addEventListener("message", async (e) => {
-	const data = e.data as WorkerResponse
-
-	const anchors = await Promise.all(data.map(({ url, filename }) => generateAnchor(new URL(url), filename)))
-
-	resetCroppers()
-	croppersContainer.append(...anchors)
-
-	setButtonStatus(applyButton, ButtonStatus.Hidden)
-})
-
 function resetCroppers() {
 	for (const { cropper } of croppers) {
 		cropper.destroy()
@@ -102,6 +91,17 @@ form.addEventListener("submit", async (e) => {
 		frame,
 		logo,
 	} satisfies WorkerRequest)
+})
+
+worker.addEventListener("message", async (e) => {
+	const data = e.data as WorkerResponse
+
+	const anchors = await Promise.all(data.map(({ url, filename }) => generateAnchor(new URL(url), filename)))
+
+	resetCroppers()
+	croppersContainer.append(...anchors)
+
+	setButtonStatus(applyButton, ButtonStatus.Hidden)
 })
 
 form.addEventListener("reset", () => {

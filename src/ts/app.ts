@@ -72,16 +72,19 @@ form.addEventListener("submit", async (e) => {
 		[Format.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
 		[Format.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 	} satisfies Record<Format, [number, number]>)[format]
+
 	const frame = await fetchFrame(format)
-	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
+
 	const districtLogo = await fetchLogo(Logo.Distretto)
+
+	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
 	const optionalLogo = logo !== null ? await fetchLogo(logo) : null
 	const customColor = logo !== null ? settings.colors[logo] : null
 
 	const anchors = await Promise.all(croppers.map(async ({ file, cropper }) => generateAnchor(await overlay(
-		cropper.getCroppedCanvas(),
 		width,
 		height,
+		cropper.getCroppedCanvas(),
 		frame,
 		districtLogo,
 		optionalLogo,

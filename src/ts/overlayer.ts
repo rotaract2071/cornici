@@ -5,9 +5,9 @@ const circleRadius = computeCircleRadius()
 const logoMargin = computeLogoMargin()
 
 export default async function overlay(
-	inputCanvas: HTMLCanvasElement,
 	width: number,
 	height: number,
+	image: HTMLCanvasElement,
 	frame: SVGElement,
 	districtLogo: ImageBitmap | HTMLImageElement,
 	optionalLogo: ImageBitmap | HTMLImageElement | null,
@@ -21,7 +21,7 @@ export default async function overlay(
 
 	// Draw the cropped portion of the input image on the output canvas
 	drawImage(
-		inputCanvas,
+		image,
 		outputCanvasContext,
 		width,
 		height,

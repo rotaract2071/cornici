@@ -39,15 +39,6 @@ imagesInput.addEventListener("change", async () => {
 		const image = new Image()
 		const url = new URL(URL.createObjectURL(file))
 		image.src = url.href
-		try {
-			await image.decode()
-		} catch (error) {
-			alert(ERROR_MESSAGE)
-			resetCroppers()
-			setButtonStatus(applyButton, ButtonStatus.Disabled)
-			fieldset.disabled = false
-			return
-		}
 		croppersContainer.appendChild(image)
 		croppers.push({ file, url, cropper: initializeCropper(image, format) })
 	}

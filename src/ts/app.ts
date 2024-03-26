@@ -37,23 +37,21 @@ imagesInput.addEventListener("change", async () => {
 	const format = formatInput.value as Format
 
 	for (const file of imagesInput.files) {
-		const container = document.createElement("div")
 		const image = new Image()
-		container.appendChild(image)
-		croppersContainer.appendChild(container)
+		image.src = URL.createObjectURL(file)
 		try {
-			const url = URL.createObjectURL(file)
-			image.src = url
 			await image.decode()
-			const cropper = await initializeCropper(image, format)
-			croppers.push({ file, cropper })
-		} catch (error) {
+		} catch {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
 			setButtonStatus(applyButton, ButtonStatus.Disabled)
 			fieldset.disabled = false
 			return
 		}
+		const container = document.createElement("div")
+		container.appendChild(image)
+		croppersContainer.appendChild(container)
+		croppers.push({ file, cropper: initializeCropper(image, format) })
 	}
 	setButtonStatus(applyButton, ButtonStatus.Clickable)
 	fieldset.disabled = false
@@ -76,8 +74,7 @@ form.addEventListener("submit", async (e) => {
 		[Format.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 	} satisfies Record<Format, [number, number]>)[format]
 
-	const frameSVG = await fetchFrame(format)
-	const frame = convertSVGToFrame(frameSVG)
+	const frame = convertSVGToFrame(await fetchFrame(format))
 
 	const districtLogo = await fetchLogo(Logo.Distretto)
 

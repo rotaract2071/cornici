@@ -125,7 +125,7 @@ function drawLogo(
 		canvasContext,
 	)
 
-	const [dx, dy] = getLogoTopLeftCoordinates(
+	const [x, y] = getLogoTopLeftCoordinates(
 		signX,
 		signY,
 		canvasWidth,
@@ -133,8 +133,8 @@ function drawLogo(
 	)
 	canvasContext.drawImage(
 		logo,
-		dx,
-		dy,
+		x,
+		y,
 		settings.logo.image.side,
 		settings.logo.image.side,
 	)

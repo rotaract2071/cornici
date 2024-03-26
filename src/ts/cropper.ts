@@ -8,16 +8,13 @@ const ratios: Record<Format, number> = {
 	[Format.Portrait]: (settings.canvas.shortSide - settings.frame.border * 2) / (settings.canvas.longSide - settings.frame.border * 2),
 }
 
-export async function initialize(image: HTMLImageElement, format: Format): Promise<Cropper> {
-	return new Promise(async (resolve) => {
-		image.addEventListener("ready", () => resolve(cropper))
-		const cropper = new Cropper(image, {
-			zoomable: false,
-			viewMode: 2,
-			responsive: false,
-			background: false,
-			aspectRatio: ratios[format],
-		})
+export function initialize(image: HTMLImageElement, format: Format): Cropper {
+	return new Cropper(image, {
+		zoomable: false,
+		viewMode: 2,
+		responsive: false,
+		background: false,
+		aspectRatio: ratios[format],
 	})
 }
 

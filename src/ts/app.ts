@@ -58,8 +58,7 @@ form.addEventListener("submit", async (e) => {
 
 	const format = formatInput.value as Format
 
-	const frameSVG = await fetchFrame(format)
-	const frame = convertSVGToFrame(frameSVG)
+	const frame = convertSVGToFrame(await fetchFrame(format))
 
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
 

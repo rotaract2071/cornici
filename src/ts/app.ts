@@ -16,10 +16,10 @@ const croppers = new Array<{ file: File, url: URL, cropper: Croppr }>()
 const worker = new Worker("worker-6QFWWSKU.js")
 
 function resetCroppers() {
-	for (const { cropper } of croppers) {
-		cropper.destroy()
-	}
 	croppersContainer.innerHTML = ""
+	for (const { url } of croppers) {
+		URL.revokeObjectURL(url.href)
+	}
 	croppers.length = 0
 }
 

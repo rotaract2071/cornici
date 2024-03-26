@@ -57,7 +57,7 @@ export function convertSVGToFrame(svg: SVGElement): Frame {
 	}
 }
 
-export async function generateAnchor(url: URL, filename: string): Promise<HTMLAnchorElement> {
+export function generateAnchor(url: URL, filename: string): HTMLAnchorElement {
 	const a = document.createElement("a")
 	a.href = url.href
 	a.download = filename
@@ -66,7 +66,6 @@ export async function generateAnchor(url: URL, filename: string): Promise<HTMLAn
 	a.appendChild(small)
 	const image = new Image()
 	image.src = url.href
-	await image.decode()
 	a.appendChild(image)
 	return a
 }

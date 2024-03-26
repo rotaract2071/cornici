@@ -81,10 +81,10 @@ form.addEventListener("submit", async (e) => {
 	} satisfies WorkerRequest)
 })
 
-worker.addEventListener("message", async (e) => {
+worker.addEventListener("message", (e) => {
 	const data = e.data as WorkerResponse
 
-	const anchors = await Promise.all(data.map(({ url, filename }) => generateAnchor(new URL(url), filename)))
+	const anchors = data.map(({ url, filename }) => generateAnchor(new URL(url), filename))
 
 	resetCroppers()
 	croppersContainer.append(...anchors)

@@ -114,7 +114,7 @@ function drawLogo(
 		context,
 	)
 
-	const [dx, dy] = getLogoTopLeftCoordinates(
+	const [x, y] = getLogoTopLeftCoordinates(
 		signX,
 		signY,
 		width,
@@ -122,8 +122,8 @@ function drawLogo(
 	)
 	context.drawImage(
 		logo,
-		dx,
-		dy,
+		x,
+		y,
 		settings.logo.image.side,
 		settings.logo.image.side,
 	)

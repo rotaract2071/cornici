@@ -36,16 +36,11 @@ imagesInput.addEventListener("change", async () => {
 	const format = formatInput.value as Format
 
 	for (const file of imagesInput.files) {
-		const container = document.createElement("div")
 		const image = new Image()
-		container.appendChild(image)
-		croppersContainer.appendChild(container)
+		const url = new URL(URL.createObjectURL(file))
+		image.src = url.href
 		try {
-			const url = new URL(URL.createObjectURL(file))
-			image.src = url.href
 			await image.decode()
-			const cropper = await initializeCropper(image, format)
-			croppers.push({ file, url, cropper })
 		} catch (error) {
 			alert(ERROR_MESSAGE)
 			resetCroppers()
@@ -53,6 +48,10 @@ imagesInput.addEventListener("change", async () => {
 			fieldset.disabled = false
 			return
 		}
+		const container = document.createElement("div")
+		container.appendChild(image)
+		croppersContainer.appendChild(container)
+		croppers.push({ file, url, cropper: initializeCropper(image, format) })
 	}
 	setButtonStatus(applyButton, ButtonStatus.Clickable)
 	fieldset.disabled = false

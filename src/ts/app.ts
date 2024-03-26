@@ -1,4 +1,4 @@
-import type Cropper from "cropperjs"
+import Croppr from "croppr"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import { ButtonStatus, convertSVGToFrame, generateAnchor, setButtonStatus } from "./dom-utils"
 import { fetchFrame } from "./fetchers"
@@ -12,7 +12,7 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ file: File, url: URL, cropper: Cropper }>()
+const croppers = new Array<{ file: File, url: URL, cropper: Croppr }>()
 const worker = new Worker("worker-6QFWWSKU.js")
 
 function resetCroppers() {
@@ -48,9 +48,7 @@ imagesInput.addEventListener("change", async () => {
 			fieldset.disabled = false
 			return
 		}
-		const container = document.createElement("div")
-		container.appendChild(image)
-		croppersContainer.appendChild(container)
+		croppersContainer.appendChild(image)
 		croppers.push({ file, url, cropper: initializeCropper(image, format) })
 	}
 	setButtonStatus(applyButton, ButtonStatus.Clickable)
@@ -77,7 +75,7 @@ form.addEventListener("submit", async (e) => {
 	worker.postMessage({
 		format,
 		images: croppers.map(({ file, url, cropper }) => {
-			const { x, y, width, height } = cropper.getData(true)
+			const { x, y, width, height } = cropper.getValue()
 			return {
 				filename: file.name,
 				url: url.href,

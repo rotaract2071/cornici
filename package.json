@@ -3,13 +3,13 @@
   "version": "2.0.0",
   "scripts": {
     "build:js": "esbuild src/ts/app.ts src/ts/worker.ts --bundle --minify --legal-comments=none --format=esm --entry-names=[name]-[hash] --outdir=public",
-    "build:css": "sass --load-path=node_modules/@picocss/pico/scss/ --load-path=node_modules/cropperjs/dist/ --no-source-map src/style.scss | esbuild --bundle --minify --loader=css --legal-comments=none --entry-names=[name]-[hash] --outfile=public/style.css"
+    "build:css": "sass --load-path=node_modules/@picocss/pico/scss/ --load-path=node_modules/croppr/dist/ --no-source-map src/style.scss | esbuild --bundle --minify --loader=css --legal-comments=none --entry-names=[name]-[hash] --outfile=public/style.css"
   },
   "author": "Daniele Ambrosino <mail@danieleambrosino.it>",
   "license": "MIT",
   "devDependencies": {
     "@picocss/pico": "^2.0.6",
-    "cropperjs": "^1.6.1",
+    "croppr": "^2.3.1",
     "esbuild": "^0.20.2",
     "sass": "^1.72.0"
   }

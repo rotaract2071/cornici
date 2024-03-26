@@ -8,9 +8,9 @@ devDependencies:
   '@picocss/pico':
     specifier: ^2.0.6
     version: 2.0.6
-  cropperjs:
-    specifier: ^1.6.1
-    version: 1.6.1
+  croppr:
+    specifier: ^2.3.1
+    version: 2.3.1
   esbuild:
     specifier: ^0.20.2
     version: 0.20.2
@@ -267,8 +267,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /cropperjs@1.6.1:
-    resolution: {integrity: sha512-F4wsi+XkDHCOMrHMYjrTEE4QBOrsHHN5/2VsVAaRq8P7E5z7xQpT75S+f/9WikmBEailas3+yo+6zPIomW+NOA==}
+  /croppr@2.3.1:
+    resolution: {integrity: sha512-0rvTl4VmR3I4AahjJPF1u9IlT7ckvjIcgaLnUjYaY+UZsP9oxlVYZWYDuqM3SVCQiaI7DXMjR7wOEYT+mydOFg==}
     dev: true
 
   /esbuild@0.20.2:

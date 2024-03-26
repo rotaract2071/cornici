@@ -14,13 +14,13 @@ const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectEle
 const applyButton = form.querySelector("button")!
 const croppersContainer = document.getElementById("croppers") as HTMLDivElement
 
-const croppers = new Array<{ file: File, cropper: Cropper }>()
+const croppers = new Array<{ file: File, url: URL, cropper: Cropper }>()
 
 function resetCroppers() {
-	for (const { cropper } of croppers) {
-		cropper.destroy()
-	}
 	croppersContainer.innerHTML = ""
+	for (const { url } of croppers) {
+		URL.revokeObjectURL(url.href)
+	}
 	croppers.length = 0
 }
 
@@ -38,11 +38,12 @@ imagesInput.addEventListener("change", async () => {
 
 	for (const file of imagesInput.files) {
 		const image = new Image()
-		image.src = URL.createObjectURL(file)
+		const url = new URL(URL.createObjectURL(file))
+		image.src = url.href
 		const container = document.createElement("div")
 		container.appendChild(image)
 		croppersContainer.appendChild(container)
-		croppers.push({ file, cropper: initializeCropper(image, format) })
+		croppers.push({ file, url, cropper: initializeCropper(image, format) })
 	}
 	setButtonStatus(applyButton, ButtonStatus.Clickable)
 	fieldset.disabled = false

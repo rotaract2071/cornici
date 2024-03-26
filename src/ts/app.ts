@@ -1,4 +1,4 @@
-import Croppr from "croppr"
+import type Croppr from "croppr"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import { ButtonStatus, convertSVGToFrame, generateAnchor, setButtonStatus } from "./dom-utils"
 import { fetchFrame } from "./fetchers"

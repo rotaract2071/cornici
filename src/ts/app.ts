@@ -39,15 +39,6 @@ imagesInput.addEventListener("change", async () => {
 	for (const file of imagesInput.files) {
 		const image = new Image()
 		image.src = URL.createObjectURL(file)
-		try {
-			await image.decode()
-		} catch {
-			alert(ERROR_MESSAGE)
-			resetCroppers()
-			setButtonStatus(applyButton, ButtonStatus.Disabled)
-			fieldset.disabled = false
-			return
-		}
 		const container = document.createElement("div")
 		container.appendChild(image)
 		croppersContainer.appendChild(container)

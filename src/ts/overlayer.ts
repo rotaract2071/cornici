@@ -13,16 +13,16 @@ export default async function overlay(
 	optionalLogo: ImageBitmap | HTMLImageElement | null,
 	customColor: string | null,
 ): Promise<URL> {
-	const outputCanvas = createCanvas(width, height)
-	const outputCanvasContext = outputCanvas.getContext("2d")
-	if (outputCanvasContext === null) {
+	const canvas = createCanvas(width, height)
+	const context = canvas.getContext("2d")
+	if (context === null) {
 		throw new Error("Canvas 2D rendering context is not supported")
 	}
 
 	// Draw the cropped portion of the input image on the output canvas
 	drawImage(
 		image,
-		outputCanvasContext,
+		context,
 		width,
 		height,
 	)
@@ -31,7 +31,7 @@ export default async function overlay(
 	drawFrame(
 		frame,
 		customColor,
-		outputCanvasContext,
+		context,
 	)
 
 	let drawnLogosCount = 0
@@ -40,7 +40,7 @@ export default async function overlay(
 		districtLogo,
 		customColor ?? settings.colors[Logo.Distretto],
 		drawnLogosCount++,
-		outputCanvasContext,
+		context,
 		width,
 		height,
 	)
@@ -51,14 +51,14 @@ export default async function overlay(
 			optionalLogo,
 			customColor,
 			drawnLogosCount++,
-			outputCanvasContext,
+			context,
 			width,
 			height,
 		)
 	}
 
 	// Create a URL to the rendered image encoded as PNG
-	return new URL(URL.createObjectURL(await getBlobAndDestroy(outputCanvas)))
+	return new URL(URL.createObjectURL(await getBlobAndDestroy(canvas)))
 }
 
 function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
@@ -73,32 +73,32 @@ function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanv
 }
 
 function drawImage(
-	inputCanvas: HTMLCanvasElement,
-	outputCanvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
-	outputCanvasWidth: number,
-	outputCanvasHeight: number,
+	image: HTMLCanvasElement,
+	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
+	width: number,
+	height: number,
 ) {
-	outputCanvasContext.drawImage(
-		inputCanvas,
+	context.drawImage(
+		image,
 		settings.frame.border,
 		settings.frame.border,
-		outputCanvasWidth - settings.frame.border * 2,
-		outputCanvasHeight - settings.frame.border * 2,
+		width - settings.frame.border * 2,
+		height - settings.frame.border * 2,
 	)
 }
 
 function drawFrame(
 	frame: Frame,
 	customColor: string | null,
-	outputCanvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
+	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
 	for (const path of frame.paths) {
 		if (customColor !== null && path.customizable) {
-			outputCanvasContext.fillStyle = customColor
+			context.fillStyle = customColor
 		} else {
-			outputCanvasContext.fillStyle = path.fill
+			context.fillStyle = path.fill
 		}
-		outputCanvasContext.fill(new Path2D(path.definition))
+		context.fill(new Path2D(path.definition))
 	}
 }
 
@@ -106,32 +106,32 @@ function drawLogo(
 	logo: ImageBitmap | HTMLImageElement,
 	circleStrokeColor: string,
 	drawnLogosCount: number,
-	canvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
-	canvasWidth: number,
-	canvasHeight: number,
+	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
+	width: number,
+	height: number,
 ) {
 	const [signX, signY] = getAxesSign(drawnLogosCount)
 
 	const [circleCenterX, circleCenterY] = getCircleCenterCoordinates(
 		signX,
 		signY,
-		canvasWidth,
-		canvasHeight,
+		width,
+		height,
 	)
 	drawLogoCircleBackground(
 		circleCenterX,
 		circleCenterY,
 		circleStrokeColor,
-		canvasContext,
+		context,
 	)
 
 	const [x, y] = getLogoTopLeftCoordinates(
 		signX,
 		signY,
-		canvasWidth,
-		canvasHeight,
+		width,
+		height,
 	)
-	canvasContext.drawImage(
+	context.drawImage(
 		logo,
 		x,
 		y,
@@ -155,10 +155,10 @@ function drawLogoCircleBackground(
 	centerX: number,
 	centerY: number,
 	strokeColor: string,
-	canvasContext: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
+	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
-	canvasContext.beginPath()
-	canvasContext.ellipse(
+	context.beginPath()
+	context.ellipse(
 		centerX,
 		centerY,
 		circleRadius,
@@ -167,37 +167,37 @@ function drawLogoCircleBackground(
 		0,
 		Math.PI * 2,
 	)
-	canvasContext.closePath()
+	context.closePath()
 
-	canvasContext.fillStyle = settings.logo.circle.color
-	canvasContext.fill()
+	context.fillStyle = settings.logo.circle.color
+	context.fill()
 
-	canvasContext.strokeStyle = strokeColor
-	canvasContext.lineWidth = settings.logo.circle.strokeWidth
-	canvasContext.stroke()
+	context.strokeStyle = strokeColor
+	context.lineWidth = settings.logo.circle.strokeWidth
+	context.stroke()
 }
 
 function getCircleCenterCoordinates(
 	signX: number,
 	signY: number,
-	canvasWidth: number,
-	canvasHeight: number
+	width: number,
+	height: number
 ): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
+		width / 2 + signX * (width / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
+		height / 2 - signY * (height / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
 	]
 }
 
 function getLogoTopLeftCoordinates(
 	signX: number,
 	signY: number,
-	canvasWidth: number,
-	canvasHeight: number,
+	width: number,
+	height: number,
 ): [number, number] {
 	return [
-		canvasWidth / 2 + signX * (canvasWidth / 2 - logoMargin - (signX > 0 ? settings.logo.image.side : 0)),
-		canvasHeight / 2 - signY * (canvasHeight / 2 - logoMargin - (signY < 0 ? settings.logo.image.side : 0)),
+		width / 2 + signX * (width / 2 - logoMargin - (signX > 0 ? settings.logo.image.side : 0)),
+		height / 2 - signY * (height / 2 - logoMargin - (signY < 0 ? settings.logo.image.side : 0)),
 	]
 }
 

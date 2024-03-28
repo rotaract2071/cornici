@@ -45,11 +45,11 @@ export default async function (
 		height,
 	)
 
-	if (optionalLogo !== null && customColor !== null) {
+	if (optionalLogo !== null) {
 		// Draw the optional logo on the output canvas
 		drawLogo(
 			optionalLogo,
-			customColor,
+			customColor ?? settings.colors[Logo.Distretto],
 			drawnLogosCount++,
 			context,
 			width,

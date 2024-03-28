@@ -181,7 +181,7 @@ function getCircleCenterCoordinates(
 	signX: number,
 	signY: number,
 	width: number,
-	height: number
+	height: number,
 ): [number, number] {
 	return [
 		width / 2 + signX * (width / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),

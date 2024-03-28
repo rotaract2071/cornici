@@ -6,8 +6,6 @@ import overlay from "./overlayer"
 import settings from "./settings"
 import { Format, Logo } from "./types.d"
 
-const ERROR_MESSAGE = "Si è verificato un errore, riprova con Google Chrome da PC o Android."
-
 const form = document.querySelector("form")!
 const fieldset = form.querySelector("fieldset")!
 const imagesInput = fieldset.querySelector('input[name="images"]') as HTMLInputElement

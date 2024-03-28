@@ -1,5 +1,5 @@
 import settings from "./settings"
-import type { Format, Logo } from "./types.d"
+import type { Format, Logo } from "./types"
 
 export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {
 	const response = await fetch(`/logos/${logo}-${settings.hashes.logos[logo]}.png`)

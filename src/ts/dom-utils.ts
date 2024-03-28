@@ -1,4 +1,4 @@
-import type { Frame } from "./types.d"
+import type { Frame } from "./types"
 
 export const enum ButtonStatus {
 	Busy,

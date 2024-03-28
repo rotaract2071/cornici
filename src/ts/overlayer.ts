@@ -4,7 +4,7 @@ import { Logo, type Frame } from "./types.d"
 const circleRadius = computeCircleRadius()
 const logoMargin = computeLogoMargin()
 
-export default async function overlay(
+export default async function (
 	width: number,
 	height: number,
 	image: HTMLCanvasElement,

@@ -12,20 +12,20 @@ const imagesInput = fieldset.querySelector('input[name="images"]') as HTMLInputE
 const formatInput = fieldset.querySelector('select[name="format"]') as HTMLSelectElement
 const logoInput = fieldset.querySelector('select[name="logo"]') as HTMLSelectElement
 const applyButton = form.querySelector("button")!
-const croppersContainer = document.getElementById("croppers") as HTMLDivElement
+const imagesContainer = document.getElementById("images") as HTMLDivElement
 
-const croppers = new Array<{ file: File, url: URL, cropper: Cropper }>()
+const images = new Array<{ file: File, url: URL, cropper: Cropper }>()
 
-function resetCroppers() {
-	croppersContainer.innerHTML = ""
-	for (const { url } of croppers) {
+function clearImages() {
+	imagesContainer.innerHTML = ""
+	for (const { url } of images) {
 		URL.revokeObjectURL(url.href)
 	}
-	croppers.length = 0
+	images.length = 0
 }
 
 imagesInput.addEventListener("change", async () => {
-	resetCroppers()
+	clearImages()
 	setButtonStatus(applyButton, ButtonStatus.Disabled)
 	if (!imagesInput.files?.length) {
 		return
@@ -40,15 +40,15 @@ imagesInput.addEventListener("change", async () => {
 		image.src = url.href
 		const container = document.createElement("div")
 		container.appendChild(image)
-		croppersContainer.appendChild(container)
-		croppers.push({ file, url, cropper: initializeCropper(image, format) })
+		imagesContainer.appendChild(container)
+		images.push({ file, url, cropper: initializeCropper(image, format) })
 	}
-	setButtonStatus(applyButton, ButtonStatus.Clickable)
+	setButtonStatus(applyButton, ButtonStatus.Enabled)
 	fieldset.disabled = false
 })
 
 formatInput.addEventListener("change", () => {
-	for (const { cropper } of croppers) {
+	for (const { cropper } of images) {
 		updateAspectRatio(cropper, formatInput.value as Format)
 	}
 })
@@ -72,7 +72,7 @@ form.addEventListener("submit", async (e) => {
 	const optionalLogo = logo !== null ? await fetchLogo(logo) : null
 	const customColor = logo !== null ? settings.colors[logo] : null
 
-	const anchors = await Promise.all(croppers.map(async ({ file, cropper }) => generateAnchor(await overlay(
+	const anchors = await Promise.all(images.map(async ({ file, cropper }) => generateAnchor(await overlay(
 		width,
 		height,
 		cropper.getCroppedCanvas(),
@@ -82,14 +82,14 @@ form.addEventListener("submit", async (e) => {
 		customColor,
 	), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
 
-	resetCroppers()
-	croppersContainer.append(...anchors)
+	clearImages()
+	imagesContainer.append(...anchors)
 
 	setButtonStatus(applyButton, ButtonStatus.Hidden)
 })
 
 form.addEventListener("reset", () => {
-	resetCroppers()
+	clearImages()
 	setButtonStatus(applyButton, ButtonStatus.Disabled)
 })
 

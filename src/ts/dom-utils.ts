@@ -2,8 +2,8 @@ import type { Frame } from "./types"
 
 export const enum ButtonStatus {
 	Busy,
-	Clickable,
 	Disabled,
+	Enabled,
 	Hidden,
 }
 
@@ -13,15 +13,15 @@ const buttonAttributes: Record<ButtonStatus, { hidden: boolean, ariaBusy: "true"
 		ariaBusy: "true",
 		disabled: true,
 	},
-	[ButtonStatus.Clickable]: {
-		hidden: false,
-		ariaBusy: "false",
-		disabled: false,
-	},
 	[ButtonStatus.Disabled]: {
 		hidden: false,
 		ariaBusy: "false",
 		disabled: true,
+	},
+	[ButtonStatus.Enabled]: {
+		hidden: false,
+		ariaBusy: "false",
+		disabled: false,
 	},
 	[ButtonStatus.Hidden]: {
 		hidden: true,

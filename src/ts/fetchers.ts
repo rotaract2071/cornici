@@ -1,14 +1,17 @@
+import { convertSVGToFrame } from "./dom-utils"
 import settings from "./settings"
-import type { Format, Logo } from "./types"
+import type { Format, Frame, Logo } from "./types"
 
 export async function fetchLogo(logo: Logo): Promise<ImageBitmap | HTMLImageElement> {
 	const response = await fetch(`/logos/${logo}-${settings.hashes.logos[logo]}.png`)
 	return createImage(await response.blob())
 }
 
-export async function fetchFrame(format: Format): Promise<SVGElement> {
+export async function fetchFrame(format: Format): Promise<Frame> {
 	const response = await fetch(`/frames/${format}-${settings.hashes.frames[format]}.svg`)
-	return new DOMParser().parseFromString(await response.text(), "image/svg+xml").documentElement as unknown as SVGElement
+	const domParser = new DOMParser()
+	const svg = domParser.parseFromString(await response.text(), "image/svg+xml").documentElement as unknown as SVGElement
+	return convertSVGToFrame(svg)
 }
 
 async function createImage(imageData: Blob): Promise<ImageBitmap | HTMLImageElement> {

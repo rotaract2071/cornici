@@ -9,9 +9,8 @@ export default async function (
 	height: number,
 	image: HTMLCanvasElement,
 	frame: Frame,
-	districtLogo: ImageBitmap | HTMLImageElement,
-	optionalLogo: ImageBitmap | HTMLImageElement | null,
-	customColor: string | null,
+	color: string | null,
+	logos: (ImageBitmap | HTMLImageElement)[],
 ): Promise<URL> {
 	const canvas = createCanvas(width, height)
 	const context = canvas.getContext("2d")
@@ -30,27 +29,16 @@ export default async function (
 	// Draw the frame on the output canvas
 	drawFrame(
 		frame,
-		customColor,
+		color,
 		context,
 	)
 
-	let drawnLogosCount = 0
-	// Draw district's logo on the output canvas
-	drawLogo(
-		districtLogo,
-		customColor ?? settings.colors[Logo.Distretto],
-		drawnLogosCount++,
-		context,
-		width,
-		height,
-	)
-
-	if (optionalLogo !== null) {
-		// Draw the optional logo on the output canvas
+	// Draw the logos
+	for (const [index, logo] of logos.entries()) {
 		drawLogo(
-			optionalLogo,
-			customColor ?? settings.colors[Logo.Distretto],
-			drawnLogosCount++,
+			logo,
+			color ?? settings.colors[Logo.Distretto],
+			index,
 			context,
 			width,
 			height,
@@ -89,12 +77,12 @@ function drawImage(
 
 function drawFrame(
 	frame: Frame,
-	customColor: string | null,
+	color: string | null,
 	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
 	for (const path of frame.paths) {
-		if (customColor !== null && path.customizable) {
-			context.fillStyle = customColor
+		if (color !== null && path.customizable) {
+			context.fillStyle = color
 		} else {
 			context.fillStyle = path.fill
 		}

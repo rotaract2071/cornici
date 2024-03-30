@@ -1,6 +1,6 @@
 import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
-import { ButtonStatus, convertSVGToFrame, generateAnchor, setButtonStatus } from "./dom-utils"
+import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
 import { fetchFrame, fetchLogo } from "./fetchers"
 import overlay from "./overlayer"
 import settings from "./settings"
@@ -63,23 +63,24 @@ form.addEventListener("submit", async (e) => {
 		[Format.Portrait]: [settings.canvas.shortSide, settings.canvas.longSide],
 		[Format.Square]: [settings.canvas.shortSide, settings.canvas.shortSide],
 	} satisfies Record<Format, [number, number]>)[format]
-
-	const frame = convertSVGToFrame(await fetchFrame(format))
-
-	const districtLogo = await fetchLogo(Logo.Distretto)
-
 	const logo = logoInput.value !== "" ? logoInput.value as Logo : null
-	const optionalLogo = logo !== null ? await fetchLogo(logo) : null
-	const customColor = logo !== null ? settings.colors[logo] : null
+	const [frame, districtLogo, optionalLogo] = await Promise.all([
+		fetchFrame(format),
+		fetchLogo(Logo.Distretto),
+		logo !== null ? fetchLogo(logo) : null,
+	])
+	const logos = [districtLogo]
+	if (optionalLogo !== null) {
+		logos.push(optionalLogo)
+	}
 
 	const anchors = await Promise.all(images.map(async ({ file, cropper }) => generateAnchor(await overlay(
 		width,
 		height,
 		cropper.getCroppedCanvas(),
 		frame,
-		districtLogo,
-		optionalLogo,
-		customColor,
+		logo !== null ? settings.colors[logo] : null,
+		logos,
 	), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
 
 	clearImages()

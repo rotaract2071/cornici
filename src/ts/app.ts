@@ -17,10 +17,11 @@ const imagesContainer = document.getElementById("images") as HTMLDivElement
 const images = new Array<{ file: File, url: URL, cropper: Cropper }>()
 
 function clearImages() {
-	imagesContainer.innerHTML = ""
-	for (const { url } of images) {
+	for (const { url, cropper } of images) {
 		URL.revokeObjectURL(url.href)
+		cropper.destroy()
 	}
+	imagesContainer.innerHTML = ""
 	images.length = 0
 }
 

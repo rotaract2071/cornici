@@ -81,11 +81,7 @@ function drawFrame(
 	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
 	for (const path of frame.paths) {
-		if (color !== null && path.customizable) {
-			context.fillStyle = color
-		} else {
-			context.fillStyle = path.fill
-		}
+		context.fillStyle = color !== null && path.customizable ? color : path.fill
 		context.fill(new Path2D(path.definition))
 	}
 }
@@ -107,6 +103,7 @@ function drawLogo(
 		height,
 	)
 	drawLogoCircleBackground(
+		drawnLogosCount,
 		circleCenterX,
 		circleCenterY,
 		circleStrokeColor,
@@ -133,36 +130,63 @@ function drawLogo(
  * to identify the quadrant in which the logo must be drawn.
  */
 function getAxesSign(drawnLogosCount: number): [number, number] {
-	// This is the angle relative to the center of the image that determines the position of the logo
+	// The angle relative to the center of the image that determines the position of the logo
 	// starting from the bottom right (-π/4) and stepping by 90° clockwise (-π/2)
 	const angle = -Math.PI / 4 - Math.PI / 2 * drawnLogosCount
-	return [Math.cos, Math.sin].map((trigonometricFunction) => Math.sign(trigonometricFunction(angle))) as [number, number]
+	return [Math.cos, Math.sin].map((fn) => Math.sign(fn(angle))) as [number, number]
 }
 
 function drawLogoCircleBackground(
+	drawnLogosCount: number,
 	centerX: number,
 	centerY: number,
 	strokeColor: string,
 	context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
+	const compensationAngle = 1 / 20
+	const startAngle = Math.PI * 3 / 4
+
+	// Draw the portion of ellipse that serves as border
 	context.beginPath()
 	context.ellipse(
 		centerX,
 		centerY,
+		circleRadius + settings.logo.circle.strokeWidth,
+		circleRadius + settings.logo.circle.strokeWidth,
+		drawnLogosCount * Math.PI / 2,
+		startAngle + compensationAngle,
+		startAngle + Math.PI - compensationAngle,
+	)
+	context.closePath()
+	context.fillStyle = strokeColor
+	context.fill()
+
+	// Dirty hack to hide the remaining portion of the frame in the corner
+	context.beginPath()
+	context.moveTo(centerX, centerY)
+	context.arc(
+		centerX,
+		centerY,
+		circleRadius + settings.logo.circle.strokeWidth,
+		drawnLogosCount * Math.PI / 2 + Math.PI / 4 - compensationAngle,
+		drawnLogosCount * Math.PI / 2 + Math.PI / 4 + compensationAngle,
+	)
+	context.closePath()
+	context.fillStyle = settings.logo.circle.color
+	context.fill()
+	
+	// Draw the actual circle
+	context.beginPath()
+	context.arc(
+		centerX,
+		centerY,
 		circleRadius,
-		circleRadius,
-		0,
 		0,
 		Math.PI * 2,
 	)
 	context.closePath()
-
 	context.fillStyle = settings.logo.circle.color
 	context.fill()
-
-	context.strokeStyle = strokeColor
-	context.lineWidth = settings.logo.circle.strokeWidth
-	context.stroke()
 }
 
 function getCircleCenterCoordinates(

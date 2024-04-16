@@ -20,13 +20,13 @@ export default {
 		},
 	},
 	colors: {
-		[Logo.Distretto]: "#d41367",
-		[Logo.Doc]: "#0d4e8c",
-		[Logo.Etruria]: "#17b2dc",
-		[Logo.Galileo]: "#f5a14d",
-		[Logo.Magnifico]: "#138a62",
-		[Logo.Montalbano]: "#e71d75",
-		[Logo.Tirreno]: "#ee7046",
+		[Logo.Distretto]: "#17458f", // Rotary Royal Blue
+		[Logo.Doc]: "#0067c8", // Azure
+		[Logo.Etruria]: "#00adbb", // Turquoise
+		[Logo.Galileo]: "#f7a81b", // Rotary Gold
+		[Logo.Magnifico]: "#009739", // Grass
+		[Logo.Montalbano]: "#901f93", // Violet
+		[Logo.Tirreno]: "#ff7600", // Orange
 	} satisfies Record<Logo, string>,
 	hashes: {
 		frames: {
@@ -44,4 +44,4 @@ export default {
 			[Logo.Tirreno]: "63195",
 		} satisfies Record<Logo, string>,
 	},
-}
+} as const

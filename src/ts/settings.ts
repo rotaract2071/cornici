@@ -39,9 +39,9 @@ export default {
 			[Format.Square]: "24840",
 		} satisfies Record<Format, string>,
 		logos: {
-			[Logo.AzioneInteressePubblico]: "63203",
-			[Logo.AzioneNuoveGenerazioni]: "41260",
-			[Logo.AzioneProfessionale]: "09833",
+			[Logo.AzioneInteressePubblico]: "12481",
+			[Logo.AzioneNuoveGenerazioni]: "28340",
+			[Logo.AzioneProfessionale]: "32990",
 			[Logo.Distretto]: "13820",
 			[Logo.Doc]: "20572",
 			[Logo.Etruria]: "25935",

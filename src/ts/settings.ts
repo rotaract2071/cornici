@@ -36,12 +36,12 @@ export default {
 		} satisfies Record<Format, string>,
 		logos: {
 			[Logo.Distretto]: "13820",
-			[Logo.Doc]: "65040",
-			[Logo.Etruria]: "34250",
-			[Logo.Galileo]: "44175",
-			[Logo.Magnifico]: "07988",
-			[Logo.Montalbano]: "56065",
-			[Logo.Tirreno]: "46942",
+			[Logo.Doc]: "20572",
+			[Logo.Etruria]: "25935",
+			[Logo.Galileo]: "03570",
+			[Logo.Magnifico]: "54002",
+			[Logo.Montalbano]: "03570",
+			[Logo.Tirreno]: "48765",
 		} satisfies Record<Logo, string>,
 	},
 } as const

@@ -5,12 +5,16 @@ export const enum Format {
 }
 
 export const enum Logo {
+	AzioneInteressePubblico = "azione-interesse-pubblico",
+	AzioneNuoveGenerazioni = "azione-nuove-generazioni",
+	AzioneProfessionale = "azione-professionale",
 	Distretto = "distretto",
 	Doc = "doc",
 	Etruria = "etruria",
 	Galileo = "galileo",
 	Magnifico = "magnifico",
 	Montalbano = "montalbano",
+	Sport = "sport",
 	Tirreno = "tirreno",
 }
 

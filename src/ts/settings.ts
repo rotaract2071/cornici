@@ -42,7 +42,7 @@ export default {
 			[Logo.AzioneInteressePubblico]: "12481",
 			[Logo.AzioneNuoveGenerazioni]: "28340",
 			[Logo.AzioneProfessionale]: "32990",
-			[Logo.Distretto]: "13820",
+			[Logo.Distretto]: "49697",
 			[Logo.Doc]: "20572",
 			[Logo.Etruria]: "25935",
 			[Logo.Galileo]: "03570",

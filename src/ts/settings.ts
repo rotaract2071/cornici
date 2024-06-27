@@ -45,7 +45,7 @@ export default {
 			[Logo.Distretto]: "01940",
 			[Logo.Doc]: "20572",
 			[Logo.Etruria]: "25935",
-			[Logo.Galileo]: "03570",
+			[Logo.Galileo]: "28425",
 			[Logo.Magnifico]: "54002",
 			[Logo.Montalbano]: "03570",
 			[Logo.Sport]: "32507",

@@ -20,8 +20,9 @@ export default {
 		},
 	},
 	colors: {
-		[Logo.AzioneInterna]: "#d41367", // Cranberry
 		[Logo.AzioneInteressePubblico]: "#d41367", // Cranberry
+		[Logo.AzioneInterna]: "#d41367", // Cranberry
+		[Logo.AzioneInternazionale]: "#d41367", // Cranberry
 		[Logo.AzioneNuoveGenerazioni]: "#d41367", // Cranberry
 		[Logo.AzioneProfessionale]: "#d41367", // Cranberry
 		[Logo.Cultura]: "#d41367", // Cranberry
@@ -43,6 +44,7 @@ export default {
 		logos: {
 			[Logo.AzioneInteressePubblico]: "12481",
 			[Logo.AzioneInterna]: "07462",
+			[Logo.AzioneInternazionale]: "07462",
 			[Logo.AzioneNuoveGenerazioni]: "28340",
 			[Logo.AzioneProfessionale]: "32990",
 			[Logo.Cultura]: "57135",

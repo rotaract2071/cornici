@@ -5,9 +5,11 @@ export const enum Format {
 }
 
 export const enum Logo {
+	AzioneInterna = "azione-interna",
 	AzioneInteressePubblico = "azione-interesse-pubblico",
 	AzioneNuoveGenerazioni = "azione-nuove-generazioni",
 	AzioneProfessionale = "azione-professionale",
+	Cultura = "cultura",
 	Distretto = "distretto",
 	Doc = "doc",
 	Etruria = "etruria",

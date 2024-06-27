@@ -20,9 +20,11 @@ export default {
 		},
 	},
 	colors: {
+		[Logo.AzioneInterna]: "#d41367", // Cranberry
 		[Logo.AzioneInteressePubblico]: "#d41367", // Cranberry
 		[Logo.AzioneNuoveGenerazioni]: "#d41367", // Cranberry
 		[Logo.AzioneProfessionale]: "#d41367", // Cranberry
+		[Logo.Cultura]: "#d41367", // Cranberry
 		[Logo.Distretto]: "#17458f", // Rotary Royal Blue
 		[Logo.Doc]: "#0067c8", // Azure
 		[Logo.Etruria]: "#00adbb", // Turquoise
@@ -40,8 +42,10 @@ export default {
 		} satisfies Record<Format, string>,
 		logos: {
 			[Logo.AzioneInteressePubblico]: "12481",
+			[Logo.AzioneInterna]: "07462",
 			[Logo.AzioneNuoveGenerazioni]: "28340",
 			[Logo.AzioneProfessionale]: "32990",
+			[Logo.Cultura]: "57135",
 			[Logo.Distretto]: "01940",
 			[Logo.Doc]: "20572",
 			[Logo.Etruria]: "25935",

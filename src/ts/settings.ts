@@ -44,7 +44,7 @@ export default {
 		logos: {
 			[Logo.AzioneInteressePubblico]: "12481",
 			[Logo.AzioneInterna]: "07462",
-			[Logo.AzioneInternazionale]: "07462",
+			[Logo.AzioneInternazionale]: "62091",
 			[Logo.AzioneNuoveGenerazioni]: "28340",
 			[Logo.AzioneProfessionale]: "32990",
 			[Logo.Cultura]: "57135",

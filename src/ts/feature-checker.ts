@@ -1,15 +1,15 @@
 export function supportsCreateImageBitmap(): boolean {
 	try {
-		return !!createImageBitmap && !!createImageBitmap(new Blob())
+		return "createImageBitmap" in globalThis && !!createImageBitmap(new Blob())
 	} catch {
 		return false
 	}
 }
 
 export function supportsWebWorkers(): boolean {
-	return !!Worker
+	return "Worker" in globalThis
 }
 
 export function supportsOffscreenCanvas(): boolean {
-	return !!OffscreenCanvas
+	return "OffscreenCanvas" in globalThis
 }

@@ -2,7 +2,7 @@ import type Cropper from "cropperjs"
 import { initialize as initializeCropper, updateAspectRatio } from "./cropper"
 import { ButtonStatus, generateAnchor, setButtonStatus } from "./dom-utils"
 import { fetchFrame, fetchLogo } from "./fetchers"
-import overlay from "./overlayer"
+import dispatchJob from "./job-dispatcher"
 import settings from "./settings"
 import { Format, Logo } from "./types.d"
 
@@ -75,14 +75,25 @@ form.addEventListener("submit", async (e) => {
 		logos.push(optionalLogo)
 	}
 
-	const anchors = await Promise.all(images.map(async ({ file, cropper }) => generateAnchor(await overlay(
+	const responses = await dispatchJob({
 		width,
 		height,
-		cropper.getCroppedCanvas(),
+		images: images.map(({ url, cropper }, index) => {
+			const { left: x, top: y, width, height } = cropper.getCropBoxData()
+			return {
+				id: index,
+				url: url.href,
+				x,
+				y,
+				width,
+				height,
+			}
+		}),
 		frame,
-		logo !== null ? settings.colors[logo] : null,
+		color: logo !== null ? settings.colors[logo] : null,
 		logos,
-	), file.name.split(".").slice(0, -1).join() + "_con_cornice.png")))
+	})
+	const anchors = responses.map(({ url }, index) => generateAnchor(new URL(url), images[index].file.name.split(".").slice(0, -1).join("") + "_con_cornice.png"))
 
 	clearImages()
 	imagesContainer.append(...anchors)

@@ -28,3 +28,26 @@ export interface Frame {
 		customizable: boolean,
 	}[],
 }
+
+export interface ImageData {
+	id: number,
+	url: string,
+	x: number,
+	y: number,
+	width: number,
+	height: number,
+}
+
+export interface OverlayerBatchRequest {
+	width: number,
+	height: number,
+	images: ImageData[],
+	frame: Frame,
+	color: string | null,
+	logos: (ImageBitmap | HTMLImageElement)[],
+}
+
+export interface OverlayerResponse {
+	id: number,
+	url: string,
+}

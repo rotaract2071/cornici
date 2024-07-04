@@ -1,3 +1,4 @@
+import { supportsOffscreenCanvas } from "./feature-checker"
 import settings from "./settings"
 import { Logo, type Frame } from "./types.d"
 
@@ -7,7 +8,7 @@ const logoMargin = computeLogoMargin()
 export default async function (
 	width: number,
 	height: number,
-	image: HTMLCanvasElement,
+	image: (ImageBitmap | HTMLImageElement),
 	frame: Frame,
 	color: string | null,
 	logos: (ImageBitmap | HTMLImageElement)[],
@@ -35,7 +36,7 @@ class Overlayer {
 		this.#context = context
 	}
 
-	drawImage(image: HTMLCanvasElement) {
+	drawImage(image: ImageBitmap | HTMLImageElement) {
 		const x = settings.frame.border
 		const y = settings.frame.border
 		const width = this.#canvas.width - settings.frame.border * 2
@@ -136,6 +137,9 @@ class Overlayer {
 
 	async getBlobAndDestroy(): Promise<Blob> {
 		const canvas = this.#canvas
+		if (supportsOffscreenCanvas() && canvas instanceof OffscreenCanvas) {
+			return canvas.convertToBlob()
+		}
 		if (canvas instanceof HTMLCanvasElement) {
 			return new Promise((resolve, reject) => {
 				canvas.toBlob((blob) => {
@@ -148,7 +152,7 @@ class Overlayer {
 				})
 			})
 		}
-		return canvas.convertToBlob()
+		throw new Error()
 	}
 }
 

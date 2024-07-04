@@ -1,4 +1,5 @@
 import { convertSVGToFrame } from "./dom-utils"
+import { supportsCreateImageBitmap } from "./feature-checker"
 import settings from "./settings"
 import type { Format, Frame, Logo } from "./types"
 
@@ -15,12 +16,12 @@ export async function fetchFrame(format: Format): Promise<Frame> {
 }
 
 async function createImage(imageData: Blob): Promise<ImageBitmap | HTMLImageElement> {
-	try {
+	if (supportsCreateImageBitmap()) {
 		return createImageBitmap(imageData)
-	} catch {
-		const image = new Image()
-		image.src = URL.createObjectURL(imageData)
-		await image.decode()
-		return image
 	}
+	const image = new Image()
+	image.src = URL.createObjectURL(imageData)
+	await image.decode()
+	return image
+
 }

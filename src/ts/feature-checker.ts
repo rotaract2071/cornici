@@ -1,6 +1,6 @@
 export function supportsCreateImageBitmap(): boolean {
 	try {
-		return !!createImageBitmap(new Blob())
+		return !!createImageBitmap && !!createImageBitmap(new Blob())
 	} catch {
 		return false
 	}

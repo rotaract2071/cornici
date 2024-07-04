@@ -1,4 +1,4 @@
-@use "pico" with (
+@use "@picocss/pico/scss/pico" with (
   $enable-semantic-container: true,
   $enable-transitions: false,
   $modules: (
@@ -49,7 +49,7 @@
   )
 );
 
-@use 'cropper.css';
+@use "cropperjs/src";
 
 #images {
   display: flex;

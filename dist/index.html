@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+	<title>Cornici</title>
+  <script type="module" crossorigin src="/assets/index-BV1TUXja.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-cfMvD2Tv.css">
+</head>
+
+<body>
+	<main>
+		<h1>Cornici</h1>
+		<div class="grid" style="align-items: start">
+			<form>
+				<noscript>Abilita JavaScript per applicare la cornice.</noscript>
+				<fieldset disabled>
+					<label>
+						Foto
+						<input type="file" name="images" accept="image/*" multiple required>
+						<small>Puoi selezionare anche più file.</small>
+					</label>
+					<label>
+						Formato
+						<select name="format">
+							<option value="square">Quadrato</option>
+							<option value="portrait">Verticale</option>
+							<option value="landscape">Orizzontale</option>
+						</select>
+					</label>
+					<label>
+						Logo
+						<select name="logo">
+							<option value="">Distretto</option>
+							<optgroup label="Zone">
+								<option value="doc">DOC</option>
+								<option value="etruria">Etruria</option>
+								<option value="galileo">Galileo</option>
+								<option value="magnifico">Il Magnifico</option>
+								<option value="montalbano">Montalbano</option>
+								<option value="tirreno">Tirreno</option>
+							</optgroup>
+							<optgroup label="Commissioni">
+								<option value="azione-interesse-pubblico">Azione Interesse Pubblico</option>
+								<option value="azione-interna">Azione Interna</option>
+								<option value="azione-internazionale">Azione Internazionale</option>
+								<option value="azione-nuove-generazioni">Azione Nuove Generazioni</option>
+								<option value="azione-professionale">Azione Professionale</option>
+								<option value="cultura">Cultura</option>
+								<option value="sport">Sport</option>
+							</optgroup>
+						</select>
+						<small>Il logo della zona o della commissione.</small>
+					</label>
+					<button type="submit" disabled>Applica cornice</button>
+					<input type="reset" value="Reset">
+				</fieldset>
+			</form>
+			<div id="images"></div>
+		</div>
+	</main>
+	<footer style="text-align: center">
+		<small>
+			Credits: <a href="https://danieleambrosino.it" target="_blank">Daniele Ambrosino</a>, <a href="https://linktr.ee/grazia_pachioli" target="_blank">Grazia Pachioli</a>, <a href="https://instagram.com/malvinarosseti" target="_blank">Malvina Rosseti</a>
+			<br>
+			<a target="_blank" href="https://rotaract2071.org">Distretto Rotaract 2071</a>
+			<br>
+			© Comm. Comunicazione e Informatica A.R. 2024/2025
+		</small>
+	</footer>
+</body>
+
+</html>

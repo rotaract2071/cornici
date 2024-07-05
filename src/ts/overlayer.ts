@@ -157,14 +157,13 @@ class Overlayer {
 }
 
 function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
-	try {
+	if (supportsOffscreenCanvas()) {
 		return new OffscreenCanvas(width, height)
-	} catch {
-		const canvas = document.createElement("canvas")
-		canvas.width = width
-		canvas.height = height
-		return canvas
 	}
+	const canvas = document.createElement("canvas")
+	canvas.width = width
+	canvas.height = height
+	return canvas
 }
 
 /**

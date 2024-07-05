@@ -25,7 +25,7 @@ function legacyStrategy(request: OverlayerBatchRequest): Promise<OverlayerRespon
 		const image = new Image()
 		image.src = imageData.url
 		await image.decode()
-		return ({
+		return {
 			id: imageData.id,
 			url: (await overlay(
 				width,
@@ -35,6 +35,6 @@ function legacyStrategy(request: OverlayerBatchRequest): Promise<OverlayerRespon
 				color,
 				logos,
 			)).href,
-		})
+		}
 	}))
 }

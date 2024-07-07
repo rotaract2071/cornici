@@ -29,6 +29,7 @@ export default {
 		[Logo.Distretto]: "#17458f", // Rotary Royal Blue
 		[Logo.Doc]: "#0067c8", // Azure
 		[Logo.Etruria]: "#00adbb", // Turquoise
+		[Logo.FondazioneRotary]: "#d41367", // Cranberry
 		[Logo.Galileo]: "#f7a81b", // Rotary Gold
 		[Logo.Magnifico]: "#009739", // Grass
 		[Logo.Montalbano]: "#901f93", // Violet
@@ -51,6 +52,7 @@ export default {
 			[Logo.Distretto]: "01940",
 			[Logo.Doc]: "20572",
 			[Logo.Etruria]: "25935",
+			[Logo.FondazioneRotary]: "41211",
 			[Logo.Galileo]: "28425",
 			[Logo.Magnifico]: "54002",
 			[Logo.Montalbano]: "03570",

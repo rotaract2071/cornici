@@ -79,7 +79,7 @@ form.addEventListener("submit", async (e) => {
 		width,
 		height,
 		images: images.map(({ url, cropper }, index) => {
-			const { left: x, top: y, width, height } = cropper.getCropBoxData()
+			const { x, y, width, height } = cropper.getData()
 			return {
 				id: index,
 				url: url.href,

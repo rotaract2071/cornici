@@ -90,7 +90,7 @@ form.addEventListener("submit", async (e) => {
 			}
 		}),
 		frame,
-		color: logo !== null ? settings.colors[logo] : null,
+		color: logo !== null && logo !== Logo.DistrettoPast ? settings.colors[logo] : null,
 		logos,
 	})
 	const anchors = responses.map(({ url }, index) => generateAnchor(new URL(url), images[index].file.name.split(".").slice(0, -1).join("") + "_con_cornice.png"))

@@ -27,6 +27,7 @@ export default {
 		[Logo.AzioneProfessionale]: "#d41367", // Cranberry
 		[Logo.Cultura]: "#d41367", // Cranberry
 		[Logo.Distretto]: "#17458f", // Rotary Royal Blue
+		[Logo.DistrettoPast]: "#d41367", // Cranberry
 		[Logo.Doc]: "#0067c8", // Azure
 		[Logo.Etruria]: "#00adbb", // Turquoise
 		[Logo.FondazioneRotary]: "#d41367", // Cranberry
@@ -50,6 +51,7 @@ export default {
 			[Logo.AzioneProfessionale]: "32990",
 			[Logo.Cultura]: "57135",
 			[Logo.Distretto]: "01940",
+			[Logo.DistrettoPast]: "35413",
 			[Logo.Doc]: "20572",
 			[Logo.Etruria]: "25935",
 			[Logo.FondazioneRotary]: "41211",

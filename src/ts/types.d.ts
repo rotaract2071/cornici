@@ -12,6 +12,7 @@ export const enum Logo {
 	AzioneProfessionale = "azione-professionale",
 	Cultura = "cultura",
 	Distretto = "distretto",
+	DistrettoPast = "distretto-past",
 	Doc = "doc",
 	Etruria = "etruria",
 	FondazioneRotary = "fondazione-rotary",

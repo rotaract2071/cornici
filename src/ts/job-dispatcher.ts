@@ -6,9 +6,9 @@ import WorkerPool from "./worker-pool"
 const pool = supportsWebWorkers() ? new WorkerPool() : null
 
 export default async function (request: OverlayerBatchRequest): Promise<OverlayerResponse[]> {
-	// if (supportsWebWorkers() && supportsCreateImageBitmap() && supportsOffscreenCanvas()) {
-	// 	return webWorkerStrategy(request)
-	// }
+	if (supportsWebWorkers() && supportsCreateImageBitmap() && supportsOffscreenCanvas()) {
+		return webWorkerStrategy(request)
+	}
 	return legacyStrategy(request)
 }
 

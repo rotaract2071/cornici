@@ -25,12 +25,21 @@ function legacyStrategy(request: OverlayerBatchRequest): Promise<OverlayerRespon
 		const image = new Image()
 		image.src = imageData.url
 		await image.decode()
+		const canvas = document.createElement("canvas")
+		canvas.width = width
+		canvas.height = height
+		const context = canvas.getContext("2d")!
+		context.drawImage(image, imageData.x, imageData.y, imageData.width, imageData.height, 0, 0, width, height)
+		const url = canvas.toDataURL()
+		const croppedImage = new Image(image.width, image.height)
+		croppedImage.src = url
+		await croppedImage.decode()
 		return {
 			id: imageData.id,
 			url: (await overlay(
 				width,
 				height,
-				image,
+				croppedImage,
 				frame,
 				color,
 				logos,

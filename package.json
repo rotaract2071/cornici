@@ -12,6 +12,6 @@
   "devDependencies": {
     "@picocss/pico": "^2.0.6",
     "cropperjs": "^1.6.2",
-    "vite": "^5.3.3"
+    "vite": "^5.4.19"
   }
 }

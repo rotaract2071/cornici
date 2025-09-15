@@ -82,64 +82,36 @@ class Overlayer {
 	}
 
 	#drawLogoCircleBackground(signX: number, signY: number, strokeColor: string) {
-		const [centerX, centerY] = [
-			this.#canvas.width / 2 + signX * (this.#canvas.width / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
-			this.#canvas.height / 2 - signY * (this.#canvas.height / 2 - settings.logo.circle.margin - Math.floor(settings.logo.circle.strokeWidth / 2) - circleRadius),
-		]
+		const [x, y] = this.#getLogoTopLeftCoordinates(signX, signY);
+		const centerX = x + settings.logo.image.side / 2;
+		const centerY = y + settings.logo.image.side / 2;
 
-		const compensationAngle = Math.PI / 64
-		const startAngle = Math.PI * 3 / 4
+		// Cerchio di sfondo con bordo
+		this.#context.beginPath();
+		this.#context.arc(centerX, centerY, circleRadius + settings.logo.circle.strokeWidth, 0, Math.PI * 2);
+		this.#context.closePath();
+		this.#context.fillStyle = strokeColor;
+		this.#context.fill();
 
-		// Draw the portion of ellipse that serves as border
-		this.#context.beginPath()
-		this.#context.ellipse(
-			centerX,
-			centerY,
-			circleRadius + settings.logo.circle.strokeWidth,
-			circleRadius + settings.logo.circle.strokeWidth,
-			this.#drawnLogosCount * Math.PI / 2,
-			startAngle + compensationAngle,
-			startAngle + Math.PI - compensationAngle,
-		)
-		this.#context.closePath()
-		this.#context.fillStyle = strokeColor
-		this.#context.fill()
-
-		// Dirty hack to hide the remaining portion of the frame in the corner
-		const patchAngle = Math.PI / 16
-		this.#context.beginPath()
-		this.#context.moveTo(centerX, centerY)
-		this.#context.arc(
-			centerX,
-			centerY,
-			circleRadius + settings.logo.circle.strokeWidth + 4,
-			this.#drawnLogosCount * Math.PI / 2 + Math.PI / 4 - patchAngle / 2,
-			this.#drawnLogosCount * Math.PI / 2 + Math.PI / 4 + patchAngle / 2,
-		)
-		this.#context.closePath()
-		this.#context.fillStyle = settings.logo.circle.color
-		this.#context.fill()
-
-		// Draw the actual circle
-		this.#context.beginPath()
-		this.#context.arc(
-			centerX,
-			centerY,
-			circleRadius,
-			0,
-			Math.PI * 2,
-		)
-		this.#context.closePath()
-		this.#context.fillStyle = settings.logo.circle.color
-		this.#context.fill()
+		// Cerchio interno (colore di sfondo reale del logo)
+		this.#context.beginPath();
+		this.#context.arc(centerX, centerY, circleRadius, 0, Math.PI * 2);
+		this.#context.closePath();
+		this.#context.fillStyle = settings.logo.circle.color;
+		this.#context.fill();
 	}
+
 
 	#getLogoTopLeftCoordinates(signX: number, signY: number): [number, number] {
-		return [
-			this.#canvas.width / 2 + signX * (this.#canvas.width / 2 - logoMargin - (signX > 0 ? settings.logo.image.side : 0)),
-			this.#canvas.height / 2 - signY * (this.#canvas.height / 2 - logoMargin - (signY < 0 ? settings.logo.image.side : 0)),
-		]
+		const padding = settings.frame.border + logoMargin; // bordo + margine
+		const side = settings.logo.image.side;
+
+		const x = signX < 0 ? padding : this.#canvas.width - padding - side;
+		const y = signY > 0 ? padding : this.#canvas.height - padding - side;
+
+		return [x, y];
 	}
+
 
 	async getBlobAndDestroy(): Promise<Blob> {
 		const canvas = this.#canvas

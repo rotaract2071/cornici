@@ -55,9 +55,9 @@ class Overlayer {
 		const y = settings.frame.border + extraPadding
 		const width = this.#canvas.width - (settings.frame.border + extraPadding) * 2
 		const height = this.#canvas.height - (settings.frame.border + extraPadding) * 2
-		const radius = 30 // raggio degli angoli stondati in px
+		const radius = 30
+	
 
-		// Creiamo il path stondato
 		this.#context.beginPath()
 		this.#context.moveTo(x + radius, y)
 		this.#context.lineTo(x + width - radius, y)
@@ -70,14 +70,14 @@ class Overlayer {
 		this.#context.quadraticCurveTo(x, y, x + radius, y)
 		this.#context.closePath()
 
-		// Applichiamo clipping
+		this.#context.fillStyle = "#FFFFFF" 
+		this.#context.fill()
+
 		this.#context.save()
 		this.#context.clip()
 
-		// Disegniamo l’immagine dentro il path
 		this.#context.drawImage(image, x, y, width, height)
 
-		// Ripristiniamo contesto
 		this.#context.restore()
 	}
 

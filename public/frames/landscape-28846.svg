@@ -1,1 +1,15 @@
-<svg width="1620" height="1080" xmlns="http://www.w3.org/2000/svg"><path class="customizable" d="M0,0 V1080 H1620 V0 Z M25,25 H1595 V1055 H25 Z" fill="#d41367"/><path d="M25,25 V1055 H1595 V25 Z M50,50 H1570 V1030 H50 Z" fill="white"/><path class="customizable" d="M50,50 V1030 H1570 V50 Z M75,75 H1545 V1005 H75 Z" fill="#17458f"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1620 1080" style="enable-background:new 0 0 1620 1080;" xml:space="preserve">
+  <path d="M0,0v1080h1620V0H0z M25,25h1570v1030H25V25z" fill="#D41367"/>
+  <path d="M25,25v1030h1570V25H25z M50,50h1520v980H50V50z" fill="#FFFFFF"/>
+  <path class="customizable" d="M546 50h1074v25H546V50z" fill="#17458F"/>
+  <path class="customizable" d="M1545 0h25v707.9h-25V0z" fill="#17458F"/>
+  <path class="customizable" d="M0 1005h1074v25H0v-25z" fill="#17458F"/>
+  <path class="customizable" d="M50 372.1h25v707.9H50V372.1z" fill="#17458F"/>
+  <path d="M50 25h25v350.3H50V25z" fill="#FFFFFF"/>
+  <path d="M25 50h521v25H25V50z" fill="#FFFFFF"/>
+  <path d="M1074 1005h521v25h-521V1005z" fill="#FFFFFF"/>
+  <path d="M1545 707.9h25v347.1h-25V707.9z" fill="#FFFFFF"/>
+
+</svg>

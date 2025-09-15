@@ -1,25 +1,40 @@
-import { supportsOffscreenCanvas } from "./feature-checker"
 import settings from "./settings"
 import { Logo, type Frame } from "./types.d"
 
+function supportsOffscreenCanvas(): boolean {
+    return typeof OffscreenCanvas !== "undefined"
+}
+
+function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
+    if (supportsOffscreenCanvas()) {
+        return new OffscreenCanvas(width, height)
+    }
+    const canvas = document.createElement("canvas")
+    canvas.width = width
+    canvas.height = height
+    return canvas
+}
+
 const circleRadius = computeCircleRadius()
+
 const logoMargin = computeLogoMargin()
 
-export default async function (
-	width: number,
-	height: number,
-	image: (ImageBitmap | HTMLImageElement),
-	frame: Frame,
-	color: string | null,
-	logos: (ImageBitmap | HTMLImageElement)[],
+
+export default async function overlay(
+    width: number,
+    height: number,
+    image: ImageBitmap | HTMLImageElement,
+    frame: Frame,
+    color: string | null,
+    logos: (ImageBitmap | HTMLImageElement)[]
 ): Promise<URL> {
-	const overlayer = new Overlayer(width, height)
-	overlayer.drawImage(image)
-	overlayer.drawFrame(frame, color)
-	for (const logo of logos) {
-		overlayer.drawLogo(logo, color ?? settings.colors[Logo.Distretto])
-	}
-	return new URL(URL.createObjectURL(await overlayer.getBlobAndDestroy()))
+    const overlayer = new Overlayer(width, height)
+    overlayer.drawImage(image)
+    overlayer.drawFrame(frame, color)
+    for (const logo of logos) {
+        overlayer.drawLogo(logo, color ?? settings.colors[Logo.Distretto])
+    }
+    return new URL(URL.createObjectURL(await overlayer.getBlobAndDestroy()))
 }
 
 class Overlayer {
@@ -52,22 +67,16 @@ class Overlayer {
     drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string) {
         const [signX, signY] = this.#getAxesSign()
         const [x, y] = this.#getLogoTopLeftCoordinates(signX, signY)
-
-        // Disegna il cerchio centrato sul logo
         this.#drawLogoCircleBackground(x, y, circleStrokeColor)
-
-        // Disegna il logo sopra il cerchio
         this.#context.drawImage(logo, x, y, settings.logo.image.side, settings.logo.image.side)
-
         this.#drawnLogosCount++
     }
 
     #getAxesSign(): [number, number] {
         switch (this.#drawnLogosCount) {
-            case 0: return [-1, 1]   // primo logo: alto a sinistra
-            case 1: return [1, -1]   // secondo logo: basso a destra
+            case 0: return [-1, 1] // primo logo: alto a sinistra
+            case 1: return [1, -1] // secondo logo: basso a destra
             default:
-                // loghi successivi: schema originale a rotazione
                 const angle = -Math.PI / 4 - Math.PI / 2 * this.#drawnLogosCount
                 return [Math.cos, Math.sin].map(fn => Math.sign(fn(angle))) as [number, number]
         }
@@ -85,14 +94,12 @@ class Overlayer {
         const centerX = x + settings.logo.image.side / 2
         const centerY = y + settings.logo.image.side / 2
 
-        // Cerchio esterno (bordo)
         this.#context.beginPath()
         this.#context.arc(centerX, centerY, circleRadius + settings.logo.circle.strokeWidth, 0, Math.PI * 2)
         this.#context.closePath()
         this.#context.fillStyle = strokeColor
         this.#context.fill()
 
-        // Cerchio interno (sfondo reale)
         this.#context.beginPath()
         this.#context.arc(centerX, centerY, circleRadius, 0, Math.PI * 2)
         this.#context.closePath()
@@ -106,42 +113,29 @@ class Overlayer {
             return canvas.convertToBlob()
         }
         if (canvas instanceof HTMLCanvasElement) {
-			return new Promise((resolve, reject) => {
-				canvas.toBlob(blob => {
-					if (!blob) {
-						reject()
-						return
-					}
-					canvas.remove()
-					resolve(blob)
-				})
-			})
-		}
-		throw new Error()
+            return new Promise<Blob>((resolve, reject) => {
+                canvas.toBlob(blob => {
+                    if (!blob) {
+                        reject(new Error("Canvas.toBlob returned null"))
+                        return
+                    }
+                    canvas.remove()
+                    resolve(blob)
+                })
+            })
+        }
+        throw new Error("Unsupported canvas type")
     }
 }
 
-
-
-function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
-	if (supportsOffscreenCanvas()) {
-		return new OffscreenCanvas(width, height)
-	}
-	const canvas = document.createElement("canvas")
-	canvas.width = width
-	canvas.height = height
-	return canvas
-}
-
-/**
- * Compute the radius as the nearest even number (ceiling) to the diagonal of the square logo
- * (plus some padding and stroke width compensation)
- * so that the logo is entirely inscribed in the circumference.
- */
 function computeCircleRadius(): number {
-	return Math.ceil(Math.ceil(settings.logo.image.side / 2 * Math.sqrt(2)) / 2) * 2 + settings.logo.circle.padding + Math.floor(settings.logo.circle.strokeWidth / 2)
+    return Math.ceil(Math.ceil(settings.logo.image.side / 2 * Math.sqrt(2)) / 2) * 2
+        + settings.logo.circle.padding
+        + Math.floor(settings.logo.circle.strokeWidth / 2)
 }
 
 function computeLogoMargin(): number {
-	return settings.logo.circle.margin + Math.floor(settings.logo.circle.strokeWidth / 2) + circleRadius - settings.logo.image.side / 2
+    return settings.logo.circle.margin
+        + Math.floor(settings.logo.circle.strokeWidth / 2)
+        + circleRadius - settings.logo.image.side / 2
 }

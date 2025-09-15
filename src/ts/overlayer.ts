@@ -49,13 +49,18 @@ class Overlayer {
         this.#context = context
     }
 
-		drawImage(image: ImageBitmap | HTMLImageElement) {
+	drawImage(image: ImageBitmap | HTMLImageElement) {
 		const extraPadding = 20  
 		const x = settings.frame.border + extraPadding
 		const y = settings.frame.border + extraPadding
 		const width = this.#canvas.width - (settings.frame.border + extraPadding) * 2
 		const height = this.#canvas.height - (settings.frame.border + extraPadding) * 2
 		const radius = 30
+
+		this.#context.save()
+		this.#context.fillStyle = "#FFFFFF"
+		this.#context.fillRect(0, 0, this.#canvas.width, this.#canvas.height)
+		this.#context.restore()
 
 		this.#context.save()
 		this.#context.beginPath()
@@ -69,7 +74,6 @@ class Overlayer {
 		this.#context.lineTo(x, y + radius)
 		this.#context.quadraticCurveTo(x, y, x + radius, y)
 		this.#context.closePath()
-
 		this.#context.fillStyle = "#FFFFFF"
 		this.#context.fill()
 		this.#context.restore()
@@ -86,12 +90,10 @@ class Overlayer {
 		this.#context.lineTo(x, y + radius)
 		this.#context.quadraticCurveTo(x, y, x + radius, y)
 		this.#context.closePath()
-
 		this.#context.clip()
 		this.#context.drawImage(image, x, y, width, height)
 		this.#context.restore()
 	}
-
 
 
     drawFrame(frame: Frame, color: string | null) {

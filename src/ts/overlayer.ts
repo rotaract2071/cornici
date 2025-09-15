@@ -23,105 +23,92 @@ export default async function (
 }
 
 class Overlayer {
-	#canvas: OffscreenCanvas | HTMLCanvasElement
-	#context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D
-	#drawnLogosCount = 0
+    #canvas: OffscreenCanvas | HTMLCanvasElement
+    #context: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D
+    #drawnLogosCount = 0
 
-	constructor(width: number, height: number) {
-		this.#canvas = createCanvas(width, height)
-		const context = this.#canvas.getContext("2d")
-		if (context === null) {
-			throw new Error("Canvas 2D rendering context is not supported")
-		}
-		this.#context = context
-	}
+    constructor(width: number, height: number) {
+        this.#canvas = createCanvas(width, height)
+        const context = this.#canvas.getContext("2d")
+        if (!context) throw new Error("Canvas 2D rendering context not supported")
+        this.#context = context
+    }
 
-	drawImage(image: ImageBitmap | HTMLImageElement) {
-		const x = settings.frame.border
-		const y = settings.frame.border
-		const width = this.#canvas.width - settings.frame.border * 2
-		const height = this.#canvas.height - settings.frame.border * 2
-		this.#context.drawImage(image, x, y, width, height)
-	}
+    drawImage(image: ImageBitmap | HTMLImageElement) {
+        const x = settings.frame.border
+        const y = settings.frame.border
+        const width = this.#canvas.width - settings.frame.border * 2
+        const height = this.#canvas.height - settings.frame.border * 2
+        this.#context.drawImage(image, x, y, width, height)
+    }
 
-	drawFrame(frame: Frame, color: string | null) {
-		for (const path of frame.paths) {
-			this.#context.fillStyle = color !== null && path.customizable ? color : path.fill
-			this.#context.fill(new Path2D(path.definition))
-		}
-	}
+    drawFrame(frame: Frame, color: string | null) {
+        for (const path of frame.paths) {
+            this.#context.fillStyle = color !== null && path.customizable ? color : path.fill
+            this.#context.fill(new Path2D(path.definition))
+        }
+    }
 
-	drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string) {
-		const [signX, signY] = this.#getAxesSign()
+    drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string) {
+        const [signX, signY] = this.#getAxesSign()
+        const [x, y] = this.#getLogoTopLeftCoordinates(signX, signY)
 
-		this.#drawLogoCircleBackground(signX, signY, circleStrokeColor)
+        // Disegna il cerchio centrato sul logo
+        this.#drawLogoCircleBackground(x, y, circleStrokeColor)
 
-		const [x, y] = this.#getLogoTopLeftCoordinates(signX, signY)
-		this.#context.drawImage(
-			logo,
-			x,
-			y,
-			settings.logo.image.side,
-			settings.logo.image.side,
-		)
+        // Disegna il logo sopra il cerchio
+        this.#context.drawImage(logo, x, y, settings.logo.image.side, settings.logo.image.side)
 
-		++this.#drawnLogosCount
-	}
+        this.#drawnLogosCount++
+    }
 
-	#getAxesSign(): [number, number] {
-		switch (this.#drawnLogosCount) {
-			case 0:
-				return [-1, 1]; // primo logo: alto a sinistra
-			case 1:
-				return [1, -1]; // secondo logo: basso a destra
-			default:
-				// loghi successivi: schema originale
-				const angle = -Math.PI / 4 - Math.PI / 2 * this.#drawnLogosCount
-				return [Math.cos, Math.sin].map((fn) => Math.sign(fn(angle))) as [number, number]
-		}
-	}
+    #getAxesSign(): [number, number] {
+        switch (this.#drawnLogosCount) {
+            case 0: return [-1, 1]   // primo logo: alto a sinistra
+            case 1: return [1, -1]   // secondo logo: basso a destra
+            default:
+                // loghi successivi: schema originale a rotazione
+                const angle = -Math.PI / 4 - Math.PI / 2 * this.#drawnLogosCount
+                return [Math.cos, Math.sin].map(fn => Math.sign(fn(angle))) as [number, number]
+        }
+    }
 
-	#drawLogoCircleBackground(signX: number, signY: number, strokeColor: string) {
-		const [x, y] = this.#getLogoTopLeftCoordinates(signX, signY);
-		const centerX = x + settings.logo.image.side / 2;
-		const centerY = y + settings.logo.image.side / 2;
+    #getLogoTopLeftCoordinates(signX: number, signY: number): [number, number] {
+        const padding = settings.frame.border + settings.logo.circle.margin
+        const side = settings.logo.image.side
+        const x = signX < 0 ? padding : this.#canvas.width - padding - side
+        const y = signY > 0 ? padding : this.#canvas.height - padding - side
+        return [x, y]
+    }
 
-		// Cerchio di sfondo con bordo
-		this.#context.beginPath();
-		this.#context.arc(centerX, centerY, circleRadius + settings.logo.circle.strokeWidth, 0, Math.PI * 2);
-		this.#context.closePath();
-		this.#context.fillStyle = strokeColor;
-		this.#context.fill();
+    #drawLogoCircleBackground(x: number, y: number, strokeColor: string) {
+        const centerX = x + settings.logo.image.side / 2
+        const centerY = y + settings.logo.image.side / 2
 
-		// Cerchio interno (colore di sfondo reale del logo)
-		this.#context.beginPath();
-		this.#context.arc(centerX, centerY, circleRadius, 0, Math.PI * 2);
-		this.#context.closePath();
-		this.#context.fillStyle = settings.logo.circle.color;
-		this.#context.fill();
-	}
+        // Cerchio esterno (bordo)
+        this.#context.beginPath()
+        this.#context.arc(centerX, centerY, circleRadius + settings.logo.circle.strokeWidth, 0, Math.PI * 2)
+        this.#context.closePath()
+        this.#context.fillStyle = strokeColor
+        this.#context.fill()
 
+        // Cerchio interno (sfondo reale)
+        this.#context.beginPath()
+        this.#context.arc(centerX, centerY, circleRadius, 0, Math.PI * 2)
+        this.#context.closePath()
+        this.#context.fillStyle = settings.logo.circle.color
+        this.#context.fill()
+    }
 
-	#getLogoTopLeftCoordinates(signX: number, signY: number): [number, number] {
-		const padding = settings.frame.border + logoMargin; // bordo + margine
-		const side = settings.logo.image.side;
-
-		const x = signX < 0 ? padding : this.#canvas.width - padding - side;
-		const y = signY > 0 ? padding : this.#canvas.height - padding - side;
-
-		return [x, y];
-	}
-
-
-	async getBlobAndDestroy(): Promise<Blob> {
-		const canvas = this.#canvas
-		if (supportsOffscreenCanvas() && canvas instanceof OffscreenCanvas) {
-			return canvas.convertToBlob()
-		}
-		if (canvas instanceof HTMLCanvasElement) {
+    async getBlobAndDestroy(): Promise<Blob> {
+        const canvas = this.#canvas
+        if (supportsOffscreenCanvas() && canvas instanceof OffscreenCanvas) {
+            return canvas.convertToBlob()
+        }
+        if (canvas instanceof HTMLCanvasElement) {
 			return new Promise((resolve, reject) => {
-				canvas.toBlob((blob) => {
-					if (blob === null) {
+				canvas.toBlob(blob => {
+					if (!blob) {
 						reject()
 						return
 					}
@@ -131,8 +118,10 @@ class Overlayer {
 			})
 		}
 		throw new Error()
-	}
+    }
 }
+
+
 
 function createCanvas(width: number, height: number): OffscreenCanvas | HTMLCanvasElement {
 	if (supportsOffscreenCanvas()) {

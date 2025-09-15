@@ -52,48 +52,33 @@ class Overlayer {
 	}
 
 	drawLogo(logo: ImageBitmap | HTMLImageElement, circleStrokeColor: string) {
-		const [x, y] = this.#getFixedLogoCoordinates(this.#drawnLogosCount);
+		const [signX, signY] = this.#getAxesSign()
 
-		// Disegna il cerchio di sfondo
-		this.#context.beginPath();
-		this.#context.arc(
-			x + settings.logo.image.side / 2,
-			y + settings.logo.image.side / 2,
-			circleRadius,
-			0,
-			Math.PI * 2
-		);
-		this.#context.fillStyle = settings.logo.circle.color;
-		this.#context.fill();
+		this.#drawLogoCircleBackground(signX, signY, circleStrokeColor)
 
-		// Disegna il logo sopra il cerchio
-		this.#context.drawImage(logo, x, y, settings.logo.image.side, settings.logo.image.side);
+		const [x, y] = this.#getLogoTopLeftCoordinates(signX, signY)
+		this.#context.drawImage(
+			logo,
+			x,
+			y,
+			settings.logo.image.side,
+			settings.logo.image.side,
+		)
 
-		++this.#drawnLogosCount;
-	}
-
-	// Nuovo metodo privato per determinare la posizione dei primi due loghi
-	#getFixedLogoCoordinates(index: number): [number, number] {
-		switch (index) {
-			case 0: // Primo logo in alto a sinistra
-				return [settings.logo.circle.margin, settings.logo.circle.margin];
-			case 1: // Secondo logo in basso a destra
-				return [
-					this.#canvas.width - settings.logo.circle.margin - settings.logo.image.side,
-					this.#canvas.height - settings.logo.circle.margin - settings.logo.image.side
-				];
-			default:
-				// Loghi successivi → comportamento originale
-				const [signX, signY] = this.#getAxesSign();
-				return this.#getLogoTopLeftCoordinates(signX, signY);
-		}
+		++this.#drawnLogosCount
 	}
 
 	#getAxesSign(): [number, number] {
-		// The angle relative to the center of the image that determines the position of the logo
-		// starting from the bottom right (-π/4) and stepping by 90° clockwise (-π/2)
-		const angle = -Math.PI / 4 - Math.PI / 2 * this.#drawnLogosCount
-		return [Math.cos, Math.sin].map((fn) => Math.sign(fn(angle))) as [number, number]
+		switch (this.#drawnLogosCount) {
+			case 0:
+				return [-1, 1]; // primo logo: alto a sinistra
+			case 1:
+				return [1, -1]; // secondo logo: basso a destra
+			default:
+				// loghi successivi: schema originale
+				const angle = -Math.PI / 4 - Math.PI / 2 * this.#drawnLogosCount
+				return [Math.cos, Math.sin].map((fn) => Math.sign(fn(angle))) as [number, number]
+		}
 	}
 
 	#drawLogoCircleBackground(signX: number, signY: number, strokeColor: string) {

@@ -50,13 +50,13 @@ class Overlayer {
     }
 
 	drawImage(image: ImageBitmap | HTMLImageElement) {
-		const extraPadding = 20
+		const extraPadding = 20 
 		const x = settings.frame.border + extraPadding
 		const y = settings.frame.border + extraPadding
 		const width = this.#canvas.width - (settings.frame.border + extraPadding) * 2
 		const height = this.#canvas.height - (settings.frame.border + extraPadding) * 2
-		const radius = 30
-	
+
+		const radius = Math.min(width, height) * 0.1  
 
 		this.#context.beginPath()
 		this.#context.moveTo(x + radius, y)
@@ -70,16 +70,28 @@ class Overlayer {
 		this.#context.quadraticCurveTo(x, y, x + radius, y)
 		this.#context.closePath()
 
-		this.#context.fillStyle = "#FFFFFF" 
+		this.#context.fillStyle = "#FFFFFF"
 		this.#context.fill()
 
 		this.#context.save()
+		this.#context.beginPath()
+		this.#context.moveTo(x + radius, y)
+		this.#context.lineTo(x + width - radius, y)
+		this.#context.quadraticCurveTo(x + width, y, x + width, y + radius)
+		this.#context.lineTo(x + width, y + height - radius)
+		this.#context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height)
+		this.#context.lineTo(x + radius, y + height)
+		this.#context.quadraticCurveTo(x, y + height, x, y + height - radius)
+		this.#context.lineTo(x, y + radius)
+		this.#context.quadraticCurveTo(x, y, x + radius, y)
+		this.#context.closePath()
+
 		this.#context.clip()
 
 		this.#context.drawImage(image, x, y, width, height)
-
 		this.#context.restore()
 	}
+
 
     drawFrame(frame: Frame, color: string | null) {
         for (const path of frame.paths) {

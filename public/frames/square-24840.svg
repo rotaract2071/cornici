@@ -1,1 +1,16 @@
-<svg width="1080" height="1080" xmlns="http://www.w3.org/2000/svg"><path class="customizable" d="M0,0 V1080 H1080 V0 Z M25,25 H1055 V1055 H25 Z" fill="#d41367"/><path d="M25,25 V1055 H1055 V25 Z M50,50 H1030 V1030 H50 Z" fill="white"/><path class="customizable" d="M50,50 V1030 H1030 V50 Z M75,75 H1005 V1005 H75 Z" fill="#17458f"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.6.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1080 1080" style="enable-background:new 0 0 1080 1080;" xml:space="preserve">
+<path d="M0,0v1080h1080V0H0z M25,25h1030v1030H25V25z" fill="#d41367"/>
+<path d="M25,25v1030h1030V25H25z M50,50h980v980H50V50z" fill="white"/>
+<path class="customizable" d="M50,50v980h980V50H50z M75,75h930v930H75V75z" fill="white"/>
+<rect x="25" y="50" width="515" height="25"  fill="white"/>
+<rect x="-195" y="270" transform="matrix(4.707885e-11 -1 1 4.707885e-11 -220 345)" width="515" height="25" fill="white"/>
+<rect x="540" y="1005" transform="matrix(-1 -9.895697e-11 9.895697e-11 -1 1570 2035)" width="490" height="25" fill="white"/>
+<rect x="772.5" y="772.5" transform="matrix(-1.484406e-10 1 -1 -1.484406e-10 1802.5 -232.5)" width="490" height="25" fill="white"/>
+<rect x="747.5" y="257.5" transform="matrix(-1.346924e-10 1 -1 -1.346924e-10 1287.5 -747.5)" class="customizable" width="540" height="25" fill="#17458f"/>
+<rect x="540" y="50" class="customizable" width="540" height="25" fill="#17458f"/>
+<rect x="-207.5" y="797.5" transform="matrix(2.244872e-10 -1 1 2.244872e-10 -747.5 872.5)" class="customizable" width="540" height="25" fill="#17458f"/>
+<rect y="1005" transform="matrix(-1 -2.693824e-10 2.693824e-10 -1 540 2035)" class="customizable" width="540" height="25" fill="#17458f"/>
+</svg>

@@ -49,13 +49,37 @@ class Overlayer {
         this.#context = context
     }
 
-    drawImage(image: ImageBitmap | HTMLImageElement) {
-        const x = settings.frame.border
-        const y = settings.frame.border
-        const width = this.#canvas.width - settings.frame.border * 2
-        const height = this.#canvas.height - settings.frame.border * 2
-        this.#context.drawImage(image, x, y, width, height)
-    }
+	drawImage(image: ImageBitmap | HTMLImageElement) {
+		const extraPadding = 20
+		const x = settings.frame.border + extraPadding
+		const y = settings.frame.border + extraPadding
+		const width = this.#canvas.width - (settings.frame.border + extraPadding) * 2
+		const height = this.#canvas.height - (settings.frame.border + extraPadding) * 2
+		const radius = 30 // raggio degli angoli stondati in px
+
+		// Creiamo il path stondato
+		this.#context.beginPath()
+		this.#context.moveTo(x + radius, y)
+		this.#context.lineTo(x + width - radius, y)
+		this.#context.quadraticCurveTo(x + width, y, x + width, y + radius)
+		this.#context.lineTo(x + width, y + height - radius)
+		this.#context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height)
+		this.#context.lineTo(x + radius, y + height)
+		this.#context.quadraticCurveTo(x, y + height, x, y + height - radius)
+		this.#context.lineTo(x, y + radius)
+		this.#context.quadraticCurveTo(x, y, x + radius, y)
+		this.#context.closePath()
+
+		// Applichiamo clipping
+		this.#context.save()
+		this.#context.clip()
+
+		// Disegniamo l’immagine dentro il path
+		this.#context.drawImage(image, x, y, width, height)
+
+		// Ripristiniamo contesto
+		this.#context.restore()
+	}
 
     drawFrame(frame: Frame, color: string | null) {
         for (const path of frame.paths) {
@@ -97,15 +121,15 @@ class Overlayer {
         this.#context.beginPath()
         this.#context.arc(centerX, centerY, circleRadius + settings.logo.circle.strokeWidth, 0, Math.PI * 2)
         this.#context.closePath()
-        this.#context.fillStyle = strokeColor
+        this.#context.fillStyle ="#FFFFFF"
         this.#context.fill()
 
         this.#context.beginPath()
         this.#context.arc(centerX, centerY, circleRadius, 0, Math.PI * 2)
         this.#context.closePath()
-        this.#context.fillStyle = "white"
+        this.#context.fillStyle = "#FFFFFF"
         this.#context.fill()
-    }
+    }	
 
     async getBlobAndDestroy(): Promise<Blob> {
         const canvas = this.#canvas

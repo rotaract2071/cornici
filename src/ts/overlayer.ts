@@ -103,7 +103,7 @@ class Overlayer {
         this.#context.beginPath()
         this.#context.arc(centerX, centerY, circleRadius, 0, Math.PI * 2)
         this.#context.closePath()
-        this.#context.fillStyle = settings.logo.circle.color
+        this.#context.fillStyle = "white"
         this.#context.fill()
     }
 

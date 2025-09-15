@@ -1,1 +1,9 @@
-<svg width="1080" height="1620" xmlns="http://www.w3.org/2000/svg"><path class="customizable" d="M0,0 V1620 H1080 V0 Z M25,25 H1055 V1595 H25 Z" fill="#d41367"/><path d="M25,25 V1595 H1055 V25 Z M50,50 H1030 V1570 H50 Z" fill="white"/><path class="customizable" d="M50,50 V1570 H1030 V50 Z M75,75 H1005 V1545 H75 Z" fill="#17458f"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.6.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1080 1620" style="enable-background:new 0 0 1080 1620;" xml:space="preserve">
+<path d="M0,0v1620h1080V0H0z M25,25h1030v1570H25V25z" fill="#d41367"/>
+<path d="M25,25v1570h1030V25H25z M50,50h980v1520H50V50z" fill="white"/>
+<path class="customizable" d="M680.8,1545v25H0l0-25H680.8z M75,1619.8l-25,0V939h25V1619.8z M399.2,74.8v-25H1080v25H399.2z M1005,0l25,0
+	v680.8h-25V0z" fill="#17458f"/>
+</svg>

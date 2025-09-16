@@ -3,7 +3,7 @@ import { Format, Logo } from "./types.d"
 export default {
 	canvas: {
 		shortSide: 1080,
-		longSide: 1620,
+		longSide: 1350,
 	},
 	frame: {
 		border: 75,

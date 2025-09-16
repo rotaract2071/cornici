@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 27.6.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 1080 1620" style="enable-background:new 0 0 1080 1620;" xml:space="preserve">
+<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 1080 1350" width="1080" height="1350" xml:space="preserve">
 
-<path d="M0,0v1620h1080V0H0z M25,25h1030v1570H25V25z" fill="#D41367"/>
-<path d="M25,25v1570h1030V25H25z M50,50h980v1520H50V50z" fill="#FFFFFF"/>
-<path class="customizable" d="M680.8,1545v25H0v-25H680.8z M75,1619.8H50V939h25V1619.8z M399.2,74.8v-25H1080v25H399.2z M1005,0h25v680.8
-	h-25V0z" fill="#17458F"/>
-<path d="M75,939H50V25h25V939z M25,74.8v-25h374.2v25H25z M1005,681.5h25V1595h-25V681.5z M1055,1545v25H680.8v-25H1055
-	z" fill="#FFFFFF"/>
+  <path d="M0,0v1350h1080V0H0z M25,20.8h1030v1308.4H25V20.8z" fill="#D41367"/>
+  <path d="M25,20.8v1308.4h1030V20.8H25z M50,41.7h980v1266.6H50V41.7z" fill="#FFFFFF"/>
+  
+  <path class="customizable" 
+        d="M680.8,1287.5v20.8H0v-20.8H680.8z 
+           M75,1349.8H50V782.5h25V1349.8z 
+           M399.2,62.3v-20.8H1080v20.8H399.2z 
+           M1005,0h25v567.4h-25V0z" 
+        fill="#17458F"/>
+  
+  <path d="M75,782.5H50V20.8h25V782.5z 
+           M25,62.3v-20.8h374.2v20.8H25z 
+           M1005,568h25v763.4h-25V568z 
+           M1055,1287.5v20.8H680.8v-20.8H1055z" 
+        fill="#FFFFFF"/>
+
 </svg>

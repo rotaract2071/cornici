@@ -31,11 +31,16 @@ export default async function overlay(
     const overlayer = new Overlayer(width, height)
     overlayer.drawImage(image)
     overlayer.drawFrame(frame, color)
-    for (const logo of logos) {
+
+    const logoList = logos.length === 1 ? [logos[0], logos[0]] : logos
+
+    for (const logo of logoList) {
         overlayer.drawLogo(logo, color ?? settings.colors[Logo.Distretto])
     }
+
     return new URL(URL.createObjectURL(await overlayer.getBlobAndDestroy()))
 }
+
 
 class Overlayer {
     #canvas: OffscreenCanvas | HTMLCanvasElement

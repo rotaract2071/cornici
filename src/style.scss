@@ -68,3 +68,51 @@
     top: var(--pico-spacing);
   }
 }
+
+:root {
+  --background: #ffffff;
+  --text: #000000;
+}
+
+[data-theme="dark"] {
+  --background: #121212;
+  --text: #ffffff;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  user-select: none;
+}
+
+.dark-theme-toggle button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.dark-theme-toggle button svg {
+  width: 55px;
+  height: 55px;
+  stroke-width: 2.5;
+  transition: transform 0.3s ease, stroke 0.3s ease;
+  color: var(--text);
+}
+
+.dark-theme-toggle button:hover svg {
+  transform: rotate(30deg);
+}

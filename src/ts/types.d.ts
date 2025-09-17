@@ -11,6 +11,7 @@ export const enum Logo {
 	AzioneNuoveGenerazioni = "azione-nuove-generazioni",
 	AzioneProfessionale = "azione-professionale",
 	Cultura = "cultura",
+	DisastriCalamita = "disastri-calamita",
 	Distretto = "distretto",
 	Doc = "doc",
 	Etruria = "etruria",

@@ -118,8 +118,8 @@ class Overlayer {
 
     #getAxesSign(): [number, number] {
         switch (this.#drawnLogosCount) {
-            case 0: return [-1, 1] // primo logo: alto a sinistra
-            case 1: return [1, -1] // secondo logo: basso a destra
+            case 0: return [-1, 1] // first logo: top left
+            case 1: return [1, -1] // secondo logo: bottom right
             default:
                 const angle = -Math.PI / 4 - Math.PI / 2 * this.#drawnLogosCount
                 return [Math.cos, Math.sin].map(fn => Math.sign(fn(angle))) as [number, number]

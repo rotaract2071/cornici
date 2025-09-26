@@ -36,7 +36,7 @@ export default {
 		[Logo.Montalbano]: "#901f93", // Violet
 		[Logo.Sport]: "#d41367", // Cranberry
 		[Logo.Tirreno]: "#ff7600", // Orange
-		[Logo.Rotary]: "#d41367", // Cranberry
+		[Logo.Rotary]: "#17458f", // Rotary Royal Blue
 	} satisfies Record<Logo, string>,
 	hashes: {
 		frames: {

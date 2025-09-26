@@ -21,6 +21,7 @@ export const enum Logo {
 	Montalbano = "montalbano",
 	Sport = "sport",
 	Tirreno = "tirreno",
+	Rotary = "rotary",
 }
 
 export interface Frame {

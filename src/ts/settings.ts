@@ -36,6 +36,7 @@ export default {
 		[Logo.Montalbano]: "#901f93", // Violet
 		[Logo.Sport]: "#d41367", // Cranberry
 		[Logo.Tirreno]: "#ff7600", // Orange
+		[Logo.Rotary]: "#d41367", // Cranberry
 	} satisfies Record<Logo, string>,
 	hashes: {
 		frames: {
@@ -60,6 +61,7 @@ export default {
 			[Logo.Montalbano]: "03570",
 			[Logo.Sport]: "32507",
 			[Logo.Tirreno]: "48765",
+			[Logo.Rotary]: "17409",
 		} satisfies Record<Logo, string>,
 	},
 } as const

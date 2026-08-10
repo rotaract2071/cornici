@@ -47,30 +47,35 @@
     fill="#FFFFFF"
     fill-rule="evenodd"/>
 
-<!-- LINEA VERTICALE -->
+<!-- LINEA VERTICALE #01B4E7 -->
 <path
-  d="M35.3 681
-     H47.9
-     V1350
+  d="M35.3 687.3
+     A6.3 6.3 0 0 1 41.6 681
+     A6.3 6.3 0 0 1 47.9 687.3
+     V1370
      H35.3
      Z"
-  fill="url(#gradVerticale)"/>
+  fill="#01B4E7"/>
 
-<!-- LINEA ORIZZONTALE SUPERIORE -->
+     
+<!-- LINEA ORIZZONTALE SUPERIORE #005DAA -->
 <path
-  d="M0 1303.4
-     H540
-     V1315.2
-     H0
+  d="M-20 1303.4
+     H534.1
+     A5.9 5.9 0 0 1 540 1309.3
+     A5.9 5.9 0 0 1 534.1 1315.2
+     H-20
      Z"
-  fill="url(#gradOrizzontale1)"/>
+  fill="#005DAA"/>
 
-<!-- LINEA ORIZZONTALE INFERIORE -->
+<!-- LINEA ORIZZONTALE INFERIORE #17458F -->
 <path
-  d="M0 1322
-     H679
-     V1333.8
-     H0
+  d="M-20 1322
+     H673.1
+     A5.9 5.9 0 0 1 679 1327.9
+     A5.9 5.9 0 0 1 673.1 1333.8
+     H-20
      Z"
-  fill="url(#gradOrizzontale2)"/>
+  fill="#17458F"/>
+     
 </svg>

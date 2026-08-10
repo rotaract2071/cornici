@@ -1,18 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     viewBox="0 0 1350 1080" width="1350" height="1080" xml:space="preserve">
 
-  <path d="M0,0v1080h1350V0H0z M20.8,25h1308.4v1030H20.8V25z" fill="#D41367"/>
-  <path d="M20.8,25v1030h1308.4V25H20.8z M41.7,50h1266.6v980H41.7V50z" fill="#FFFFFF"/>
-  
-  <path class="customizable" d="M455 50h895v25H455V50z" fill="#17458F"/>
-  <path class="customizable" d="M1287.5 0h20.8v707.9h-20.8V0z" fill="#17458F"/>
-  <path class="customizable" d="M0 1005h895v25H0v-25z" fill="#17458F"/>
-  <path class="customizable" d="M41.7 372.1h20.8v707.9H41.7V372.1z" fill="#17458F"/>
-  
-  <path d="M41.7 25h20.8v350.3H41.7V25z" fill="#FFFFFF"/>
-  <path d="M20.8 50h434.2v25H20.8V50z" fill="#FFFFFF"/>
-  <path d="M895 1005h434.2v25H895V1005z" fill="#FFFFFF"/>
-  <path d="M1287.5 707.9h20.8v347.1h-20.8V707.9z" fill="#FFFFFF"/>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1350 1080"
+     width="1350"
+     height="1080">
+
+  <defs>
+
+    <!-- GRADIENTE VERTICALE -->
+    <linearGradient id="gradVerticale"
+                    gradientUnits="userSpaceOnUse"
+                    x1="0" y1="540"
+                    x2="0" y2="1080">
+      <stop offset="0%" stop-color="#F4FCFE"/>
+      <stop offset="25%" stop-color="#01B4E7"/>
+      <stop offset="75%" stop-color="#01B4E7"/>
+      <stop offset="85%" stop-color="#04A6DC"/>
+      <stop offset="100%" stop-color="#13579D"/>
+    </linearGradient>
+
+    <!-- GRADIENTE ORIZZONTALE -->
+    <linearGradient id="gradOrizzontale2"
+                    gradientUnits="userSpaceOnUse"
+                    x1="0" y1="0"
+                    x2="679" y2="0">
+      <stop offset="0%" stop-color="#17458F"/>
+      <stop offset="62.5%" stop-color="#17458F"/>
+      <stop offset="75%" stop-color="#4268A4"/>
+      <stop offset="85%" stop-color="#8FA5C9"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+
+  </defs>
+
+
+  <!-- ======================================= -->
+  <!-- CORNICE BIANCA 50 PX                    -->
+  <!-- ======================================= -->
+
+  <path
+    d="M0 0
+       H1350
+       V1080
+       H0
+       Z
+
+       M50 50
+       V1030
+       H1300
+       V50
+       Z"
+    fill="#FFFFFF"
+    fill-rule="evenodd"/>
+
+
+  <!-- ======================================= -->
+  <!-- ANGOLO IN BASSO A SINISTRA              -->
+  <!-- ======================================= -->
+
+  <!-- LINEA VERTICALE #01B4E7 -->
+  <path
+    d="M33.6 554
+       A8 8 0 0 1 41.6 546
+       A8 8 0 0 1 49.6 554
+       V1100
+       H33.6
+       Z"
+    fill="#01B4E7"/>
+
+
+  <!-- LINEA ORIZZONTALE INTERNA #005DAA -->
+  <path
+    d="M-20 1021.8
+       H667
+       A8 8 0 0 1 675 1029.8
+       A8 8 0 0 1 667 1037.8
+       H-20
+       Z"
+    fill="#005DAA"/>
+
+
+  <!-- LINEA ORIZZONTALE VICINA AL BORDO #17458F -->
+  <path
+    d="M-20 1045.8
+       H839
+       A8 8 0 0 1 847 1053.8
+       A8 8 0 0 1 839 1061.8
+       H-20
+       Z"
+    fill="#17458F"/>
+
+
+  <!-- ======================================= -->
+  <!-- ANGOLO IN ALTO A DESTRA                 -->
+  <!-- ======================================= -->
+
+  <!-- LINEA VERTICALE #01B4E7 -->
+  <path
+    d="M1300.4 -20
+       H1316.4
+       V526
+       A8 8 0 0 1 1308.4 534
+       A8 8 0 0 1 1300.4 526
+       Z"
+    fill="#01B4E7"/>
+
+
+  <!-- LINEA ORIZZONTALE VICINA AL BORDO #17458F -->
+  <path
+    d="M508.6 18.2
+       H1370
+       V34.2
+       H508.6
+       A8 8 0 0 1 508.6 18.2
+       Z"
+    fill="#17458F"/>
+
+
+  <!-- LINEA ORIZZONTALE INTERNA #005DAA -->
+  <path
+    d="M682.4 42.2
+       H1370
+       V58.2
+       H682.4
+       A8 8 0 0 1 682.4 42.2
+       Z"
+    fill="#005DAA"/>
 
 </svg>

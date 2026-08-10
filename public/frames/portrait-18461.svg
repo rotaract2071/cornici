@@ -1,21 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     viewBox="0 0 1080 1350" width="1080" height="1350" xml:space="preserve">
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1080 1350"
+     width="1080"
+     height="1350">
 
-  <path d="M0,0v1350h1080V0H0z M25,20.8h1030v1308.4H25V20.8z" fill="#D41367"/>
-  <path d="M25,20.8v1308.4h1030V20.8H25z M50,41.7h980v1266.6H50V41.7z" fill="#FFFFFF"/>
-  
-  <path class="customizable" 
-        d="M680.8,1287.5v20.8H0v-20.8H680.8z 
-           M75,1349.8H50V782.5h25V1349.8z 
-           M399.2,62.3v-20.8H1080v20.8H399.2z 
-           M1005,0h25v567.4h-25V0z" 
-        fill="#17458F"/>
-  
-  <path d="M75,782.5H50V20.8h25V782.5z 
-           M25,62.3v-20.8h374.2v20.8H25z 
-           M1005,568h25v763.4h-25V568z 
-           M1055,1287.5v20.8H680.8v-20.8H1055z" 
-        fill="#FFFFFF"/>
+  <defs>
+
+    <linearGradient id="gradOrizzontale1"
+                    gradientUnits="userSpaceOnUse"
+                    x1="0"
+                    y1="0"
+                    x2="540"
+                    y2="0">
+      <stop offset="0%"
+            stop-color="#005DAA"/>
+      <stop offset="50%"
+            stop-color="#005DAA"/>
+      <stop offset="65%"
+            stop-color="#4186BF"/>
+      <stop offset="75%"
+            stop-color="#78A9D2"/>
+      <stop offset="85%"
+            stop-color="#AECBE4"/>
+      <stop offset="100%"
+            stop-color="#FFFFFF"/>
+
+    </linearGradient>
+  <linearGradient id="gradVerticale"
+                    gradientUnits="userSpaceOnUse"
+                    x1="0"
+                    y1="681"
+                    x2="0"
+                    y2="1350">
+     <stop offset="0%"
+            stop-color="#F4FCFE"/>
+      <stop offset="25%"
+            stop-color="#01B4E7"/>
+      <stop offset="75%"
+            stop-color="#01B4E7"/>
+      <stop offset="85%"
+            stop-color="#04A6DC"/>
+      <stop offset="100%"
+            stop-color="#13579D"/>
+
+    </linearGradient>
+    <linearGradient id="gradOrizzontale2"
+                    gradientUnits="userSpaceOnUse"
+                    x1="0"
+                    y1="0"
+                    x2="679"
+                    y2="0">
+      <stop offset="0%"
+            stop-color="#17458F"/>
+      <stop offset="62.5%"
+            stop-color="#17458F"/>
+      <stop offset="75%"
+            stop-color="#4268A4"/>
+      <stop offset="85%"
+            stop-color="#8FA5C9"/>
+      <stop offset="100%"
+            stop-color="#FFFFFF"/>
+         
+    </linearGradient>
+
+  </defs>
+
+     
+<path
+  d="M0,0
+     H1080
+     V1350
+     H0
+     Z
+
+     M50,50
+     V1300
+     H1030
+     V50
+     Z"
+  fill="#FFFFFF"
+  fill-rule="evenodd"/>
+
+
+ <rect
+    x="35.3"
+    y="681"
+    width="12.6"
+    height="669"
+    fill="url(#gradVerticale)"/>
+
+
+  <rect
+    x="0"
+    y="1303.4"
+    width="540"
+    height="11.8"
+    rx="5.9"
+    fill="url(#gradOrizzontale1)"/>
+
+
+  <rect
+    x="0"
+    y="1322"
+    width="679"
+    height="11.8"
+    rx="5.9"
+    fill="url(#gradOrizzontale2)"/>
 
 </svg>

@@ -56,25 +56,26 @@
      H33.6
      Z"
   fill="#01B4E7"/>
-<!-- LINEA ORIZZONTALE SUPERIORE #005DAA -->
-<path
-  d="M-20 1291.4
-     H532
-     A8 8 0 0 1 540 1299.4
-     A8 8 0 0 1 532 1307.4
-     H-20
-     Z"
-  fill="#005DAA"/>
 
-<!-- LINEA ORIZZONTALE INFERIORE #17458F -->
+<!-- LINEA ORIZZONTALE PIÙ VICINA AL BORDO #17458F -->
 <path
-  d="M-20 1315.4
+  d="M-20 1315.8
      H671
-     A8 8 0 0 1 679 1323.4
-     A8 8 0 0 1 671 1331.4
+     A8 8 0 0 1 679 1323.8
+     A8 8 0 0 1 671 1331.8
      H-20
      Z"
   fill="#17458F"/>
+
+<!-- LINEA ORIZZONTALE PIÙ INTERNA #005DAA -->
+<path
+  d="M-20 1291.8
+     H532
+     A8 8 0 0 1 540 1299.8
+     A8 8 0 0 1 532 1307.8
+     H-20
+     Z"
+  fill="#005DAA"/>
 
 
 <!-- ===== ANGOLO IN ALTO A DESTRA ===== -->

@@ -5,106 +5,72 @@
      height="1350">
 
   <defs>
-
     <linearGradient id="gradOrizzontale1"
                     gradientUnits="userSpaceOnUse"
-                    x1="0"
-                    y1="0"
-                    x2="540"
-                    y2="0">
-      <stop offset="0%"
-            stop-color="#005DAA"/>
-      <stop offset="50%"
-            stop-color="#005DAA"/>
-      <stop offset="65%"
-            stop-color="#4186BF"/>
-      <stop offset="75%"
-            stop-color="#78A9D2"/>
-      <stop offset="85%"
-            stop-color="#AECBE4"/>
-      <stop offset="100%"
-            stop-color="#FFFFFF"/>
-
+                    x1="0" y1="0"
+                    x2="540" y2="0">
+      <stop offset="0%" stop-color="#005DAA"/>
+      <stop offset="50%" stop-color="#005DAA"/>
+      <stop offset="65%" stop-color="#4186BF"/>
+      <stop offset="75%" stop-color="#78A9D2"/>
+      <stop offset="85%" stop-color="#AECBE4"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
     </linearGradient>
-  <linearGradient id="gradVerticale"
+
+    <linearGradient id="gradVerticale"
                     gradientUnits="userSpaceOnUse"
-                    x1="0"
-                    y1="681"
-                    x2="0"
-                    y2="1350">
-     <stop offset="0%"
-            stop-color="#F4FCFE"/>
-      <stop offset="25%"
-            stop-color="#01B4E7"/>
-      <stop offset="75%"
-            stop-color="#01B4E7"/>
-      <stop offset="85%"
-            stop-color="#04A6DC"/>
-      <stop offset="100%"
-            stop-color="#13579D"/>
-
+                    x1="0" y1="681"
+                    x2="0" y2="1350">
+      <stop offset="0%" stop-color="#F4FCFE"/>
+      <stop offset="25%" stop-color="#01B4E7"/>
+      <stop offset="75%" stop-color="#01B4E7"/>
+      <stop offset="85%" stop-color="#04A6DC"/>
+      <stop offset="100%" stop-color="#13579D"/>
     </linearGradient>
+
     <linearGradient id="gradOrizzontale2"
                     gradientUnits="userSpaceOnUse"
-                    x1="0"
-                    y1="0"
-                    x2="679"
-                    y2="0">
-      <stop offset="0%"
-            stop-color="#17458F"/>
-      <stop offset="62.5%"
-            stop-color="#17458F"/>
-      <stop offset="75%"
-            stop-color="#4268A4"/>
-      <stop offset="85%"
-            stop-color="#8FA5C9"/>
-      <stop offset="100%"
-            stop-color="#FFFFFF"/>
-         
+                    x1="0" y1="0"
+                    x2="679" y2="0">
+      <stop offset="0%" stop-color="#17458F"/>
+      <stop offset="62.5%" stop-color="#17458F"/>
+      <stop offset="75%" stop-color="#4268A4"/>
+      <stop offset="85%" stop-color="#8FA5C9"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
     </linearGradient>
-
   </defs>
 
-     
+  <!-- CORNICE BIANCA -->
+  <path
+    d="M0 0H1080V1350H0Z
+       M50 50V1300H1030V50Z"
+    fill="#FFFFFF"
+    fill-rule="evenodd"/>
+
+<!-- LINEA VERTICALE -->
 <path
-  d="M0,0
-     H1080
+  d="M35.3 681
+     H47.9
      V1350
-     H0
-     Z
-
-     M50,50
-     V1300
-     H1030
-     V50
+     H35.3
      Z"
-  fill="#FFFFFF"
-  fill-rule="evenodd"/>
+  fill="url(#gradVerticale)"/>
 
+<!-- LINEA ORIZZONTALE SUPERIORE -->
+<path
+  d="M0 1303.4
+     H540
+     V1315.2
+     H0
+     Z"
+  fill="url(#gradOrizzontale1)"/>
 
- <rect
-    x="35.3"
-    y="681"
-    width="12.6"
-    height="669"
-    fill="url(#gradVerticale)"/>
-
-
-  <rect
-    x="0"
-    y="1303.4"
-    width="540"
-    height="11.8"
-    rx="5.9"
-    fill="url(#gradOrizzontale1)"/>
-
-
-  <rect
-    x="0"
-    y="1322"
-    width="679"
-    height="11.8"
-    rx="5.9"
-    fill="url(#gradOrizzontale2)"/>
-
+<!-- LINEA ORIZZONTALE INFERIORE -->
+<path
+  d="M0 1322
+     H679
+     V1333.8
+     H0
+     Z"
+  fill="url(#gradOrizzontale2)"/>
 </svg>
